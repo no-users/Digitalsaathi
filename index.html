@@ -2,256 +2,640 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Saath - Elite Dashboard</title>
     <link rel="icon" type="image/x-icon" href="Web_Icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --p-blue: #0f172a;
+            --p-blue: #040712;
             --accent: #0ea5e9;
+            --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #e607c8 100%);
             --glow: rgba(14, 165, 233, 0.4);
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
-            --glass-header: rgba(10, 5, 80, 0.9);
+            --glass-header: rgba(4, 7, 18, 0.85);
+            --bg-gradient: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #040712 80%, #000000 100%);
+            --card-bg: rgba(15, 23, 42, 0.3);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --neon-pink: #e607c8;
+            --panel-bg: rgba(8, 14, 28, 0.98);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        [data-theme="light"] {
+            --p-blue: #f8fafc;
+            --accent: #2563eb;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --glow: rgba(37, 99, 235, 0.2);
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --glass-header: rgba(255, 255, 255, 0.9);
+            --bg-gradient: radial-gradient(circle at top, #f1f5f9 0%, #e2e8f0 100%);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(15, 23, 42, 0.1);
+            --panel-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        /* HARD CONTAINMENT SYSTEM */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Hard block for any scrolling leakage */
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #1a237e; 
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            color: var(--text-main);
+            max-height: 100vh;
+            max-width: 100vw;
         }
 
+        /* PREMIUM FUTURISTIC GLOW LOADER */
+        #premium-loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #040712;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+        }
+        .loader-wrapper {
+            position: relative;
+            width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .loader-ring {
+            width: 100%; height: 100%;
+            border: 3px solid rgba(14, 165, 233, 0.1);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: modern-spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+            filter: drop-shadow(0 0 8px var(--accent));
+        }
+        .loader-text {
+            margin-top: 16px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes modern-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        /* ABSOLUTE HEIGHT BOUNDARY HEADER */
         header {
             background: var(--glass-header);
-            backdrop-filter: blur(15px);
-            height: 80px;
-            padding: 0 40px;
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            height: 64px; /* Scaled down for perfect 100% viewport matrix */
+            width: 100%;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.24);
+            flex-shrink: 0;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; cursor: pointer; }
 
         .premium-logo {
-            width: 42px; height: 42px;
-            background: linear-gradient(135deg, var(--accent), #2563eb);
-            border-radius: 12px;
+            width: 34px; height: 34px;
+            background: var(--accent-gradient);
+            border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 15px var(--glow);
+            box-shadow: 0 4px 15px var(--glow);
+            padding: 2px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .brand:hover .premium-logo { transform: scale(1.05) rotate(3deg); box-shadow: 0 0 20px var(--neon-pink); }
 
         .brand-text {
-            font-size: 22px; font-weight: 800;
-            background: linear-gradient(to right, #fff, #7dd3fc);
+            font-size: 16px; font-weight: 800;
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--text-dim) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
 
         nav { 
             display: flex; 
-            gap: 8px; 
-            background: rgba(255, 255, 255, 0.1);
-            padding: 6px;
-            border-radius: 14px;
+            gap: 4px; 
+            background: rgba(255, 255, 255, 0.02);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            align-items: center;
         }
 
         .nav-link {
-            color: #ffffff;
+            color: var(--text-dim);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
-            padding: 8px 18px;
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             white-space: nowrap;
         }
 
-        /* AAPKA ORIGINAL HOVER STYLE */
         .nav-link:hover {
-            background: white;
-            color: #e607c8;
-            box-shadow: 0 0 15px red;
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--accent);
         }
 
-        /* AAPKA ORIGINAL ACTIVE STYLE */
         .nav-link.active {
-            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); 
+            background: var(--accent-gradient);
             color: white !important;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4); 
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
         }
 
-        /* --- STABLE HOVER DROPDOWN --- */
-        .nav-item-dropdown {
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px; 
-            margin-bottom: -15px;
-        }
-
+        /* DROPDOWN NAVIGATION */
+        .nav-item-dropdown { position: relative; display: inline-block; }
         .premium-dropdown {
             display: none; 
             position: absolute;
-            top: 85%;
-            left: 0;
-            background-color: #ffffff;
+            top: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--panel-bg);
             min-width: 200px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            padding: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            padding: 4px;
             z-index: 1000;
+            backdrop-filter: blur(25px);
         }
-
         .nav-item-dropdown:hover .premium-dropdown {
             display: block;
-            animation: slideDown 0.2s ease-out;
+            animation: slideUp 0.18s ease-out;
         }
-
-        .nav-item-dropdown:hover .arrow-icon { transform: rotate(180deg); }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 4px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
         }
-
         .premium-dropdown a {
-            color: #333 !important;
-            padding: 10px 15px;
+            color: var(--text-main);
+            padding: 8px 12px;
             text-decoration: none;
-            display: flex; align-items: center; gap: 10px;
-            border-radius: 8px; font-size: 14px;
+            display: flex; align-items: center; gap: 8px;
+            border-radius: 8px; font-size: 12.5px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .premium-dropdown a:hover { 
+            background: rgba(14, 165, 233, 0.08); 
+            color: var(--accent); 
+            transform: translateX(3px);
         }
 
-        .premium-dropdown a:hover { background-color: #f4f7ff !important; color: #6366f1 !important; }
+        /* HEADER CONTROLS ELEMENTS */
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            flex-shrink: 0;
+        }
 
-        /* --- HEADER RIGHT --- */
-        .header-right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
-        
         .clock-container {
             text-align: right;
-            padding-right: 25px;
-            border-right: 2px solid rgba(14, 165, 233, 0.2);
+            padding-right: 12px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         #clock {
-            background: linear-gradient(to bottom, #fff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-main);
             font-family: 'Courier New', monospace;
-            font-size: 26px;
+            font-size: 22px; /* Protected boundary scaling */
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         #date {
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            color: #0ea5e9;
-            font-weight: 700;
+            color: #00a2ff;
+            letter-spacing: 0.5px;
+            font-weight: 800;
+            margin-top: 1px;
+            display: block;
+            text-align: right;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.06); transform: scale(1.05); }
+
+        /* PROFILE DROPDOWN MANAGER */
+        .user-profile-wrapper { position: relative; flex-shrink: 0; }
+        .avatar { 
+            width: 34px; height: 34px; 
+            border-radius: 50%; 
+            border: 2px solid var(--accent); 
+            padding: 2px; 
+            box-shadow: 0 4px 10px var(--glow);
+            transition: all 0.2s;
+            cursor: pointer;
+            display: block;
+        }
+        .avatar:hover { transform: scale(1.05); border-color: var(--neon-pink); }
+        
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 125%; right: 0;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            width: 240px; border-radius: 12px;
+            padding: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            z-index: 1001;
+            backdrop-filter: blur(25px);
+        }
+        .profile-dropdown.show { display: block; animation: slideUpProfile 0.18s ease-out; }
+        @keyframes slideUpProfile { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .user-info { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
+        .user-info h4 { font-size: 13px; font-weight: 700; }
+        .user-info p { font-size: 11px; color: var(--text-dim); }
+
+        /* MAIN ABSOLUTE MONITOR CANVAS */
+        .main-view { 
+            flex: 1 1 auto;
+            position: relative; 
+            width: 100%;
+            height: calc(100% - 102px); /* Mathematically locks remaining height (64px Header + 38px Footer) */
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .app-canvas { 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            position: relative;
+        }
+        
+        iframe { 
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            background: transparent;
             display: block;
         }
 
-        .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent); padding: 2px; background: #fff; }
-
-        /* --- MOBILE RESPONSIVE (ONLY ADJUSTMENTS) --- */
-        @media (max-width: 1024px) {
-            header { padding: 0 15px; height: auto; min-height: 70px; flex-wrap: wrap; justify-content: center; gap: 10px; padding-bottom: 10px; }
-            .brand { order: 1; }
-            .header-right { order: 2; }
-            nav { order: 3; width: 100%; justify-content: center; overflow-x: auto; padding: 4px; }
-            .nav-link { padding: 6px 12px; font-size: 12px; }
-            #clock { font-size: 20px; }
-            .clock-container { padding-right: 10px; }
+        .iframe-overlay-loader {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(4, 7, 18, 0.7);
+            display: none; align-items: center; justify-content: center;
+            z-index: 5; backdrop-filter: blur(15px);
         }
+        .iframe-ring {
+            width: 38px; height: 38px;
+            border: 3px solid rgba(14, 165, 233, 0.1);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: modern-spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+            filter: drop-shadow(0 0 6px var(--accent));
+        }
+        
+        /* TOAST ALERT ENGINE */
+        #premium-toast {
+            position: fixed; bottom: 50px; right: 20px;
+            background: rgba(8, 14, 28, 0.95);
+            border-left: 4px solid var(--accent);
+            padding: 10px 16px; border-radius: 8px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+            color: white; font-size: 12px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+            transform: translateY(150px); opacity: 0;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 10000; backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+        }
+        #premium-toast.show { transform: translateY(0); opacity: 1; }
 
-        .main-view { flex-grow: 1; padding: 15px; background: radial-gradient(circle at center, #1a237e 0%, #0d1117 100%); }
-        .app-canvas { width: 100%; height: 100%; background: #ffffff; border-radius: 20px; overflow: hidden; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .marquee-footer { background: #0f172a; height: 40px; display: flex; align-items: center; padding: 0 30px; font-size: 12px; }
-        .badge { background: #ef4444; color: white; padding: 2px 10px; border-radius: 6px; font-weight: 800; margin-right: 15px; }
+        /* COMMAND MODAL */
+        #command-center {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 4, 10, 0.6); backdrop-filter: blur(20px);
+            z-index: 5000; display: none; align-items: center; justify-content: center;
+        }
+        .command-box {
+            background: var(--panel-bg); border: 1px solid var(--border-color);
+            width: 460px; border-radius: 14px; padding: 16px;
+            box-shadow: 0 30px 64px rgba(0,0,0,0.7);
+            animation: superPop 0.22s ease-out;
+        }
+        @keyframes superPop { from { transform: scale(0.97); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .command-input-wrapper { position: relative; display: flex; align-items: center; }
+        .command-input-wrapper i { position: absolute; left: 12px; color: var(--text-dim); font-size: 14px; }
+        .command-input {
+            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+            padding: 10px 12px 10px 36px; border-radius: 10px; color: white; font-size: 13.5px; outline: none;
+        }
+        .command-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(14, 165, 233, 0.15); }
+        .command-hints { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+        .hint-tag { background: rgba(255,255,255,0.04); padding: 4px 8px; border-radius: 5px; font-size: 11px; color: var(--text-dim); cursor: pointer; border: 1px solid var(--border-color); }
+        .hint-tag:hover { background: rgba(14, 165, 233, 0.1); color: var(--accent); }
+
+        /* FIXED VERTICAL FOOTER */
+        .marquee-footer { 
+            background: var(--p-blue); 
+            height: 38px;
+            display: flex; 
+            align-items: center; 
+            padding: 0 20px; 
+            font-size: 11.5px;
+            border-top: 1px solid var(--border-color);
+            font-weight: 500;
+            flex-shrink: 0;
+            width: 100%;
+        }
+        
+        .badge { 
+            background: var(--accent-gradient); 
+            color: white; 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-weight: 800; 
+            margin-right: 10px; 
+            font-size: 9.5px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 10px var(--glow);
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
 
+    <div id="premium-loader">
+        <div class="loader-wrapper">
+            <div class="loader-ring"></div>
+        </div>
+        <div class="loader-text" id="loader-dynamic-text">Connecting Core Modules Engine...</div>
+    </div>
+
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+    <div id="command-center" onclick="closeSearch()">
+        <div class="command-box" onclick="event.stopPropagation()">
+            <div class="command-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="command-input" placeholder="Type a command (e.g., 'photo', 'form', 'services')..." id="cmd-field" onkeyup="handleSearch(event)">
+            </div>
+            <div class="command-hints">
+                <span class="hint-tag" onclick="executeSearchCommand('photo')">/crop-photo</span>
+                <span class="hint-tag" onclick="executeSearchCommand('form')">/declaration-form</span>
+                <span class="hint-tag" onclick="executeSearchCommand('services')">/services</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="premium-toast">
+        <i class="fa-solid fa-bolt" style="color: #0ea5e9;" id="toast-icon"></i>
+        <span id="toast-msg">System Functional</span>
+    </div>
+
     <header>
-        <div class="brand">
+        <div class="brand" onclick="triggerToast('Digital Saath Intelligence Node Active', 'fa-solid fa-circle-check')">
             <div class="premium-logo">
-                <img src="Studio_Photo_31.8KB.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+                <img src="Studio_Photo_31.8KB.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
             </div>
             <span class="brand-text">DIGITAL SAATH</span>
         </div>
 
         <nav id="top-nav">
-            <a href="#" class="nav-link active" onclick="setActive(this)"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a class="nav-link active" onclick="loadPortal(this, 'https://script.google.com/macros/s/AKfycbz-o4ZklFKzXFdS1hLF8Zct8sK0vOI4VkUKocaiUOEk0iOJcd3EhUIhhUIvNntm3FPn/exec', 'Dashboard Interface Sync Complete')"><i class="fa-solid fa-house"></i> Dashboard</a>
             
             <div class="nav-item-dropdown">
                 <div class="nav-link">
                     <i class="fa-solid fa-screwdriver-wrench"></i> 
                     <span>Tools</span>
-                    <i class="fa-solid fa-chevron-down arrow-icon" style="font-size: 0.7rem; transition: 0.3s;"></i>
+                    <i class="fa-solid fa-chevron-down arrow-icon" style="font-size: 0.65rem; margin-left: 2px;"></i>
                 </div> 
                 <div class="premium-dropdown">
-                    <a href="photo.html" target="_blank" rel="noopener noreferrer">
-    <i class="fa-solid fa-user-plus"></i> Photos Crop
-</a>
-                    <a href="form.html" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-list-ul"></i> Declaration Form</a>
+                    <a href="photo.html" target="_blank" onclick="playAudio()"><i class="fa-solid fa-user-plus"></i> Photos Crop Tool</a>
+                    <a href="form.html" target="_blank" onclick="playAudio()"><i class="fa-solid fa-list-ul"></i> Declaration Form</a>
                 </div>
             </div>
 
-            <a href="#" class="nav-link" onclick="setActive(this)"><i class="fa-solid fa-gears"></i> Services</a>
-            <a href="#" class="nav-link" onclick="setActive(this)"><i class="fa-solid fa-search"></i> Search</a>
+            <a class="nav-link" onclick="loadPortal(this, 'services.html', 'Global Cloud Services Enabled')"><i class="fa-solid fa-gears"></i> Services</a>
+            <a class="nav-link" onclick="openSearch()"><i class="fa-solid fa-search"></i> Search <kbd style="background: rgba(255,255,255,0.08); padding: 2px 5px; border-radius: 4px; font-size: 9px; margin-left: 5px;">Ctrl+K</kbd></a>
         </nav>
 
         <div class="header-right">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Environment Mode">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+            
             <div class="clock-container">
-                <span id="clock">00:00:00 AM</span>
+                <span id="clock">00:00:00 &nbsp;AM</span>
                 <span id="date">-- -- ----</span>
             </div>
-            <img src="Studio_Photo_113.0KB.png" class="avatar" alt="Admin">
+            
+            <div class="user-profile-wrapper">
+                <img src="Studio_Photo_113.0KB.png" class="avatar" alt="Admin" onclick="toggleProfileDropdown()">
+                <div class="profile-dropdown" id="userDropdown">
+                    <div class="user-info">
+                        <img src="Studio_Photo_113.0KB.png" alt="Admin" style="width: 32px; height: 32px; border-radius: 50%;">
+                        <div>
+                            <h4>System Administrator</h4>
+                            <p>admin@digitalsaath.com</p>
+                        </div>
+                    </div>
+                    <a href="#" style="display:flex; align-items:center; gap:10px; color:var(--text-main); text-decoration:none; font-size:13px; margin-bottom:12px;" onclick="triggerToast('Security Control Operational')"><i class="fa-solid fa-shield"></i> Core Settings</a>
+                    <a href="#" style="display:flex; align-items:center; gap:10px; color:#ef4444; text-decoration:none; font-size:13px;" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> Terminal Restart</a>
+                </div>
+            </div>
         </div>
     </header>
 
     <main class="main-view">
         <div class="app-canvas">
-            <iframe src="https://script.google.com/macros/s/AKfycbz-o4ZklFKzXFdS1hLF8Zct8sK0vOI4VkUKocaiUOEk0iOJcd3EhUIhhUIvNntm3FPn/exec"></iframe>
+            <div class="iframe-overlay-loader" id="iframe-loader">
+                <div class="iframe-ring"></div>
+            </div>
+            <iframe id="main-iframe" src="https://script.google.com/macros/s/AKfycbxDOBY6PErfsXDPM7VcWqfYeMKOTmv_BHWvH9o01rUbGzKPk7bQ8tgprtG3UeJJ6Y83/exec"></iframe>
         </div>
     </main>
 
     <footer class="marquee-footer">
-        <span class="badge">LIVE</span>
-        <marquee scrollamount="5">🚀 System Optimization Complete | 🛡️ Secure Encrypted Tunnel Active | 📞 Support 24/7 Available</marquee>
+        <span class="badge">SECURE MATRIX</span>
+        <marquee scrollamount="4" style="color: var(--text-dim);">🔒 Quantum Session Initialized Successfully | Server Location: Secure Multi-Cluster Node | Anti-DDoS Architecture Active</marquee>
     </footer>
 
     <script>
+        // Smooth Loader Sequence 
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('premium-loader');
+            const dynamicText = document.getElementById('loader-dynamic-text');
+            
+            setTimeout(() => { dynamicText.textContent = "Authorizing Neural Cryptography Handshake..."; }, 400);
+            
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                triggerToast('Digital Saath mainframe synchronization complete.', 'fa-solid fa-circle-check');
+            }, 1200); 
+        });
+
+        // Exact Image-Matched Time Synchronization Matrix
         function updateDisplay() {
             const now = new Date();
-            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-            const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+            
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            document.getElementById('clock').innerHTML = `${hours}:${minutes}:${seconds}&nbsp;&nbsp;&nbsp;${ampm}`;
+            
+            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            let dateStr = now.toLocaleDateString('en-US', options).toUpperCase();
+            
+            dateStr = dateStr.replace('.', '');
+            document.getElementById('date').textContent = dateStr;
         }
         setInterval(updateDisplay, 1000);
         updateDisplay();
 
-        function setActive(element) {
+        function playAudio() {
+            const snd = document.getElementById('click-sound');
+            snd.currentTime = 0; snd.volume = 0.12;
+            snd.play().catch(e => {});
+        }
+
+        // Clean Tab Routing Core
+        function loadPortal(element, url, successMessage) {
+            playAudio();
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             element.classList.add('active');
+            
+            const ifrLoader = document.getElementById('iframe-loader');
+            ifrLoader.style.display = 'flex';
+            
+            const iframe = document.getElementById('main-iframe');
+            iframe.src = url; 
+            
+            iframe.onload = () => {
+                ifrLoader.style.display = 'none';
+                triggerToast(successMessage, 'fa-solid fa-circle-check');
+            };
+        }
+
+        function triggerToast(msg, iconClass = 'fa-solid fa-bolt') {
+            const toast = document.getElementById('premium-toast');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').className = iconClass;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
+        function toggleProfileDropdown() {
+            playAudio();
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+
+        function openSearch() { playAudio(); document.getElementById('command-center').style.display = 'flex'; document.getElementById('cmd-field').focus(); }
+        function closeSearch() { document.getElementById('command-center').style.display = 'none'; }
+        
+        function handleSearch(e) {
+            if (e.key === 'Enter') {
+                executeSearchCommand(document.getElementById('cmd-field').value.toLowerCase());
+            }
+        }
+
+        function executeSearchCommand(query) {
+            closeSearch();
+            if(query.includes('photo')) {
+                window.open('photo.html', '_blank');
+                triggerToast('Redirecting to Photo Crop Utility');
+            } else if(query.includes('form')) {
+                window.open('form.html', '_blank');
+                triggerToast('Opening Declaration Form Module');
+            } else if(query.includes('services')) {
+                const navLinks = document.querySelectorAll('.nav-link');
+                loadPortal(navLinks[2], 'services.html', 'Global Cloud Services Enabled');
+            } else {
+                triggerToast('Command node not found', 'fa-solid fa-circle-exclamation');
+            }
+            document.getElementById('cmd-field').value = '';
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'k') { e.preventDefault(); openSearch(); }
+            if (e.key === 'Escape') { closeSearch(); document.getElementById('userDropdown').classList.remove('show'); }
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!e.target.matches('.avatar')) {
+                document.getElementById('userDropdown').classList.remove('show');
+            }
+        });
+
+        function toggleTheme() {
+            playAudio();
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                triggerToast('Obsidian Dark Architecture RESTORED');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-sun';
+                triggerToast('Pure Light Diffusion System ENGAGED');
+            }
         }
     </script>
 </body>
