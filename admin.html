@@ -1,0 +1,2120 @@
+ <!DOCTYPE html>
+
+<html lang="hi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Saathi</title>
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+        
+
+        /* === PREMIUM LUXURY LIGHT MATTE BASE (CREAM) === */
+
+        body { 
+
+            background: linear-gradient(244deg, #0f1f8c94 0%, hsla(218, 93%, 37%, 0.744) 100%); 
+
+            color: #2D3748; 
+
+            padding: 30px; 
+
+            display: flex; 
+
+            justify-content: center; 
+
+            min-height: 100vh; 
+
+            -webkit-font-smoothing: antialiased; 
+
+            position: relative; 
+
+        }
+
+        .master-wrapper { max-width: 1050px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+
+        
+
+        /* === PREMIUM REMASTERED SECURITY OVERLAY SHIELD === */
+
+        #securityGateOverlay {
+
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+
+            background: linear-gradient(135deg, rgba(238, 238, 237, 0.8) 0%, rgba(166, 222, 237, 0.5) 100%);
+
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+
+            z-index: 99999; display: flex; align-items: center; justify-content: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+        }
+
+        .pin-terminal {
+
+            background: rgba(255, 255, 255, 0.85); 
+
+            border: 2px solid #A8D5E3;
+
+            padding: 45px 40px; border-radius: 28px; 
+
+            box-shadow: 0 25px 60px -15px rgba(45, 55, 72, 0.1), 0 0 30px rgba(168, 213, 227, 0.2);
+
+            width: 400px; text-align: center; transition: transform 0.3s ease;
+
+        }
+
+        @keyframes terminalErrorShake {
+
+            0%, 100% { transform: translateX(0); }
+
+            20%, 60% { transform: translateX(-10px); }
+
+            40%, 80% { transform: translateX(10px); }
+
+        }
+
+        .terminal-shake-active { animation: terminalErrorShake 0.4s linear; border-color: #FF78AC !important; box-shadow: 0 0 25px rgba(255, 120, 172, 0.25) !important; }
+
+        
+
+        .pin-terminal .icon-badge-shield { 
+
+            width: 70px; height: 70px; 
+
+            background: #ffffff; 
+
+            border: 2px solid #A8D5E3;
+
+            border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; 
+
+            box-shadow: 0 10px 25px rgba(168, 213, 227, 0.3); margin-bottom: 20px; 
+
+        }
+
+        .pin-terminal .icon-badge-shield i { font-size: 28px; color: #02013b; }
+
+        .pin-terminal h4 { font-size: 20px; font-weight: 700; color: #2D3748; margin-bottom: 8px; letter-spacing: -0.3px; }
+
+        .pin-terminal p { font-size: 13px; color: #718096; margin-bottom: 30px; line-height: 1.5; }
+
+        .hidden-pin-buffer-field { position: absolute; opacity: 0; pointer-events: none; width: 100%; }
+
+
+
+        .premium-pin-box-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; cursor: pointer; }
+
+        .pin-digit-cell { 
+
+            width: 52px; height: 52px; 
+
+            background: #ffffff; 
+
+            border: 2px solid #E2E8F0; 
+
+            border-radius: 14px; font-size: 22px; font-weight: 700; color: #2D3748; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+
+        }
+
+        .pin-digit-cell.cell-focused { border-color: #08297d; box-shadow: 0 0 0 4px rgba(79, 53, 223, 0.2); background: #ffffff; }
+
+        .pin-digit-cell.cell-filled { background: #ffffff; border-color: #A8D5E3; }
+
+        
+
+        .pin-digit-cell.cell-filled .pin-dot-indicator { transform: scale(1); }
+
+        .pin-err-log { color: #E53E3E; font-size: 12.5px; font-weight: 600; margin-top: 10px; display: none; }
+
+
+
+        /* HEADER & TABS PANEL NAVIGATION SYSTEM */
+
+        .admin-header-node { 
+
+            background: #ffffff; 
+
+            padding: 24px 35px; border-radius: 0px; 
+
+            box-shadow: 0 10px 30px rgba(2, 39, 103, 0.04); 
+
+            border: 2px solid #0d265f; 
+
+            display: flex; justify-content: space-between; align-items: center; 
+
+        }
+
+        .header-title-meta h2 { font-size: 22px; font-weight: 700; color: #030119; display: flex; align-items: center; gap: 10px; }
+
+        .header-title-meta h2 i { color: #050223; }
+
+        .header-title-meta p { font-size: 13px; color: #54575c; margin-top: 2px; }
+
+        
+
+        .btn-back { 
+
+            display: inline-flex; align-items: center; gap: 8px; text-decoration: none; 
+
+            color: #060217; background: #e3ea27; padding: 10px 18px; border-radius: 12px; 
+
+            font-size: 13.5px; font-weight: 600; border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s;
+
+        }
+
+        .btn-back:hover { background: #dd1964; color: white; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(239, 129, 86, 0.2); }
+
+
+
+        .control-modes-bar { 
+
+            display: flex; gap: 12px; background: rgb(255, 255, 255); 
+
+            padding: 6px; border-radius: 16px; border: 1px solid #000000; 
+
+        }
+
+        .mode-tab-btn { 
+
+            flex: 1; background: none; border: none; padding: 12px; font-size: 13.5px; 
+
+            font-weight: 700; color: #000000; cursor: pointer; border-radius: 12px; 
+
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
+
+        }
+
+        .mode-tab-btn:hover { color: #970404; background: rgba(55, 54, 54, 0.5); }
+
+        .mode-tab-btn.active { 
+
+            background: #600944; color: rgb(255, 255, 255); 
+
+            box-shadow: 0 4px 15px rgba(241, 38, 187, 0.3); 
+
+        }
+
+
+
+        .workspace-panel-box { display: none; flex-direction: column; gap: 20px; }
+
+        .workspace-panel-box.panel-active { display: flex; animation: smoothFadeIn 0.3s ease; }
+
+        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+
+
+        .control-card-section {
+
+            background: #ffffff; border-radius: 20px; padding: 28px 30px; 
+            box-shadow: #000000;
+
+            border: 1px solid rgba(0, 0, 0, 0.4); box-shadow: 0 10px 30px rgba(24, 29, 172, 0.02);
+
+            display: flex; flex-direction: column; gap: 20px;
+
+        }
+
+
+
+        .section-heading-cluster { 
+
+            font-size: 14px; font-weight: 700; color: #05024a; text-transform: uppercase; 
+
+            letter-spacing: 0.8px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; 
+
+            border-bottom: 1px solid #bfbfbf; margin-bottom: 4px; 
+
+        }
+
+        .section-heading-cluster i { color: #0a012c; }
+
+
+
+        .form-row-matrix-grid { 
+
+            display: grid; 
+
+            grid-template-columns: repeat(3, 1fr); 
+
+            gap: 20px; 
+
+            align-items: flex-start;
+
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+
+        .span-2-cols { grid-column: span 2; }
+
+        .span-full { grid-column: span 2; }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
+
+        .form-group label { font-size: 11.5px; font-weight: 700; color: #000440; text-transform: uppercase; }
+
+        
+
+        .form-group input, .form-group select { 
+
+            padding: 12px 16px; border: 1px solid #ced0d3; border-radius: 0px; 
+
+            font-size: 13.5px; outline: none; background: #ffffff; color: #969696; width: 100%; transition: all 0.2s;
+
+        }
+
+        .form-group input:focus, .form-group select:focus { 
+
+            border-color: #746af7; background: white; box-shadow: 0 0 8px rgba(86, 96, 240, 0.4); 
+
+        }
+
+
+
+        /* DYNAMIC POPMENUS DRAWERS CONFIGS */
+
+        .premium-color-trigger-field { 
+
+            padding: 12px 16px; border: 1px solid #c9c9cd; border-radius: 0px; 
+
+            font-size: 13.5px; background: #ffffff; color: #656669; cursor: pointer; 
+
+            display: flex; align-items: center; justify-content: space-between; font-weight: 300; min-height: 45px; transition: all 0.2s;
+
+        }
+
+        .premium-color-trigger-field:hover { border-color: #657fc6; background: white; }
+
+        
+
+        .icon-dropdown-popover { position: absolute; top: 102%; left: 0; width: 100%; background: white; border: 2px solid #A8D5E3; border-radius: 16px; padding: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); z-index: 999; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 200px; overflow-y: auto; opacity: 0; pointer-events: none; transform: translateY(5px); transition: all 0.25s ease; }
+
+        .color-dropdown-popover { position: absolute; top: 102%; left: 0; width: 100%; background: white; border: 2px solid #A8D5E3; border-radius: 16px; padding: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); z-index: 999; display: grid; grid-template-columns: repeat(1, 1fr); gap: 6px; max-height: 200px; overflow-y: auto; opacity: 0; pointer-events: none; transform: translateY(5px); transition: all 0.25s ease; }
+
+        .popover-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+        
+
+        .icon-dropdown-popover .icon-grid-item { background: #FAF9F6; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #4A5568; font-size: 16px; }
+
+        .icon-dropdown-popover .icon-grid-item:hover { border-color: #FF78AC; color: #FF78AC; background: white; }
+
+        
+
+        .color-chip-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #E2E8F0; border-radius: 10px; cursor: pointer; font-size: 12.5px; font-weight: 500; color: #4A5568; background: #FAF9F6; }
+
+        .color-chip-row:hover { border-color: #FF78AC; background: white; }
+
+        .circular-glow-dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+
+
+        /* ACTIONS PANEL INTERFACES */
+
+        .btn-panel { display: flex; justify-content: flex-end; width: 100%; margin-top: 4px; }
+
+        .btn-action-trigger {
+    padding: 12px 24px;
+    background: #8f1342;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* transition ko short rakha hai taaki smooth feel ho */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(227, 31, 171, 0.25);
+}
+
+/* Space hata di hai yahan */
+.btn-action-trigger:hover {
+    background: #43031c;
+    color: #ffffff; /* Text color white rakha hai kyunki background dark hai */
+    transform: translateY(-2px); /* Button halka sa upar uthega */
+    box-shadow: 0 6px 16px rgba(67, 3, 28, 0.4);
+}
+
+/* Click karne par button thoda dabne ka effect */
+.btn-action-trigger:active {
+    transform: translateY(0);
+}
+
+        .btn-update-mode {
+    background: linear-gradient(135deg, #0114a4 0%, #110248 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    padding: 12px 28px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-update-mode:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(16, 185, 129, 0.4);
+    filter: brightness(1.1);
+}
+
+.btn-update-mode:active {
+    transform: translateY(1px);
+}
+
+        
+
+        .btn-revert { 
+
+            background: #E2E8F0; color: #4A5568; margin-left: 8px; border: none; 
+
+            padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 13.5px; 
+
+            cursor: pointer; display: inline-flex; align-items: center; transition: all 0.2s;
+
+        }
+
+        .btn-revert:hover { background: #CBD5E0; }
+
+
+
+        /* DATA MANAGEMENT VIEWS TABLES */
+
+        .database-manager-card { background: #ffffff; border-radius: 20px; border: 2px solid #A8D5E3; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+
+        .manager-table-header-tabs { display: flex; background: #FAF9F6; padding: 10px 20px; border-bottom: 2px solid #E2E8F0; gap: 8px; }
+
+        .sub-tab-btn {
+    background: transparent;
+    border: 1px solid transparent; /* Border ko invisible rakha */
+    padding: 10px 18px;
+    font-size: 12.5px;
+    font-weight: 650;
+    color: #718096;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
+}
+
+.sub-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.6);
+    color: #2D3748;
+    transform: translateY(-1px);
+}
+
+.sub-tab-btn.active {
+    background: #ffffff;
+    color: #FF78AC;
+    border: 1px solid rgba(255, 120, 172, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 120, 172, 0.15);
+}
+
+
+
+        /* Table Container and Styling */
+.data-viewport-table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    text-align: left;
+    background: #ffffff;
+}
+
+/* Header Cells */
+.data-viewport-table th { 
+    background: #F9FAFB; 
+    padding: 16px 20px; 
+    font-size: 11px; 
+    font-weight: 700; 
+    color: #4A5568; 
+    text-transform: uppercase; 
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #EDF2F7; 
+}
+
+/* Body Cells with Hover Effect */
+.data-viewport-table td { 
+    padding: 18px 20px; 
+    font-size: 13.5px; 
+    border-bottom: 1px solid #F7FAFC; 
+    color: #2D3748; 
+    vertical-align: middle; 
+    transition: background 0.2s;
+}
+
+.data-viewport-table tbody tr:hover { 
+    background-color: #F8FAFC; 
+}
+
+/* Premium Icon Thumbnail */
+.icon-thumbnail-preview { 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 10px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    font-size: 14px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Action Container */
+.action-container-box { 
+    display: flex; 
+    gap: 8px; 
+    justify-content: flex-end; 
+}
+
+        
+
+        /* Base Row Button Style */
+.row-btn {
+    border: 1px solid transparent;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Edit Button - Soft Blue/Teal */
+.row-btn-edit { 
+    background: rgba(168, 213, 227, 0.15); 
+    color: #2b6cb0; 
+    border: 1px solid rgba(168, 213, 227, 0.5); 
+}
+.row-btn-edit:hover { 
+    background: #A8D5E3; 
+    color: #1a365d; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(168, 213, 227, 0.3);
+}
+
+/* Delete Button - Soft Red/Danger */
+.row-btn-delete { 
+    background: rgba(229, 62, 62, 0.05); 
+    color: #c53030; 
+    border: 1px solid rgba(229, 62, 62, 0.2); 
+}
+.row-btn-delete:hover { 
+    background: #E53E3E; 
+    color: white; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+}
+
+/* Sort Button - Neutral/Modern */
+.row-btn-sort { 
+    background: #EDF2F7; 
+    color: #4A5568; 
+    border: 1px solid #E2E8F0; 
+}
+.row-btn-sort:hover { 
+    background: #E2E8F0; 
+    transform: translateY(-2px);
+}
+
+
+
+        /* ALL DEPLOYED SHADOW GLOW MATRIX PLUGINS */
+
+        .glow-token-orange-glow2 { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+        .glow-token-blue-glow2 { background: linear-gradient(135deg, #0284c7, #0369a1); }
+
+        .glow-token-emerald-glow2 { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .glow-token-purple-glow { background: linear-gradient(135deg, #a855f7, #9333ea); }
+
+        .glow-token-pink-glow { background: linear-gradient(135deg, #ec4899, #db2777); }
+
+        .glow-token-teal-glow { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+
+        .glow-token-red-glow2 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .glow-token-yellow-glow { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .glow-token-cyan-glow { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+        .glow-token-indigo-glow { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+
+        .glow-token-lime-glow { background: linear-gradient(135deg, #84cc16, #65a30d); }
+
+        .glow-token-fuchsia-glow { background: linear-gradient(135deg, #d946ef, #c026d3); }
+
+        .glow-token-rose-glow { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+
+        .glow-token-default { background: #FF78AC; }
+
+
+
+        .pin-dot-indicator { 
+    width: 12px; height: 12px; 
+    background-color: #1d4de9; /* Golden Amber - Change this color code as you wish */
+    border-radius: 50%; 
+    transform: scale(0); 
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <!-- SECURE LUXURY ACCESS WALL GATE -->
+
+    <div id="securityGateOverlay">
+
+        <div class="pin-terminal" id="pinTerminalCard">
+
+            <div class="icon-badge-shield"><i class="fas fa-user-shield"></i></div>
+
+            <h4>Admin Verification</h4>
+
+            <p>Please Enter 4-Digit Secure PIN </p>
+
+            
+
+            <div class="premium-pin-box-row" onclick="focusSecurityPinBufferField()">
+
+                <div class="pin-digit-cell" id="cell-0"><span class="pin-dot-indicator"></span></div>
+
+                <div class="pin-digit-cell" id="cell-1"><span class="pin-dot-indicator"></span></div>
+
+                <div class="pin-digit-cell" id="cell-2"><span class="pin-dot-indicator"></span></div>
+
+                <div class="pin-digit-cell" id="cell-3"><span class="pin-dot-indicator"></span></div>
+
+            </div>
+
+
+
+            <input type="text" pattern="[0-9]*" inputmode="numeric" id="hiddenPinField" class="hidden-pin-buffer-field" maxlength="4" autocomplete="off" oninput="compilePinDisplayLiveFeedback(this.value)">
+
+            <div class="pin-err-log" id="pinErrorLogMsg">Enter Correct Pin.</div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="master-wrapper">
+
+        <header class="admin-header-node">
+
+            <div class="header-title-meta">
+
+                <h2><i class="fas fa-sliders-h"></i> DIGITAL SAATHI</h2>
+
+                <p>live folders, inner sub-portals, deep side-links aur colors sync kijiye.</p>
+
+            </div>
+
+            <a href="index.html" class="btn-back"><i class="fas fa-home"></i> View Site</a>
+
+        </header>
+
+
+
+        <nav class="control-modes-bar">
+
+            <button class="mode-tab-btn active" id="tabBtnLayout" onclick="switchActiveFormPanel('panelLayout', this)"><i class="fas fa-folder-tree"></i> 1. Sidebar Structure</button>
+
+            <button class="mode-tab-btn" id="tabBtnCards" onclick="switchActiveFormPanel('panelCards', this)"><i class="fas fa-th-large"></i> 2. Workspace Cards</button>
+
+            <button class="mode-tab-btn" id="tabBtnAlerts" onclick="switchActiveFormPanel('panelAlerts', this)"><i class="fas fa-bullhorn"></i> 3. System Alerts</button>
+
+            <button class="mode-tab-btn" id="tabBtnSettings" onclick="switchActiveFormPanel('panelSettings', this)"><i class="fas fa-cog"></i> 4. Control Settings</button>
+
+        </nav>
+
+
+
+        <!-- PANEL 1: SIDEBAR STRUCTURE MANAGEMENT -->
+
+        <div class="workspace-panel-box panel-active" id="panelLayout">
+
+            
+
+            <!-- CARD 1: MAIN FOLDER GENERATION -->
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="mainFolderFormTitle"><i class="fas fa-folder"></i> Creat Main Folder</div>
+
+                <input type="hidden" id="mainFolderEditIndex" value="-1">
+
+                
+
+                <div class="form-row-matrix-grid">
+
+                    <div class="form-group">
+
+                        <label>Folder Name</label>
+
+                        <input type="text" id="mainFolderNameInput" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Select Icon</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('mainFolderIconPopover')">
+
+                            <span id="mainFolderIconTriggerLabel"><i class="fas fa-folder"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="mainFolderIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Icon Theme</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('mainFolderColorPopover')">
+
+                            <span id="mainFolderColorTriggerLabel">Select Color</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="mainFolderColorPopover"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="mainFolderSubmitBtn" onclick="executeMainFolderAddition()"><i class="fas fa-plus"></i> Create Folder</button>
+
+                    <button class="btn-revert" id="mainFolderCancelBtn" style="display: none;" onclick="resetMainFolderForm()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CARD 2: SUB-PORTAL CONFIGURATIONS -->
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="subPortalFormTitle"><i class="fas fa-folder-open"></i> Creat Sub-Portal</div>
+
+                <input type="hidden" id="subPortalEditIndex" value="-1">
+
+                
+
+                <div class="form-row-matrix-grid">
+
+                    <div class="form-group">
+
+                        <label>Main Folder </label>
+
+                        <select id="subPortalParentSelect"></select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Sub-Folder Name</label>
+
+                        <input type="text" id="subPortalNameInput" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label> Icon</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalIconPopover')">
+
+                            <span id="subPortalIconTriggerLabel"><i class="fas fa-folder-open"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="subPortalIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-2-cols" style="margin-top: 4px;">
+
+                        <label> Theme </label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalColorPopover')">
+
+                            <span id="subPortalColorTriggerLabel">Select Color </span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="subPortalColorPopover"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="subPortalSubmitBtn" onclick="executeSubPortalAddition()"><i class="fas fa-level-down-alt"></i> Create Sub-Portal</button>
+
+                    <button class="btn-revert" id="subPortalCancelBtn" style="display: none;" onclick="resetSubPortalForm()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CARD 3: DEEP SIDE-LINKS -->
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="sideLinkFormTitle"><i class="fas fa-link"></i> CREATE DEEP LINKS </div>
+
+                <input type="hidden" id="sideLinkEditIndex" value="-1">
+
+                
+
+                <div class="form-row-matrix-grid">
+
+                    <div class="form-group">
+
+                        <label>FOLDERL</label>
+
+                        <select id="sideLinkParentSelect"></select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>LINK NAME</label>
+
+                        <input type="text" id="sideLinkLabelInput" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Icon</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('sideLinkIconPopover')">
+
+                            <span id="sideLinkIconTriggerLabel"><i class="fas fa-link"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="sideLinkIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-2-cols" style="margin-top: 4px;">
+
+                        <label> URL</label>
+
+                        <input type="text" id="sideLinkUrlInput" value="Paste Link">
+
+                    </div>
+
+                    <div class="form-group" style="margin-top: 4px;">
+
+                        <label>Theme</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('sideLinkColorPopover')">
+
+                            <span id="sideLinkColorTriggerLabel">Select Color </span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="sideLinkColorPopover"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="sideLinkSubmitBtn" onclick="executeSideLinkAddition()"><i class="fas fa-link"></i> Add Deep-Link</button>
+
+                    <button class="btn-revert" id="sideLinkCancelBtn" style="display: none;" onclick="resetSideLinkForm()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PANEL 2: WORKSPACE DISPLAY GRID CARDS -->
+
+        <div class="workspace-panel-box" id="panelCards">
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="cardFormTitleText"><i class="fas fa-plus-circle"></i> Workspace Cards</div>
+
+                <input type="hidden" id="cardEditModeTrackerId" value="-1">
+
+                
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Step 1: Select Main Folder</label>
+
+                        <select id="cardMainFolderContextSelector" onchange="filterCardSubPortalDropdownOptionsByParent(this.value)"></select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Step 2: Chose Sub-Portal </label>
+
+                        <select id="cardSubPortalContextSelector"></select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Card Heading</label>
+
+                        <input type="text" id="cardTitleHeaderInput" placeholder="Enter Hading">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Redirect URL</label>
+
+                        <input type="text" id="cardUrlPathInput" value="Links">
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>SELECT CARD ICON</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('cardIconPopover')">
+
+                            <span id="workspaceCardIconTriggerLabel"><i class="fas fa-link"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="cardIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>THEME</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('workspaceCardColorPopover')">
+
+                            <span id="workspaceCardColorTriggerLabel">Select Theme</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="workspaceCardColorPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>Card Description</label>
+
+                        <input type="text" id="cardDescriptionTextSummaryInput" placeholder="Details">
+
+                    </div>
+
+                </div>
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="cardFormSubmitTriggerBtn" onclick="processCardPanelFormSubmission()"><i class="fas fa-save"></i> Create Card</button>
+
+                    <button class="btn-action-trigger btn-revert" id="cardFormCancelTriggerBtn" style="display: none;" onclick="clearCardFormInputsToInsertState()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PANEL 3: SYSTEM ALERTS -->
+
+        <div class="workspace-panel-box" id="panelAlerts">
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster"><i class="fas fa-bell"></i> Live Notice </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group span-full">
+
+                        <label>System Notification Message</label>
+
+                        <input type="text" id="globalNoticeBoardFeedInput">
+
+                    </div>
+
+                </div>
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" onclick="executeNoticeBoardUpdateFeed()"><i class="fas fa-sync-alt"></i> Update Notice </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PANEL 4: CONTROL SETTINGS -->
+
+        <div class="workspace-panel-box" id="panelSettings">
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster"><i class="fas fa-key"></i> Modify Pass-PIN</div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Enter New 4-Digit  PIN</label>
+
+                        <input type="password" id="newSettingsPinField" maxlength="4" placeholder="e.g. 5678">
+
+                    </div>
+
+                </div>
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" onclick="changeMasterSecurityPin()"><i class="fas fa-lock"></i> Update PIN</button>
+
+                </div>
+
+            </div>
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster"><i class="fas fa-download"></i> System Database Export Node</div>
+
+                <div class="btn-panel" style="justify-content: flex-start;">
+
+                    <button class="btn-action-trigger" style="background:#A8D5E3; color:#2D3748; box-shadow: 0 4px 12px rgba(168, 213, 227, 0.3);" onclick="exportFullSystemBackupData()"><i class="fas fa-file-download"></i> Download Full JSON Backup</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOWER MONITOR TABLES DATAGRID PORTAL -->
+
+        <section class="database-manager-card">
+
+            <div class="manager-table-header-tabs">
+
+                <button class="sub-tab-btn active" onclick="switchManagementDataGridTab('cards', this)"><i class="fas fa-th-large"></i> Active Cards</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('sideLinks', this)"><i class="fas fa-link"></i> Side-Links</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('subPortals', this)"><i class="fas fa-folder-open"></i> Sub-Portals</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('mainFolders', this)"><i class="fas fa-folder"></i> Main Folders</button>
+
+            </div>
+
+            <div style="overflow-x: auto; max-height: 400px;">
+
+                <table class="data-viewport-table">
+
+                    <thead id="renderTableColumnsHead"></thead>
+
+                    <tbody id="renderTableRowsContentBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <script>
+
+        const premiumIconsPool = [
+
+            "fas fa-gavel", "fas fa-university", "fas fa-train", "fas fa-bolt", "fas fa-id-card", 
+
+            "fas fa-file-pdf", "fas fa-image", "fas fa-wallet", "fas fa-link", "fas fa-shield-heart",
+
+            "fas fa-file-archive", "fas fa-user-tie", "fas fa-calculator", "fas fa-file-invoice-dollar", 
+
+            "fas fa-plug", "fas fa-print", "fas fa-database", "fas fa-server", "fas fa-laptop-code",
+
+            "fas fa-envelope", "fas fa-phone", "fas fa-globe", "fas fa-map-marker-alt", "fas fa-key",
+
+            "fas fa-lock", "fas fa-folder-open", "fas fa-clock", "fas fa-briefcase", "fas fa-tools",
+
+            "fas fa-wrench", "fas fa-book", "fas fa-graduation-cap", "fas fa-users", "fas fa-address-card",
+
+            "fas fa-fingerprint", "fas fa-coins", "fas fa-house-user", "fas fa-receipt", "fas fa-sliders-h",
+
+            "fas fa-network-wired", "fas fa-chart-bar", "fas fa-qrcode", "fas fa-mobile-alt", "fas fa-credit-card"
+
+        ];
+
+
+
+        const premiumNeonColorsPool = [
+
+            { className: "orange-glow2", label: "Orange Radiant Neon" },
+
+            { className: "blue-glow2", label: "Blue Radiant Ocean" },
+
+            { className: "emerald-glow2", label: "Emerald Green Forest" },
+
+            { className: "purple-glow", label: "Obsidian Royal Purple" },
+
+            { className: "pink-glow", label: "Soft Magenta Pink" },
+
+            { className: "teal-glow", label: "Teal Mint Cyan" },
+
+            { className: "red-glow2", label: "Cyber Punk Fire Red" },
+
+            { className: "yellow-glow", label: "Gold Amber Yellow" },
+
+            { className: "cyan-glow", label: "Sky Electric Cyan" },
+
+            { className: "indigo-glow", label: "Premium Royal Indigo" },
+
+            { className: "lime-glow", label: "Neon Citrus Lime" },
+
+            { className: "fuchsia-glow", label: "Cyber Fuchsia Purple" },
+
+            { className: "rose-glow", label: "Deep Velvet Rose" }
+
+        ];
+
+
+
+        let selectedMainFolderIconStr = "fas fa-folder";
+
+        let selectedSubPortalIconStr = "fas fa-folder-open";
+
+        let selectedSideLinkIconStr = "fas fa-link";
+
+        let selectedWorkspaceCardIconStr = "fas fa-link";
+
+
+
+        let selectedMainFolderColorToken = "orange-glow2";
+
+        let selectedSubPortalColorToken = "blue-glow2";
+
+        let selectedSideLinkColorToken = "emerald-glow2";
+
+        let selectedWorkspaceCardColorToken = "orange-glow2";
+
+
+
+        function togglePopoverDrawerMenu(popoverId) {
+
+            const el = document.getElementById(popoverId);
+
+            const isVisible = el.classList.contains('popover-visible');
+
+            document.querySelectorAll('.color-dropdown-popover, .icon-dropdown-popover').forEach(p => p.classList.remove('popover-visible'));
+
+            if(!isVisible) el.classList.add('popover-visible');
+
+        }
+
+
+
+        document.addEventListener('click', function(e) {
+
+            if(!e.target.closest('.premium-color-trigger-field') && !e.target.closest('.color-dropdown-popover') && !e.target.closest('.icon-dropdown-popover')) {
+
+                document.querySelectorAll('.color-dropdown-popover, .icon-dropdown-popover').forEach(p => p.classList.remove('popover-visible'));
+
+            }
+
+        });
+
+
+
+        function compileVisualUISelectionPickers() {
+
+            const mainIconGrid = document.getElementById('mainFolderIconPopover');
+
+            const subIconGrid = document.getElementById('subPortalIconPopover');
+
+            const sideIconGrid = document.getElementById('sideLinkIconPopover');
+
+            const cardIconGrid = document.getElementById('cardIconPopover');
+
+
+
+            mainIconGrid.innerHTML = ''; subIconGrid.innerHTML = ''; sideIconGrid.innerHTML = ''; cardIconGrid.innerHTML = '';
+
+
+
+            premiumIconsPool.forEach(icon => {
+
+                const d1 = document.createElement('div'); d1.className = "icon-grid-item"; d1.innerHTML = `<i class="${icon}"></i>`;
+
+                d1.onclick = () => { selectedMainFolderIconStr = icon; document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; mainIconGrid.classList.remove('popover-visible'); };
+
+                mainIconGrid.appendChild(d1);
+
+
+
+                const d2 = document.createElement('div'); d2.className = "icon-grid-item"; d2.innerHTML = `<i class="${icon}"></i>`;
+
+                d2.onclick = () => { selectedSubPortalIconStr = icon; document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; subIconGrid.classList.remove('popover-visible'); };
+
+                subIconGrid.appendChild(d2);
+
+
+
+                const dSide = document.createElement('div'); dSide.className = "icon-grid-item"; dSide.innerHTML = `<i class="${icon}"></i>`;
+
+                dSide.onclick = () => { selectedSideLinkIconStr = icon; document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; sideIconGrid.classList.remove('popover-visible'); };
+
+                sideIconGrid.appendChild(dSide);
+
+
+
+                const d3 = document.createElement('div'); d3.className = "icon-grid-item"; d3.innerHTML = `<i class="${icon}"></i>`;
+
+                d3.onclick = () => { selectedWorkspaceCardIconStr = icon; document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; cardIconGrid.classList.remove('popover-visible'); };
+
+                cardIconGrid.appendChild(d3);
+
+            });
+
+
+
+            const mainColorPopover = document.getElementById('mainFolderColorPopover');
+
+            const subColorPopover = document.getElementById('subPortalColorPopover');
+
+            const sideColorPopover = document.getElementById('sideLinkColorPopover');
+
+            const cardColorPopover = document.getElementById('workspaceCardColorPopover');
+
+            mainColorPopover.innerHTML = ''; subColorPopover.innerHTML = ''; sideColorPopover.innerHTML = ''; cardColorPopover.innerHTML = '';
+
+
+
+            premiumNeonColorsPool.forEach(color => {
+
+                const r1 = document.createElement('div'); r1.className = "color-chip-row";
+
+                r1.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
+
+                r1.onclick = () => { selectedMainFolderColorToken = color.className; document.getElementById('mainFolderColorTriggerLabel').innerText = color.label; mainColorPopover.classList.remove('popover-visible'); };
+
+                mainColorPopover.appendChild(r1);
+
+
+
+                const rSub = document.createElement('div'); rSub.className = "color-chip-row";
+
+                rSub.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
+
+                rSub.onclick = () => { selectedSubPortalColorToken = color.className; document.getElementById('subPortalColorTriggerLabel').innerText = color.label; subColorPopover.classList.remove('popover-visible'); };
+
+                subColorPopover.appendChild(rSub);
+
+
+
+                const rSide = document.createElement('div'); rSide.className = "color-chip-row";
+
+                rSide.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
+
+                rSide.onclick = () => { selectedSideLinkColorToken = color.className; document.getElementById('sideLinkColorTriggerLabel').innerText = color.label; sideColorPopover.classList.remove('popover-visible'); };
+
+                sideColorPopover.appendChild(rSide);
+
+
+
+                const r2 = document.createElement('div'); r2.className = "color-chip-row";
+
+                r2.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
+
+                r2.onclick = () => { selectedWorkspaceCardColorToken = color.className; document.getElementById('workspaceCardColorTriggerLabel').innerText = color.label; cardColorPopover.classList.remove('popover-visible'); };
+
+                cardColorPopover.appendChild(r2);
+
+            });
+
+        }
+
+
+
+        const baselineMainFolders = [
+
+            { name: "Sarkari Hub", icon: "fas fa-gavel", color: "orange-glow2" },
+
+            { name: "PDF Workspace", icon: "fas fa-file-pdf", color: "red-glow2" }
+
+        ];
+
+        const baselineSubPortals = [{ parent: "Sarkari Hub", name: "SSC Portal", icon: "fas fa-university", color: "blue-glow2" }];
+
+        const baselineSideLinks = [{ parent: "SSC Portal", label: "SSC Main Website", url: "https://ssc.gov.in/", icon: "fas fa-link", color: "emerald-glow2" }];
+
+        const baselineCards = [{ parentMain: "Sarkari Hub", parentSub: "SSC Portal", name: "SSC Official Portal", url: "https://ssc.gov.in/", icon: "fas fa-university", glow: "orange-glow2", desc: "Staff Selection Commission ke saare forms online login track." }];
+
+
+
+        if(!localStorage.getItem('matrix_secure_hash')) localStorage.setItem('matrix_secure_hash', "81dc9bdb52d04dc20036dbd8313ed055");
+
+        if(!localStorage.getItem('matrix_folders')) localStorage.setItem('matrix_folders', JSON.stringify(baselineMainFolders));
+
+        if(!localStorage.getItem('matrix_subs')) localStorage.setItem('matrix_subs', JSON.stringify(baselineSubPortals));
+
+        if(!localStorage.getItem('matrix_sideLinks')) localStorage.setItem('matrix_sideLinks', JSON.stringify(baselineSideLinks));
+
+        if(!localStorage.getItem('matrix_cards')) localStorage.setItem('matrix_cards', JSON.stringify(baselineCards));
+
+        if(!localStorage.getItem('matrix_notice')) localStorage.setItem('matrix_notice', "Search bar is connected globally.");
+
+
+
+        function hashSimulateEngine(str) {
+
+            let h1 = 1779033703, h2 = 304734477;
+
+            for (let i = 0; i < str.length; i++) {
+
+                h1 = Math.imul(h1 ^ str.charCodeAt(i), 3432918353); h1 = h1 << 13 | h1 >>> 19;
+
+                h2 = Math.imul(h2 ^ str.charCodeAt(i), 2246822507);
+
+            }
+
+            return (h1 >>> 0).toString(16) + (h2 >>> 0).toString(16);
+
+        }
+
+
+
+        function focusSecurityPinBufferField() { document.getElementById('hiddenPinField').focus(); }
+
+
+
+        function compilePinDisplayLiveFeedback(pinValue) {
+
+            pinValue = pinValue.replace(/[^0-9]/g, '');
+
+            document.getElementById('hiddenPinField').value = pinValue;
+
+
+
+            for(let i = 0; i < 4; i++) {
+
+                const cell = document.getElementById(`cell-${i}`);
+
+                if(i < pinValue.length) { cell.classList.add('cell-filled'); cell.classList.remove('cell-focused'); }
+
+                else if(i === pinValue.length) { cell.classList.remove('cell-filled'); cell.classList.add('cell-focused'); }
+
+                else { cell.classList.remove('cell-filled'); cell.classList.remove('cell-focused'); }
+
+            }
+
+            if(pinValue.length === 4) { checkPinLiveAuthentication(pinValue); }
+
+        }
+
+
+
+        function checkPinLiveAuthentication(inputVal) {
+
+            const targetHash = localStorage.getItem('matrix_secure_hash');
+
+            if((targetHash === "81dc9bdb52d04dc20036dbd8313ed055" && inputVal === "1234") || hashSimulateEngine(inputVal) === targetHash) {
+
+                document.getElementById('securityGateOverlay').style.opacity = "0";
+
+                setTimeout(() => document.getElementById('securityGateOverlay').style.display = "none", 400);
+
+            } else {
+
+                const terminalCard = document.getElementById('pinTerminalCard');
+
+                terminalCard.classList.add('terminal-shake-active');
+
+                document.getElementById('pinErrorLogMsg').style.display = "block";
+
+                setTimeout(() => {
+
+                    terminalCard.classList.remove('terminal-shake-active');
+
+                    document.getElementById('hiddenPinField').value = '';
+
+                    compilePinDisplayLiveFeedback(''); focusSecurityPinBufferField();
+
+                }, 500);
+
+            }
+
+        }
+
+
+
+        function changeMasterSecurityPin() {
+
+            const pin = document.getElementById('newSettingsPinField').value.trim();
+
+            if(pin.length !== 4 || isNaN(pin)) return alert("PIN must be 4 numeric digits!");
+
+            localStorage.setItem('matrix_secure_hash', hashSimulateEngine(pin));
+
+            document.getElementById('newSettingsPinField').value = ''; alert("Access PIN updated!");
+
+        }
+
+
+
+        function exportFullSystemBackupData() {
+
+            const backupObj = { f: localStorage.getItem('matrix_folders'), s: localStorage.getItem('matrix_subs'), l: localStorage.getItem('matrix_sideLinks'), c: localStorage.getItem('matrix_cards'), n: localStorage.getItem('matrix_notice') };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj));
+
+            const downloadAnchor = document.createElement('a'); downloadAnchor.setAttribute("href", dataStr); downloadAnchor.setAttribute("download", "Apna_Agency_Backup.json");
+
+            document.body.appendChild(downloadAnchor); downloadAnchor.click(); downloadAnchor.remove();
+
+        }
+
+
+
+        function switchActiveFormPanel(panelId, tabButtonElement) {
+
+            document.querySelectorAll('.workspace-panel-box').forEach(p => p.classList.remove('panel-active'));
+
+            document.querySelectorAll('.mode-tab-btn').forEach(t => t.classList.remove('active'));
+
+            document.getElementById(panelId).classList.add('panel-active');
+
+            tabButtonElement.classList.add('active');
+
+        }
+
+
+
+        function runDatabaseStateSynchronization() {
+
+            compileVisualUISelectionPickers();
+
+            setTimeout(focusSecurityPinBufferField, 300);
+
+            compilePinDisplayLiveFeedback('');
+
+
+
+            const folders = JSON.parse(localStorage.getItem('matrix_folders')) || [];
+
+            const subs = JSON.parse(localStorage.getItem('matrix_subs')) || [];
+
+            document.getElementById('globalNoticeBoardFeedInput').value = localStorage.getItem('matrix_notice') || '';
+
+
+
+            const layoutMainSel = document.getElementById('subPortalParentSelect');
+
+            const cardMainCtxSel = document.getElementById('cardMainFolderContextSelector');
+
+            layoutMainSel.innerHTML = ''; cardMainCtxSel.innerHTML = '';
+
+
+
+            folders.forEach(f => {
+
+                layoutMainSel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
+
+                cardMainCtxSel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
+
+            });
+
+
+
+            const sideLinkSubSel = document.getElementById('sideLinkParentSelect');
+
+            sideLinkSubSel.innerHTML = '';
+
+            subs.forEach(s => { sideLinkSubSel.innerHTML += `<option value="${s.name}">${s.parent} ➔ ${s.name}</option>`; });
+
+
+
+            if(folders.length > 0) { filterCardSubPortalDropdownOptionsByParent(folders[0].name); }
+
+            renderDynamicManagementViewGrid();
+
+        }
+
+
+
+        function filterCardSubPortalDropdownOptionsByParent(mainName) {
+
+            const subs = JSON.parse(localStorage.getItem('matrix_subs')) || [];
+
+            const subDropdown = document.getElementById('cardSubPortalContextSelector');
+
+            subDropdown.innerHTML = ''; const filtered = subs.filter(s => s.parent === mainName);
+
+            if(filtered.length === 0) subDropdown.innerHTML = `<option value="">-- No Sub Portal found --</option>`;
+
+            else filtered.forEach(s => subDropdown.innerHTML += `<option value="${s.name}">${s.name}</option>`);
+
+        }
+
+
+
+        function executeNoticeBoardUpdateFeed() {
+
+            localStorage.setItem('matrix_notice', document.getElementById('globalNoticeBoardFeedInput').value.trim()); alert("Notice updated!");
+
+        }
+
+
+
+        function executeMainFolderAddition() {
+
+            const name = document.getElementById('mainFolderNameInput').value.trim();
+
+            const icon = selectedMainFolderIconStr; const color = selectedMainFolderColorToken;
+
+            const editIdx = parseInt(document.getElementById('mainFolderEditIndex').value);
+
+            if(!name) return alert("Folder name required!");
+
+            
+
+            let list = JSON.parse(localStorage.getItem('matrix_folders'));
+
+            if(editIdx > -1) list[editIdx] = { name, icon, color };
+
+            else list.push({ name, icon, color });
+
+            
+
+            localStorage.setItem('matrix_folders', JSON.stringify(list));
+
+            resetMainFolderForm(); runDatabaseStateSynchronization();
+
+        }
+
+
+
+        function triggerMainFolderEdit(idx) {
+
+            const list = JSON.parse(localStorage.getItem('matrix_folders'));
+
+            const item = list[idx]; document.getElementById('mainFolderEditIndex').value = idx;
+
+            document.getElementById('mainFolderNameInput').value = item.name;
+
+            selectedMainFolderColorToken = item.color || 'orange-glow2'; selectedMainFolderIconStr = item.icon;
+
+            
+
+            document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected: ${item.icon}`;
+
+            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedMainFolderColorToken);
+
+            if(matchColorObj) document.getElementById('mainFolderColorTriggerLabel').innerText = matchColorObj.label;
+
+
+
+            document.getElementById('mainFolderFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Main Folder Category`;
+
+            document.getElementById('mainFolderSubmitBtn').className = "btn-action-trigger btn-update-mode";
+
+            document.getElementById('mainFolderSubmitBtn').innerHTML = "Update Folder";
+
+            document.getElementById('mainFolderCancelBtn').style.display = "inline-flex";
+
+        }
+
+
+
+        function resetMainFolderForm() {
+
+            document.getElementById('mainFolderEditIndex').value = "-1";
+
+            document.getElementById('mainFolderNameInput').value = '';
+
+            selectedMainFolderIconStr = "fas fa-folder"; selectedMainFolderColorToken = "orange-glow2";
+
+            document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="fas fa-folder"></i> Select Custom Visual Icon...`;
+
+            document.getElementById('mainFolderColorTriggerLabel').innerText = "Select Color...";
+
+            document.getElementById('mainFolderFormTitle').innerHTML = `<i class="fas fa-folder"></i> Main Category Folder Banayein`;
+
+            document.getElementById('mainFolderSubmitBtn').className = "btn-action-trigger";
+
+            document.getElementById('mainFolderSubmitBtn').innerHTML = `<i class="fas fa-plus"></i> Live Create Main Folder`;
+
+            document.getElementById('mainFolderCancelBtn').style.display = "none";
+
+        }
+
+
+
+        function executeSubPortalAddition() {
+
+            const parent = document.getElementById('subPortalParentSelect').value;
+
+            const name = document.getElementById('subPortalNameInput').value.trim();
+
+            const icon = selectedSubPortalIconStr; const color = selectedSubPortalColorToken;
+
+            const editIdx = parseInt(document.getElementById('subPortalEditIndex').value);
+
+            if(!name) return alert("Sub portal name required!");
+
+
+
+            let list = JSON.parse(localStorage.getItem('matrix_subs'));
+
+            if(editIdx > -1) list[editIdx] = { parent, name, icon, color };
+
+            else list.push({ parent, name, icon, color });
+
+
+
+            localStorage.setItem('matrix_subs', JSON.stringify(list));
+
+            resetSubPortalForm(); runDatabaseStateSynchronization();
+
+        }
+
+
+
+        function triggerSubPortalEdit(idx) {
+
+            const list = JSON.parse(localStorage.getItem('matrix_subs'));
+
+            const item = list[idx]; 
+
+            document.getElementById('subPortalEditIndex').value = idx;
+
+            document.getElementById('subPortalParentSelect').value = item.parent;
+
+            document.getElementById('subPortalNameInput').value = item.name; 
+
+            selectedSubPortalIconStr = item.icon || 'fas fa-folder-open'; 
+
+            selectedSubPortalColorToken = item.color || 'blue-glow2';
+
+            
+
+            document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="${selectedSubPortalIconStr}"></i> Selected: ${selectedSubPortalIconStr}`;
+
+            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedSubPortalColorToken);
+
+            if(matchColorObj) document.getElementById('subPortalColorTriggerLabel').innerText = matchColorObj.label;
+
+
+
+            document.getElementById('subPortalFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Sub-Portal Details`;
+
+            const submitBtn = document.getElementById('subPortalSubmitBtn');
+
+            submitBtn.className = "btn-action-trigger btn-update-mode";
+
+            submitBtn.innerHTML = "Update Sub-Portal";
+
+            document.getElementById('subPortalCancelBtn').style.display = "inline-flex";
+
+            document.getElementById('subPortalFormTitle').scrollIntoView({ behavior: 'smooth' });
+
+        }
+
+
+
+        function resetSubPortalForm() {
+
+            document.getElementById('subPortalEditIndex').value = "-1";
+
+            document.getElementById('subPortalNameInput').value = ''; selectedSubPortalIconStr = "fas fa-folder-open";
+
+            selectedSubPortalColorToken = "blue-glow2";
+
+            document.getElementById('subPortalColorTriggerLabel').innerText = "Select Sub-Portal Color Theme...";
+
+            document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="fas fa-folder-open"></i> Select Custom Visual Icon...`;
+
+            document.getElementById('subPortalFormTitle').innerHTML = `<i class="fas fa-folder-open"></i> Sub-Portal (Inner Dropdown) Banayein`;
+
+            document.getElementById('subPortalSubmitBtn').className = "btn-action-trigger";
+
+            document.getElementById('subPortalSubmitBtn').innerHTML = `<i class="fas fa-level-down-alt"></i> Create Sub-Portal`;
+
+            document.getElementById('subPortalCancelBtn').style.display = "none";
+
+        }
+
+
+
+        function executeSideLinkAddition() {
+
+            const parent = document.getElementById('sideLinkParentSelect').value;
+
+            const label = document.getElementById('sideLinkLabelInput').value.trim();
+
+            const url = document.getElementById('sideLinkUrlInput').value.trim();
+
+            const icon = selectedSideLinkIconStr; const color = selectedSideLinkColorToken;
+
+            const editIdx = parseInt(document.getElementById('sideLinkEditIndex').value);
+
+            if(!label || url === "https://") return alert("Parameters missing!");
+
+
+
+            let list = JSON.parse(localStorage.getItem('matrix_sideLinks'));
+
+            if(editIdx > -1) list[editIdx] = { parent, label, url, icon, color };
+
+            else list.push({ parent, label, url, icon, color });
+
+
+
+            localStorage.setItem('matrix_sideLinks', JSON.stringify(list));
+
+            resetSideLinkForm(); runDatabaseStateSynchronization();
+
+        }
+
+
+
+        function triggerSideLinkEdit(idx) {
+
+            const list = JSON.parse(localStorage.getItem('matrix_sideLinks'));
+
+            const item = list[idx]; 
+
+            document.getElementById('sideLinkEditIndex').value = idx;
+
+            document.getElementById('sideLinkParentSelect').value = item.parent;
+
+            document.getElementById('sideLinkLabelInput').value = item.label;
+
+            document.getElementById('sideLinkUrlInput').value = item.url;
+
+            selectedSideLinkIconStr = item.icon || 'fas fa-link';
+
+            selectedSideLinkColorToken = item.color || 'emerald-glow2';
+
+
+
+            document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="${selectedSideLinkIconStr}"></i> Selected: ${selectedSideLinkIconStr}`;
+
+            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedSideLinkColorToken);
+
+            if(matchColorObj) document.getElementById('sideLinkColorTriggerLabel').innerText = matchColorObj.label;
+
+
+
+            document.getElementById('sideLinkFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Nested Anchor Link Details`;
+
+            const submitBtn = document.getElementById('sideLinkSubmitBtn');
+
+            submitBtn.className = "btn-action-trigger btn-update-mode";
+
+            submitBtn.innerHTML = "Update Side-Link";
+
+            document.getElementById('sideLinkCancelBtn').style.display = "inline-flex";
+
+            document.getElementById('sideLinkFormTitle').scrollIntoView({ behavior: 'smooth' });
+
+        }
+
+
+
+        function resetSideLinkForm() {
+
+            document.getElementById('sideLinkEditIndex').value = "-1";
+
+            document.getElementById('sideLinkLabelInput').value = ''; document.getElementById('sideLinkUrlInput').value = 'https://';
+
+            selectedSideLinkIconStr = "fas fa-link"; selectedSideLinkColorToken = "emerald-glow2";
+
+            document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="fas fa-link"></i> Select Custom Visual Icon...`;
+
+            document.getElementById('sideLinkColorTriggerLabel').innerText = "Select Side-Link Color Theme...";
+
+            document.getElementById('sideLinkFormTitle').innerHTML = `<i class="fas fa-link"></i> Deep Side-Link Anchor Jodein`;
+
+            document.getElementById('sideLinkSubmitBtn').className = "btn-action-trigger";
+
+            document.getElementById('sideLinkSubmitBtn').innerHTML = `<i class="fas fa-link"></i> Inject Deep Side-Link`;
+
+            document.getElementById('sideLinkCancelBtn').style.display = "none";
+
+        }
+
+
+
+        function processCardPanelFormSubmission() {
+
+            const parentMain = document.getElementById('cardMainFolderContextSelector').value;
+
+            const parentSub = document.getElementById('cardSubPortalContextSelector').value;
+
+            const name = document.getElementById('cardTitleHeaderInput').value.trim();
+
+            const url = document.getElementById('cardUrlPathInput').value.trim();
+
+            const icon = selectedWorkspaceCardIconStr; const glow = selectedWorkspaceCardColorToken;
+
+            const desc = document.getElementById('cardDescriptionTextSummaryInput').value.trim();
+
+            const editIdx = parseInt(document.getElementById('cardEditModeTrackerId').value);
+
+
+
+            if(!parentSub) return alert("Select target subcategory!");
+
+            if(!name || !desc) return alert("Fill fields appropriately!");
+
+
+
+            let list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
+
+            if(editIdx > -1) list[editIdx] = { parentMain, parentSub, name, url, icon, glow, desc };
+
+            else list.push({ parentMain, parentSub, name, url, icon, glow, desc });
+
+
+
+            localStorage.setItem('matrix_cards', JSON.stringify(list));
+
+            clearCardFormInputsToInsertState(); runDatabaseStateSynchronization();
+
+        }
+
+
+
+        function setupCardEditWorkflowMode(idx) {
+
+            const list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
+
+            const c = list[idx]; document.getElementById('cardEditModeTrackerId').value = idx;
+
+            document.getElementById('cardMainFolderContextSelector').value = c.parentMain;
+
+            filterCardSubPortalDropdownOptionsByParent(c.parentMain);
+
+            document.getElementById('cardSubPortalContextSelector').value = c.parentSub;
+
+            document.getElementById('cardTitleHeaderInput').value = c.name;
+
+            document.getElementById('cardUrlPathInput').value = c.url;
+
+            selectedWorkspaceCardIconStr = c.icon; selectedWorkspaceCardColorToken = c.glow || 'orange-glow2';
+
+            document.getElementById('cardDescriptionTextSummaryInput').value = c.desc;
+
+
+
+            document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="${c.icon}"></i> Selected: ${c.icon}`;
+
+            const matchColorObj = premiumNeonColorsPool.find(col => col.className === selectedWorkspaceCardColorToken);
+
+            if(matchColorObj) document.getElementById('workspaceCardColorTriggerLabel').innerText = matchColorObj.label;
+
+
+
+            document.getElementById('cardFormTitleText').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Active Card Content`;
+
+            const sBtn = document.getElementById('cardFormSubmitTriggerBtn');
+
+            sBtn.className = "btn-prime btn-update-mode"; document.getElementById('cardFormCancelTriggerBtn').style.display = "inline-flex";
+
+            document.getElementById('cardFormTitleText').scrollIntoView({ behavior: 'smooth' });
+
+        }
+
+
+
+        function clearCardFormInputsToInsertState() {
+
+            document.getElementById('cardEditModeTrackerId').value = "-1";
+
+            document.getElementById('cardTitleHeaderInput').value = ''; document.getElementById('cardUrlPathInput').value = 'https://';
+
+            selectedWorkspaceCardIconStr = "fas fa-link"; selectedWorkspaceCardColorToken = "orange-glow2";
+
+            document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="fas fa-link"></i> Select Custom Visual Icon...`;
+
+            document.getElementById('workspaceCardColorTriggerLabel').innerText = "Select Glow Profile Theme...";
+
+            document.getElementById('cardFormCancelTriggerBtn').style.display = "none";
+
+        }
+
+
+
+        function switchManagementDataGridTab(tab, btn) {
+
+            dataViewActiveTab = tab; document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+
+            renderDynamicManagementViewGrid();
+
+        }
+
+
+
+        function moveArrayItemIndexPositionTrack(keyName, direction, idx) {
+
+            let list = JSON.parse(localStorage.getItem(keyName)) || [];
+
+            if(direction === 'up' && idx > 0) {
+
+                let swapped = list[idx]; list[idx] = list[idx-1]; list[idx-1] = swapped;
+
+            } else if(direction === 'down' && idx < list.length - 1) {
+
+                let swapped = list[idx]; list[idx] = list[idx+1]; list[idx+1] = swapped;
+
+            }
+
+            localStorage.setItem(keyName, JSON.stringify(list)); renderDynamicManagementViewGrid();
+
+        }
+
+
+
+        function renderDynamicManagementViewGrid() {
+
+            const head = document.getElementById('renderTableColumnsHead');
+
+            const body = document.getElementById('renderTableRowsContentBody'); body.innerHTML = '';
+
+
+
+            if(dataViewActiveTab === 'cards') {
+
+                head.innerHTML = `<tr><th>Icon</th><th>Title</th><th>Main</th><th>Sub Portal</th><th style="text-align:right;">Actions</th></tr>`;
+
+                const list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
+
+                list.forEach((c, idx) => {
+
+                    body.innerHTML += `<tr>
+
+                        <td><div class="icon-thumbnail-preview glow-token-${c.glow}"><i class="${c.icon}"></i></div></td>
+
+                        <td><strong>${c.name}</strong></td><td>${c.parentMain}</td><td>${c.parentSub}</td>
+
+                        <td><div class="action-container-box">
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_cards', 'up', ${idx})">▲</button>
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_cards', 'down', ${idx})">▼</button>
+
+                            <button class="row-btn row-btn-edit" onclick="setupCardEditWorkflowMode(${idx})">Edit</button>
+
+                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_cards', ${idx})">Delete</button>
+
+                        </div></td>
+
+                    </tr>`;
+
+                });
+
+            } else if(dataViewActiveTab === 'sideLinks') {
+
+                head.innerHTML = `<tr><th>Icon</th><th>Label Link</th><th>Target URL</th><th>Sub Portal</th><th style="text-align:right;">Actions</th></tr>`;
+
+                const list = JSON.parse(localStorage.getItem('matrix_sideLinks')) || [];
+
+                list.forEach((l, idx) => {
+
+                    body.innerHTML += `<tr>
+
+                        <td><div class="icon-thumbnail-preview glow-token-${l.color ? l.color : 'default'}"><i class="${l.icon ? l.icon : 'fas fa-link'}"></i></div></td>
+
+                        <td><strong>${l.label}</strong></td><td>${l.url}</td><td>${l.parent}</td>
+
+                        <td><div class="action-container-box">
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_sideLinks', 'up', ${idx})">▲</button>
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_sideLinks', 'down', ${idx})">▼</button>
+
+                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerSideLinkEdit(${idx});">Edit</button>
+
+                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_sideLinks', ${idx})">Delete</button>
+
+                        </div></td>
+
+                    </tr>`;
+
+                });
+
+            } else if(dataViewActiveTab === 'subPortals') {
+
+                head.innerHTML = `<tr><th>Icon Preview</th><th>Sub Portal</th><th>Parent Main</th><th style="text-align:right;">Actions</th></tr>`;
+
+                const list = JSON.parse(localStorage.getItem('matrix_subs')) || [];
+
+                list.forEach((s, idx) => {
+
+                    body.innerHTML += `<tr>
+
+                        <td><div class="icon-thumbnail-preview glow-token-${s.color ? s.color : 'default'}"><i class="${s.icon ? s.icon : 'fas fa-folder-open'}"></i></div></td>
+
+                        <td><strong>${s.name}</strong></td><td>${s.parent}</td>
+
+                        <td><div class="action-container-box">
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_subs', 'up', ${idx})">▲</button>
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_subs', 'down', ${idx})">▼</button>
+
+                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerSubPortalEdit(${idx});">Edit</button>
+
+                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_subs', ${idx})">Delete</button>
+
+                        </div></td>
+
+                    </tr>`;
+
+                });
+
+            } else if(dataViewActiveTab === 'mainFolders') {
+
+                head.innerHTML = `<tr><th>Theme Icon</th><th>Folder Name</th><th style="text-align:right;">Actions</th></tr>`;
+
+                const list = JSON.parse(localStorage.getItem('matrix_folders')) || [];
+
+                list.forEach((f, idx) => {
+
+                    body.innerHTML += `<tr>
+
+                        <td><div class="icon-thumbnail-preview glow-token-${f.color ? f.color : 'default'}"><i class="${f.icon}"></i></div></td>
+
+                        <td><strong>${f.name}</strong></td>
+
+                        <td><div class="action-container-box">
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_folders', 'up', ${idx})">▲</button>
+
+                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_folders', 'down', ${idx})">▼</button>
+
+                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerMainFolderEdit(${idx});">Edit</button>
+
+                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_folders', ${idx})">Delete</button>
+
+                        </div></td>
+
+                    </tr>`;
+
+                });
+
+            }
+
+        }
+
+
+
+        function purgeEntry(key, idx) {
+
+            if(!confirm("Are you sure?")) return;
+
+            let list = JSON.parse(localStorage.getItem(key)); list.splice(idx, 1);
+
+            localStorage.setItem(key, JSON.stringify(list)); runDatabaseStateSynchronization();
+
+        }
+
+
+
+        let dataViewActiveTab = 'cards';
+
+        window.onload = runDatabaseStateSynchronization;
+
+    </script>
+
+</body>
+
+</html> 
+
