@@ -822,186 +822,160 @@
 
 
 <script>
-// 1. Initial Load & Interface Build with Error Handling
-function buildLiveSiteInterfaces() {
-    try {
-        const folders = JSON.parse(localStorage.getItem('matrix_folders')) || [];
-        const subs = JSON.parse(localStorage.getItem('matrix_subs')) || [];
-        const sideLinks = JSON.parse(localStorage.getItem('matrix_sideLinks')) || [];
-        const cards = JSON.parse(localStorage.getItem('matrix_cards')) || [];
-        const noticeText = localStorage.getItem('matrix_notice') || 'Search bar connected globally.';
-
-        const noticeBoard = document.getElementById('liveNoticeBoardHeadlineText');
-        if (noticeBoard) {
-            noticeBoard.style.opacity = '0';
-            noticeBoard.innerText = noticeText;
-            setTimeout(() => {
-                noticeBoard.style.transition = 'opacity 0.5s ease';
-                noticeBoard.style.opacity = '1';
-            }, 100);
-        }
-
-        const sidebarMenu = document.getElementById('masterLiveSidebarMenu');
-        const gridContainer = document.getElementById('toolsDisplayGrid');
-
-        if (sidebarMenu) sidebarMenu.innerHTML = '';
-        if (gridContainer) {
-            // Remove existing cards only, keep the noResultsMessage element if present
-            gridContainer.querySelectorAll('.tool-card-item').forEach(e => e.remove());
-        }
-
-        folders.forEach((mainFolder, fIdx) => {
-            const li = document.createElement('li');
-            li.className = `menu-item ${fIdx === 0 ? 'open' : ''}`;
-            const safeFolderName = mainFolder.name.replace(/\s+/g, '');
-            
-            li.innerHTML = `
-                <div class="menu-link" onclick="toggleDropdown(this)">
-                    <div class="menu-link-content">
-                        <i class="${mainFolder.icon}" style="color: var(--${mainFolder.color});"></i>
-                        <span>${mainFolder.name}</span>
-                    </div>
-                    <i class="fas fa-chevron-down chevron-icon"></i>
-                </div>
-                <div class="submenu-container" id="container-${safeFolderName}"></div>
-            `;
-            sidebarMenu.appendChild(li);
-
-            const matchingSubs = subs.filter(s => s.parent === mainFolder.name);
-            const subContainerElement = document.getElementById(`container-${safeFolderName}`);
-
-            matchingSubs.forEach(subPortal => {
-                const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
-                const subPortalDiv = document.createElement('div');
-                subPortalDiv.className = "submenu-link-toggle";
-                subPortalDiv.setAttribute('onclick', `toggleNestedSidebarDropdown('${subId}', this)`);
-                
-                subPortalDiv.innerHTML = `
-                    <span class="menu-link-content">
-                        <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
-                    </span>
-                    <i class="fas fa-chevron-down nested-chevron" style="font-size:10px; color:#94a3b8; transition:transform 0.3s;"></i>
-                `;
-                subContainerElement.appendChild(subPortalDiv);
-
-                const nestedContainerDiv = document.createElement('div');
-                nestedContainerDiv.className = "nested-submenu-container";
-                nestedContainerDiv.id = subId;
-
-                const deepLinks = sideLinks.filter(l => l.parent === subPortal.name);
-                deepLinks.forEach(dl => {
-                    const dlAnchor = document.createElement('a');
-                    dlAnchor.href = dl.url;
-                    dlAnchor.target = "_blank";
-                    dlAnchor.className = "nested-submenu-link";
-                    dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: var(--${dl.color});"></i> ${dl.label}`;
-                    nestedContainerDiv.appendChild(dlAnchor);
-                });
-                subContainerElement.appendChild(nestedContainerDiv);
-            });
-        });
-
-        cards.forEach(card => {
-            const anchor = document.createElement('a');
-            anchor.href = card.url;
-            anchor.target = "_blank"; // Updated to open in new tab for better UX
-            anchor.className = `service-card-block ${card.glow} tool-card-item`;
-            anchor.setAttribute('data-subportal', card.parentSub ? card.parentSub.trim().toLowerCase() : '');
-            anchor.setAttribute('data-search', `${card.name.toLowerCase()} ${card.desc.toLowerCase()}`);
-            
-            anchor.innerHTML = `
-                <div class="square-icon-box"><i class="${card.icon ? card.icon : 'fas fa-link'}"></i></div>
-                <div class="service-meta-text">
-                    <h4>${card.name}</h4>
-                    <p>${card.desc}</p>
-                </div>
-            `;
-            gridContainer.appendChild(anchor);
-        });
-    } catch (e) {
-        console.error("Dashboard loading error:", e);
+// 1. REAL-TIME FIREBASE SYNC
+db.collection('data').doc('matrix_config').onSnapshot((doc) => {
+    if (doc.exists) {
+        renderUI(doc.data());
     }
-}
+});
 
-// 2. Interaction Functions
-function toggleDropdown(element) {
-    let parentItem = element.parentElement;
-    document.querySelectorAll('.menu-item').forEach(item => { if(item !== parentItem) item.classList.remove('open'); });
-    parentItem.classList.toggle('open');
-}
+// 2. RENDER LOGIC
+function renderUI(config) {
+    const sidebarMenu = document.getElementById('masterLiveSidebarMenu');
+    const gridContainer = document.getElementById('toolsDisplayGrid');
+    const noticeBoard = document.getElementById('liveNoticeBoardHeadlineText');
 
-function toggleNestedSidebarDropdown(targetContainerId, element) {
-    document.querySelectorAll('.nested-submenu-container').forEach(c => { if(c.id !== targetContainerId) c.classList.remove('nested-open'); });
-    document.querySelectorAll('.submenu-link-toggle').forEach(b => { if(b !== element) b.classList.remove('active-toggle-item'); });
-    
-    element.classList.toggle('active-toggle-item');
-    const container = document.getElementById(targetContainerId);
-    if(container) container.classList.toggle('nested-open');
-    
-    const subPortalName = element.innerText.trim();
-    const bread = document.getElementById('breadCrumbStatus');
-    if(bread) bread.innerText = subPortalName;
-    
-    filterAndSearch(subPortalName, '');
-}
-
-// 3. Optimized Search and Filter Logic
-function filterAndSearch(filterValue = 'all', searchTerm = '') {
-    const cards = document.querySelectorAll('.service-card-block');
+    sidebarMenu.innerHTML = '';
+    // Grid saaf karein, lekin 'noResultsMessage' ko preserve karein
     const noResults = document.getElementById('noResultsMessage');
-    const gridSectionTitle = document.getElementById('gridSectionTitle');
-    let visibleCount = 0;
+    gridContainer.innerHTML = '';
+    gridContainer.appendChild(noResults); 
+    
+    if (noticeBoard) noticeBoard.innerText = config.notice || 'System Online';
+
+    // RENDER FOLDERS, SUBS, AND LINKS
+    config.folders.forEach((mainFolder, fIdx) => {
+        const safeFolderName = mainFolder.name.replace(/\s+/g, '');
+        const li = document.createElement('li');
+        li.className = `menu-item ${fIdx === 0 ? 'open' : ''}`;
+        
+        li.innerHTML = `
+            <div class="menu-link" data-type="main-folder">
+                <div class="menu-link-content">
+                    <i class="${mainFolder.icon}" style="color: var(--${mainFolder.color});"></i>
+                    <span>${mainFolder.name}</span>
+                </div>
+                <i class="fas fa-chevron-down chevron-icon"></i>
+            </div>
+            <div class="submenu-container" id="container-${safeFolderName}"></div>
+        `;
+        sidebarMenu.appendChild(li);
+
+        const subContainer = document.getElementById(`container-${safeFolderName}`);
+        const matchingSubs = config.subs.filter(s => s.parent === mainFolder.name);
+
+        matchingSubs.forEach(subPortal => {
+            const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
+            const subDiv = document.createElement('div');
+            subDiv.className = "submenu-link-toggle";
+            subDiv.setAttribute('data-target', subId);
+            subDiv.setAttribute('data-filter', subPortal.name.toLowerCase()); // Filter ke liye
+            subDiv.innerHTML = `
+                <span class="menu-link-content">
+                    <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
+                </span>
+                <i class="fas fa-chevron-down nested-chevron"></i>
+            `;
+            subContainer.appendChild(subDiv);
+
+            const nestedContainer = document.createElement('div');
+            nestedContainer.className = "nested-submenu-container";
+            nestedContainer.id = subId;
+
+            const deepLinks = config.sideLinks.filter(l => l.parent === subPortal.name);
+            deepLinks.forEach(dl => {
+                const dlAnchor = document.createElement('a');
+                dlAnchor.href = dl.url;
+                dlAnchor.target = "_blank";
+                dlAnchor.className = "nested-submenu-link";
+                dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: var(--${dl.color});"></i> ${dl.label}`;
+                nestedContainer.appendChild(dlAnchor);
+            });
+            subContainer.appendChild(nestedContainer);
+        });
+    });
+
+    // RENDER CARDS
+    config.cards.forEach(card => {
+        const anchor = document.createElement('a');
+        anchor.href = card.url;
+        anchor.target = "_blank";
+        anchor.className = `service-card-block ${card.glow} tool-card-item`;
+        // Search aur Filter ke liye attributes
+        anchor.setAttribute('data-sub', card.parentSub ? card.parentSub.toLowerCase() : '');
+        anchor.setAttribute('data-name', card.name.toLowerCase());
+        anchor.setAttribute('data-desc', card.desc.toLowerCase());
+        
+        anchor.innerHTML = `
+            <div class="square-icon-box"><i class="${card.icon}"></i></div>
+            <div class="service-meta-text">
+                <h4>${card.name}</h4>
+                <p>${card.desc}</p>
+            </div>
+        `;
+        gridContainer.appendChild(anchor);
+    });
+}
+
+// 3. UNIVERSAL SEARCH & FILTER
+function filterAndSearch() {
+    const searchTerm = document.getElementById('toolSearchField').value.toLowerCase();
+    const cards = document.querySelectorAll('.tool-card-item');
+    const noResults = document.getElementById('noResultsMessage');
+    let count = 0;
 
     cards.forEach(card => {
-        const subPortal = card.getAttribute('data-subportal') || '';
-        const searchableText = card.getAttribute('data-search') || '';
-        
-        const matchFilter = (filterValue === 'all' || subPortal === filterValue.toLowerCase());
-        const matchSearch = (searchableText.includes(searchTerm.toLowerCase()));
-
-        if (matchFilter && matchSearch) {
+        const text = (card.getAttribute('data-name') + card.getAttribute('data-desc')).toLowerCase();
+        if (text.includes(searchTerm)) {
             card.style.display = "flex";
-            visibleCount++;
+            count++;
         } else {
             card.style.display = "none";
         }
     });
+
+    noResults.style.display = count === 0 ? "block" : "none";
+}
+
+// 4. EVENT DELEGATION (Sidebar + Search)
+// --- UPDATED SIDEBAR EVENT DELEGATION ---
+document.getElementById('masterLiveSidebarMenu').addEventListener('click', function(e) {
+    const breadCrumbStatus = document.getElementById('breadCrumbStatus');
     
-    if(gridSectionTitle) gridSectionTitle.innerText = filterValue === 'all' ? "Sarkari Portals & Recruitment Desks" : `${filterValue} - Portals & Desks`;
-    if(noResults) noResults.style.display = visibleCount === 0 ? "block" : "none";
-}
+    // Main Folder Click
+    const menuLink = e.target.closest('.menu-link');
+    if (menuLink) {
+        menuLink.parentElement.classList.toggle('open');
+        const folderName = menuLink.innerText.trim();
+        if(breadCrumbStatus) breadCrumbStatus.innerText = folderName; // Status Update
+    }
 
-function handleSearchKey(event) {
-    filterAndSearch('all', event.target.value);
-}
-
-// Click outside to hide search history
-document.addEventListener('click', (e) => {
-    const hist = document.getElementById('searchHistoryDropdown');
-    const searchInput = document.getElementById('toolSearchField');
-    if (hist && e.target !== searchInput) {
-        hist.style.display = 'none';
+    // Sub Portal Click
+    const subToggle = e.target.closest('.submenu-link-toggle');
+    if (subToggle) {
+        const targetId = subToggle.getAttribute('data-target');
+        subToggle.classList.toggle('active-toggle-item');
+        document.getElementById(targetId).classList.toggle('nested-open');
+        
+        // Status Update & Filter
+        const subName = subToggle.innerText.trim();
+        if(breadCrumbStatus) breadCrumbStatus.innerText = subName;
+        
+        const filterVal = subToggle.getAttribute('data-filter');
+        const cards = document.querySelectorAll('.tool-card-item');
+        cards.forEach(c => {
+            c.style.display = (c.getAttribute('data-sub') === filterVal) ? "flex" : "none";
+        });
     }
 });
+// SEARCH INPUT LISTENER
+document.getElementById('toolSearchField').addEventListener('input', filterAndSearch);
 
-function showHistory() {
-    const hist = document.getElementById('searchHistoryDropdown');
-    if(hist) hist.style.display = 'block';
-}
-
-// 4. Clock & Init
-function updateClock() {
+// CLOCK
+setInterval(() => {
     const clock = document.getElementById('liveMatrixClock');
-    if (clock) {
-        clock.innerText = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-    }
-}
-
-window.onload = () => {
-    buildLiveSiteInterfaces();
-    setInterval(updateClock, 1000);
-    updateClock();
-};
+    if(clock) clock.innerText = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+}, 1000);
 </script>
 
     
