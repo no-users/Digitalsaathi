@@ -666,59 +666,135 @@
 }
 
 
+
+
+
+
+
+
+/* Slide karne wali animation */
+@keyframes marquee {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+/* Container ki styling taaki text bahar na dikhe */
+
+
+
+//* Container ko flexible aur layout mein stable banayein */
+.premium-notice-hub-box {
+    display: flex !important;
+    align-items: center;
+    overflow: hidden; 
+    padding: 15px 20px !important;
+    position: relative;
+}
+
+/* Static label ko alag karein */
+.notice-text-details h6 {
+    margin: 0;
+    margin-right: 15px; /* Label aur scrolling text mein gap */
+    white-space: nowrap;
+    flex-shrink: 0; /* Ye hamesha dikhega, scroll nahi hoga */
+}
+
+/* Scrolling text area */
+
+
+/* Scrolling Text */
+#liveNoticeBoardHeadlineText {
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%; 
+    animation: marquee 15s linear infinite;
+    font-weight: 700;
+}
+.notice-text-details {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.static-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #000d1d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    margin-right: 10px; /* Label aur text ke beech gap */
+}
+
+.scrolling-text-wrapper {
+    overflow: hidden;
+    flex-grow: 1;
+    position: relative;
+}
+
+#liveNoticeBoardHeadlineText {
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%;
+    margin: 0;
+    animation: marquee 15s linear infinite, premium-red-alert-cycle 5s infinite linear;
+}
     </style>
 </head>
 <body>
-
     <aside class="sidebar">
-        <div class="sidebar-logo"><i class="fas fa-layer-group"></i>DIGITAL SAATHI </div>
-        
+        <div class="sidebar-logo"><i class="fas fa-layer-group"></i>DIGITAL SAATHI</div>
         <ul class="menu-list" id="masterLiveSidebarMenu"></ul>
-        
     </aside>
-    
 
     <main class="main-content">
         <nav class="top-navbar">
             <div class="bread-crumb">Application &gt; <span id="breadCrumbStatus">Dashboard</span></div>
             
             <div class="tab-container">
-    <div class="tab-item" data-url="Saathi.html">Saathi</div>
-    
-    
+                <div class="tab-item" onclick="window.open('Saathi.html', '_blank')">Saathi</div>
+                
+                <div class="tab-wrapper">
+                    <div class="tab-item dropdown-trigger" onclick="togglePremiumDropdown('my-dropdown', event)">
+                        Kits ▾
+                    </div>
+                    <!-- Dropdown content yahan hona zaroori hai -->
+                    <div id="my-dropdown" class="dropdown-content">
+                        <a href="#">Tool Kit 1</a>
+                        <a href="#">Tool Kit 2</a>
+                    </div>
+                </div>
+            </div>
 
-    <div class="tab-wrapper">
-        <div class="tab-item dropdown-trigger" onclick="togglePremiumDropdown('my-dropdown', event)">
-            Kits ▾
-        </div>
-        
-        </div>
-</div>
             <div class="header-actions">
                 <div class="search-box-wrap">
                     <input type="text" id="toolSearchField" placeholder="Type to search..." 
-       onkeyup="handleSearchKey(event)" 
-       onfocus="showHistory()">
+                           onkeyup="handleSearchKey(event)" 
+                           onfocus="showHistory()">
                     <i class="fas fa-search"></i>
-                    <div id="searchHistoryDropdown" class="search-history-dropdown">
-    </div>
+                    <div id="searchHistoryDropdown" class="search-history-dropdown"></div>
                 </div>
                 <a href="admin.html" class="btn-admin-route" target="_blank"><i class="fas fa-sliders-h"></i> Admin </a>
             </div>
         </nav>
 
         <div class="app-canvas">
-            
             <div class="info-grid-row">
                 <div class="premium-notice-hub-box">
-                    <div class="notice-content-wrapper">
-                        <div class="live-pulse-container"><div class="live-pulse-dot"></div><div class="live-pulse-ring"></div></div>
-                        <div class="notice-text-details">
-                            <h6>System Live Update</h6>
+                    <div class="live-pulse-container" style="margin-right: 15px;">
+                        <div class="live-pulse-dot"></div>
+                        <div class="live-pulse-ring"></div>
+                    </div>
+                    <div class="notice-text-details">
+                        <span class="static-label">SYSTEM LIVE UPDATE:</span>
+                        <div class="scrolling-text-wrapper">
                             <p id="liveNoticeBoardHeadlineText">Loading...</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="premium-status-indicator">
                     <div>
                         <h5 style="font-weight: 700; color:#64748b; font-size:11px; text-transform:uppercase;">Clock Node</h5>
@@ -731,29 +807,22 @@
             <div class="tools-section-heading" id="gridSectionTitle">Sarkari Portals & Recruitment Desks</div>
 
             <div class="services-grid-container" id="toolsDisplayGrid">
-                <div id="noResultsMessage">
-                    <i class="fas fa-search-minus" style="font-size: 32px; color: #4f46e5; margin-bottom: 12px;"></i>
+                <div id="noResultsMessage" style="display: none;">
+                    <i class="fas fa-search-minus" style="font-size: 32px; color: #4f46e5; margin-bottom: 12px; display: block;"></i>
                     <p style="color: #64748b; font-weight: 500;">Koi active card nahi mila!</p>
                 </div>
             </div>
         </div>
         
-<button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('active')" 
-        style="display: none; background: none; border: none; font-size: 20px;">
-    <i class="fas fa-bars"></i>
-</button>
+        <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('active')" 
+                style="display: none; background: none; border: none; font-size: 20px; position: absolute; top: 20px; left: 20px; z-index: 1001;">
+            <i class="fas fa-bars"></i>
+        </button>
     </main>
 
+
 <script>
-function showLoading(gridContainer) {
-    // 4 skeleton cards create karein
-    for(let i = 0; i < 4; i++) {
-        const div = document.createElement('div');
-        div.className = "skeleton tool-card-item";
-        gridContainer.appendChild(div);
-    }
-}
- 
+// 1. Initial Load & Interface Build with Error Handling
 function buildLiveSiteInterfaces() {
     try {
         const folders = JSON.parse(localStorage.getItem('matrix_folders')) || [];
@@ -763,25 +832,29 @@ function buildLiveSiteInterfaces() {
         const noticeText = localStorage.getItem('matrix_notice') || 'Search bar connected globally.';
 
         const noticeBoard = document.getElementById('liveNoticeBoardHeadlineText');
+        if (noticeBoard) {
+            noticeBoard.style.opacity = '0';
+            noticeBoard.innerText = noticeText;
+            setTimeout(() => {
+                noticeBoard.style.transition = 'opacity 0.5s ease';
+                noticeBoard.style.opacity = '1';
+            }, 100);
+        }
+
         const sidebarMenu = document.getElementById('masterLiveSidebarMenu');
         const gridContainer = document.getElementById('toolsDisplayGrid');
-        const noResultsElement = document.getElementById('noResultsMessage');
 
-        if (!noticeBoard || !sidebarMenu || !gridContainer) return;
+        if (sidebarMenu) sidebarMenu.innerHTML = '';
+        if (gridContainer) {
+            // Remove existing cards only, keep the noResultsMessage element if present
+            gridContainer.querySelectorAll('.tool-card-item').forEach(e => e.remove());
+        }
 
-        noticeBoard.innerText = noticeText;
-
-        // UI Reset
-        sidebarMenu.innerHTML = '';
-        gridContainer.querySelectorAll('.tool-card-item').forEach(e => e.remove());
-        const existingEmpty = gridContainer.querySelector('.empty-state-box');
-        if (existingEmpty) existingEmpty.remove();
-
-        // Build Sidebar
         folders.forEach((mainFolder, fIdx) => {
             const li = document.createElement('li');
             li.className = `menu-item ${fIdx === 0 ? 'open' : ''}`;
             const safeFolderName = mainFolder.name.replace(/\s+/g, '');
+            
             li.innerHTML = `
                 <div class="menu-link" onclick="toggleDropdown(this)">
                     <div class="menu-link-content">
@@ -796,48 +869,46 @@ function buildLiveSiteInterfaces() {
 
             const matchingSubs = subs.filter(s => s.parent === mainFolder.name);
             const subContainerElement = document.getElementById(`container-${safeFolderName}`);
-            
-            if (subContainerElement) {
-                matchingSubs.forEach(subPortal => {
-                    const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
-                    const subPortalDiv = document.createElement('div');
-                    subPortalDiv.className = "submenu-link-toggle";
-                    subPortalDiv.setAttribute('onclick', `toggleNestedSidebarDropdown('${subId}', this)`);
-                    subPortalDiv.innerHTML = `
-                        <span class="menu-link-content">
-                            <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
-                        </span>
-                        <i class="fas fa-chevron-down nested-chevron" style="font-size:10px; color:#94a3b8; transition:transform 0.3s;"></i>
-                    `;
-                    subContainerElement.appendChild(subPortalDiv);
 
-                    const nestedContainerDiv = document.createElement('div');
-                    nestedContainerDiv.className = "nested-submenu-container";
-                    nestedContainerDiv.id = subId;
+            matchingSubs.forEach(subPortal => {
+                const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
+                const subPortalDiv = document.createElement('div');
+                subPortalDiv.className = "submenu-link-toggle";
+                subPortalDiv.setAttribute('onclick', `toggleNestedSidebarDropdown('${subId}', this)`);
+                
+                subPortalDiv.innerHTML = `
+                    <span class="menu-link-content">
+                        <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
+                    </span>
+                    <i class="fas fa-chevron-down nested-chevron" style="font-size:10px; color:#94a3b8; transition:transform 0.3s;"></i>
+                `;
+                subContainerElement.appendChild(subPortalDiv);
 
-                    const deepLinks = sideLinks.filter(l => l.parent === subPortal.name);
-                    deepLinks.forEach(dl => {
-                        const dlAnchor = document.createElement('a');
-                        dlAnchor.href = dl.url;
-                        dlAnchor.target = "_blank";
-                        dlAnchor.className = "nested-submenu-link";
-                        dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: var(--${dl.color});"></i> ${dl.label}`;
-                        nestedContainerDiv.appendChild(dlAnchor);
-                    });
-                    subContainerElement.appendChild(nestedContainerDiv);
+                const nestedContainerDiv = document.createElement('div');
+                nestedContainerDiv.className = "nested-submenu-container";
+                nestedContainerDiv.id = subId;
+
+                const deepLinks = sideLinks.filter(l => l.parent === subPortal.name);
+                deepLinks.forEach(dl => {
+                    const dlAnchor = document.createElement('a');
+                    dlAnchor.href = dl.url;
+                    dlAnchor.target = "_blank";
+                    dlAnchor.className = "nested-submenu-link";
+                    dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: var(--${dl.color});"></i> ${dl.label}`;
+                    nestedContainerDiv.appendChild(dlAnchor);
                 });
-            }
+                subContainerElement.appendChild(nestedContainerDiv);
+            });
         });
 
-        // Build Cards
         cards.forEach(card => {
             const anchor = document.createElement('a');
             anchor.href = card.url;
-            anchor.target = "digital-saathi-frame";
+            anchor.target = "_blank"; // Updated to open in new tab for better UX
             anchor.className = `service-card-block ${card.glow} tool-card-item`;
-            anchor.setAttribute('data-subportal', card.parentSub ? card.parentSub.toLowerCase() : 'all');
+            anchor.setAttribute('data-subportal', card.parentSub ? card.parentSub.trim().toLowerCase() : '');
             anchor.setAttribute('data-search', `${card.name.toLowerCase()} ${card.desc.toLowerCase()}`);
-            anchor.style.display = "flex"; 
+            
             anchor.innerHTML = `
                 <div class="square-icon-box"><i class="${card.icon ? card.icon : 'fas fa-link'}"></i></div>
                 <div class="service-meta-text">
@@ -845,69 +916,94 @@ function buildLiveSiteInterfaces() {
                     <p>${card.desc}</p>
                 </div>
             `;
-            gridContainer.insertBefore(anchor, noResultsElement);
+            gridContainer.appendChild(anchor);
         });
-
-    } catch (error) {
-        console.error("Error building interface:", error);
+    } catch (e) {
+        console.error("Dashboard loading error:", e);
     }
 }
 
-function initAppWithFirebase() {
-    const gridContainer = document.getElementById('toolsDisplayGrid');
-    showLoading(gridContainer); 
+// 2. Interaction Functions
+function toggleDropdown(element) {
+    let parentItem = element.parentElement;
+    document.querySelectorAll('.menu-item').forEach(item => { if(item !== parentItem) item.classList.remove('open'); });
+    parentItem.classList.toggle('open');
+}
 
-    if (!window.db) {
-        console.error("Firebase DB object not found!"); 
-        return;
-    }
+function toggleNestedSidebarDropdown(targetContainerId, element) {
+    document.querySelectorAll('.nested-submenu-container').forEach(c => { if(c.id !== targetContainerId) c.classList.remove('nested-open'); });
+    document.querySelectorAll('.submenu-link-toggle').forEach(b => { if(b !== element) b.classList.remove('active-toggle-item'); });
+    
+    element.classList.toggle('active-toggle-item');
+    const container = document.getElementById(targetContainerId);
+    if(container) container.classList.toggle('nested-open');
+    
+    const subPortalName = element.innerText.trim();
+    const bread = document.getElementById('breadCrumbStatus');
+    if(bread) bread.innerText = subPortalName;
+    
+    filterAndSearch(subPortalName, '');
+}
 
-    window.db.collection("data").doc("matrix_config").onSnapshot((doc) => {
-        if (doc.exists) {
-            const data = doc.data();
-            // Save to localStorage
-            localStorage.setItem('matrix_cards', JSON.stringify(data.cards || []));
-            localStorage.setItem('matrix_folders', JSON.stringify(data.folders || []));
-            localStorage.setItem('matrix_subs', JSON.stringify(data.subs || []));
-            localStorage.setItem('matrix_sideLinks', JSON.stringify(data.sideLinks || []));
-            localStorage.setItem('matrix_notice', data.notice || 'Welcome!');
-            
-            // Refresh UI
-            buildLiveSiteInterfaces();
+// 3. Optimized Search and Filter Logic
+function filterAndSearch(filterValue = 'all', searchTerm = '') {
+    const cards = document.querySelectorAll('.service-card-block');
+    const noResults = document.getElementById('noResultsMessage');
+    const gridSectionTitle = document.getElementById('gridSectionTitle');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const subPortal = card.getAttribute('data-subportal') || '';
+        const searchableText = card.getAttribute('data-search') || '';
+        
+        const matchFilter = (filterValue === 'all' || subPortal === filterValue.toLowerCase());
+        const matchSearch = (searchableText.includes(searchTerm.toLowerCase()));
+
+        if (matchFilter && matchSearch) {
+            card.style.display = "flex";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
         }
-    }, (error) => {
-        console.error("Firebase Error:", error);
     });
+    
+    if(gridSectionTitle) gridSectionTitle.innerText = filterValue === 'all' ? "Sarkari Portals & Recruitment Desks" : `${filterValue} - Portals & Desks`;
+    if(noResults) noResults.style.display = visibleCount === 0 ? "block" : "none";
 }
 
-// Baki sabhi functions (toggleDropdown, filterCards, etc.) wahi rahenge jo aapke purane code mein the.
-// Bas upar ka logic fix karna tha.
-window.onload = initAppWithFirebase;
+function handleSearchKey(event) {
+    filterAndSearch('all', event.target.value);
+}
 
-// Clock update function
+// Click outside to hide search history
+document.addEventListener('click', (e) => {
+    const hist = document.getElementById('searchHistoryDropdown');
+    const searchInput = document.getElementById('toolSearchField');
+    if (hist && e.target !== searchInput) {
+        hist.style.display = 'none';
+    }
+});
+
+function showHistory() {
+    const hist = document.getElementById('searchHistoryDropdown');
+    if(hist) hist.style.display = 'block';
+}
+
+// 4. Clock & Init
 function updateClock() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
-    hours = hours % 12 || 12; // 12-hour format
-    const formattedHours = String(hours).padStart(2, '0');
-    
-    const clockElement = document.getElementById('liveMatrixClock');
-    if (clockElement) {
-        clockElement.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+    const clock = document.getElementById('liveMatrixClock');
+    if (clock) {
+        clock.innerText = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
     }
 }
 
-// Page load hote hi ek baar call karein
-updateClock();
-
-// Phir har second update karein
-setInterval(updateClock, 1000);
-
-
+window.onload = () => {
+    buildLiveSiteInterfaces();
+    setInterval(updateClock, 1000);
+    updateClock();
+};
 </script>
+
+    
 </body>
 </html>
