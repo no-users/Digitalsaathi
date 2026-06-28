@@ -741,6 +741,16 @@
     margin: 0;
     animation: marquee 15s linear infinite, premium-red-alert-cycle 5s infinite linear;
 }
+
+
+
+
+
+
+/* Niche wala CSS add karein */
+.square-icon-box.custom-color {
+    background-image: none !important;
+}
     </style>
 </head>
 <body>
@@ -821,7 +831,7 @@
     </main>
 
 
-<script>
+<script >
 // 1. REAL-TIME FIREBASE SYNC
 db.collection('data').doc('matrix_config').onSnapshot((doc) => {
     if (doc.exists) {
@@ -834,147 +844,160 @@ function renderUI(config) {
     const sidebarMenu = document.getElementById('masterLiveSidebarMenu');
     const gridContainer = document.getElementById('toolsDisplayGrid');
     const noticeBoard = document.getElementById('liveNoticeBoardHeadlineText');
+    const noResults = document.getElementById('noResultsMessage');
+
+    if (!sidebarMenu) return;
 
     sidebarMenu.innerHTML = '';
-    // Grid saaf karein, lekin 'noResultsMessage' ko preserve karein
-    const noResults = document.getElementById('noResultsMessage');
     gridContainer.innerHTML = '';
-    gridContainer.appendChild(noResults); 
+    if (noResults) gridContainer.appendChild(noResults); 
     
-    if (noticeBoard) noticeBoard.innerText = config.notice || 'System Online';
+    if (noticeBoard && config.notice) noticeBoard.innerText = config.notice;
 
     // RENDER FOLDERS, SUBS, AND LINKS
-    config.folders.forEach((mainFolder, fIdx) => {
-        const safeFolderName = mainFolder.name.replace(/\s+/g, '');
-        const li = document.createElement('li');
-        li.className = `menu-item ${fIdx === 0 ? 'open' : ''}`;
-        
-        li.innerHTML = `
-            <div class="menu-link" data-type="main-folder">
-                <div class="menu-link-content">
-                    <i class="${mainFolder.icon}" style="color: var(--${mainFolder.color});"></i>
-                    <span>${mainFolder.name}</span>
+    if (config.folders) {
+        config.folders.forEach((mainFolder, fIdx) => {
+            const safeFolderName = mainFolder.name.replace(/\s+/g, '');
+            const li = document.createElement('li');
+            li.className = `menu-item ${fIdx === 0 ? 'open' : ''}`;
+            
+            li.innerHTML = `
+                <div class="menu-link" data-type="main-folder">
+                    <div class="menu-link-content">
+                        <i class="${mainFolder.icon}" style="color: var(--${mainFolder.color});"></i>
+                        <span>${mainFolder.name}</span>
+                    </div>
+                    <i class="fas fa-chevron-down chevron-icon"></i>
                 </div>
-                <i class="fas fa-chevron-down chevron-icon"></i>
-            </div>
-            <div class="submenu-container" id="container-${safeFolderName}"></div>
-        `;
-        sidebarMenu.appendChild(li);
-
-        const subContainer = document.getElementById(`container-${safeFolderName}`);
-        const matchingSubs = config.subs.filter(s => s.parent === mainFolder.name);
-
-        matchingSubs.forEach(subPortal => {
-            const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
-            const subDiv = document.createElement('div');
-            subDiv.className = "submenu-link-toggle";
-            subDiv.setAttribute('data-target', subId);
-            subDiv.setAttribute('data-filter', subPortal.name.toLowerCase()); // Filter ke liye
-            subDiv.innerHTML = `
-                <span class="menu-link-content">
-                    <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
-                </span>
-                <i class="fas fa-chevron-down nested-chevron"></i>
+                <div class="submenu-container" id="container-${safeFolderName}"></div>
             `;
-            subContainer.appendChild(subDiv);
+            sidebarMenu.appendChild(li);
 
-            const nestedContainer = document.createElement('div');
-            nestedContainer.className = "nested-submenu-container";
-            nestedContainer.id = subId;
+            const subContainer = document.getElementById(`container-${safeFolderName}`);
+            if (config.subs) {
+                config.subs.filter(s => s.parent === mainFolder.name).forEach(subPortal => {
+                    const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
+                    const subDiv = document.createElement('div');
+                    subDiv.className = "submenu-link-toggle";
+                    subDiv.setAttribute('data-target', subId);
+                    subDiv.setAttribute('data-filter', subPortal.name.toLowerCase());
+                    subDiv.innerHTML = `
+                        <span class="menu-link-content">
+                            <i class="${subPortal.icon}" style="color: var(--${subPortal.color});"></i> ${subPortal.name}
+                        </span>
+                        <i class="fas fa-chevron-down nested-chevron"></i>
+                    `;
+                    subContainer.appendChild(subDiv);
 
-            const deepLinks = config.sideLinks.filter(l => l.parent === subPortal.name);
-            deepLinks.forEach(dl => {
-                const dlAnchor = document.createElement('a');
-                dlAnchor.href = dl.url;
-                dlAnchor.target = "_blank";
-                dlAnchor.className = "nested-submenu-link";
-                dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: var(--${dl.color});"></i> ${dl.label}`;
-                nestedContainer.appendChild(dlAnchor);
-            });
-            subContainer.appendChild(nestedContainer);
+                    const nestedContainer = document.createElement('div');
+                    nestedContainer.className = "nested-submenu-container";
+                    nestedContainer.id = subId;
+
+                    if (config.sideLinks) {
+                        config.sideLinks.filter(l => l.sub?.toLowerCase().trim() === subPortal.name.toLowerCase().trim()).forEach(dl => {
+                            const dlAnchor = document.createElement('a');
+                            dlAnchor.href = dl.url || '#';
+                            dlAnchor.target = "_blank";
+                            dlAnchor.className = "nested-submenu-link";
+                            dlAnchor.innerHTML = `<i class="${dl.icon}"></i> ${dl.label || dl.title}`;
+                            nestedContainer.appendChild(dlAnchor);
+                        });
+                    }
+                    subContainer.appendChild(nestedContainer);
+                });
+            }
         });
-    });
+    }
 
     // RENDER CARDS
-    config.cards.forEach(card => {
-        const anchor = document.createElement('a');
-        anchor.href = card.url;
-        anchor.target = "_blank";
-        anchor.className = `service-card-block ${card.glow} tool-card-item`;
-        // Search aur Filter ke liye attributes
-        anchor.setAttribute('data-sub', card.parentSub ? card.parentSub.toLowerCase() : '');
-        anchor.setAttribute('data-name', card.name.toLowerCase());
-        anchor.setAttribute('data-desc', card.desc.toLowerCase());
-        
-        anchor.innerHTML = `
-            <div class="square-icon-box"><i class="${card.icon}"></i></div>
-            <div class="service-meta-text">
-                <h4>${card.name}</h4>
-                <p>${card.desc}</p>
-            </div>
-        `;
-        gridContainer.appendChild(anchor);
-    });
+    if (config.cards) {
+        config.cards.forEach(card => {
+            const anchor = document.createElement('a');
+            anchor.className = `service-card-block ${card.glow || ''} tool-card-item`;
+            anchor.href = card.url || '#';
+            anchor.target = "_blank";
+            anchor.setAttribute('data-sub', card.sub?.toLowerCase() || '');
+            anchor.setAttribute('data-name', (card.title || card.name || '').toLowerCase());
+            
+            anchor.innerHTML = `
+                <div class="square-icon-box" id="icon-${card.title?.replace(/\s+/g, '')}">
+                    <i class="${card.icon || 'fas fa-link'}"></i>
+                </div>
+                <div class="service-meta-text">
+                    <h4>${card.title || card.name || 'Untitled'}</h4>
+                    <p>${card.desc || card.description || ''}</p>
+                </div>
+            `;
+            gridContainer.appendChild(anchor);
+
+            if (card.color) {
+                const iconBox = anchor.querySelector('.square-icon-box');
+                iconBox.style.setProperty('background-color', card.color, 'important');
+                iconBox.style.setProperty('background-image', 'none', 'important');
+            }
+        });
+    }
 }
 
-// 3. UNIVERSAL SEARCH & FILTER
-function filterAndSearch() {
-    const searchTerm = document.getElementById('toolSearchField').value.toLowerCase();
-    const cards = document.querySelectorAll('.tool-card-item');
-    const noResults = document.getElementById('noResultsMessage');
-    let count = 0;
-
-    cards.forEach(card => {
-        const text = (card.getAttribute('data-name') + card.getAttribute('data-desc')).toLowerCase();
-        if (text.includes(searchTerm)) {
-            card.style.display = "flex";
-            count++;
-        } else {
-            card.style.display = "none";
-        }
-    });
-
-    noResults.style.display = count === 0 ? "block" : "none";
-}
-
-// 4. EVENT DELEGATION (Sidebar + Search)
-// --- UPDATED SIDEBAR EVENT DELEGATION ---
+// 3. SINGLE MASTER EVENT LISTENER (Filter + UI Toggle)
 document.getElementById('masterLiveSidebarMenu').addEventListener('click', function(e) {
-    const breadCrumbStatus = document.getElementById('breadCrumbStatus');
-    
-    // Main Folder Click
+    const allCards = document.querySelectorAll('.tool-card-item');
+    const noResults = document.getElementById('noResultsMessage');
+
+    // Folder click: Reset (Saare cards dikhayein)
     const menuLink = e.target.closest('.menu-link');
     if (menuLink) {
         menuLink.parentElement.classList.toggle('open');
-        const folderName = menuLink.innerText.trim();
-        if(breadCrumbStatus) breadCrumbStatus.innerText = folderName; // Status Update
+        allCards.forEach(c => c.style.display = "flex");
+        if(noResults) noResults.style.display = "none";
+        return;
     }
 
-    // Sub Portal Click
-    const subToggle = e.target.closest('.submenu-link-toggle');
-    if (subToggle) {
-        const targetId = subToggle.getAttribute('data-target');
-        subToggle.classList.toggle('active-toggle-item');
-        document.getElementById(targetId).classList.toggle('nested-open');
+    // Sub-folder click: Filter
+// --- SUB-FOLDER FILTER LOGIC ---
+const subToggle = e.target.closest('.submenu-link-toggle');
+if (subToggle) {
+    e.stopPropagation();
+    const filterVal = subToggle.getAttribute('data-filter').toLowerCase().trim();
+    
+    // UI Toggle
+    subToggle.classList.toggle('active-toggle-item');
+    document.getElementById(subToggle.getAttribute('data-target')).classList.toggle('nested-open');
+
+    let matchCount = 0;
+    allCards.forEach(c => {
+        const cardSub = c.getAttribute('data-sub').toLowerCase().trim();
         
-        // Status Update & Filter
-        const subName = subToggle.innerText.trim();
-        if(breadCrumbStatus) breadCrumbStatus.innerText = subName;
-        
-        const filterVal = subToggle.getAttribute('data-filter');
-        const cards = document.querySelectorAll('.tool-card-item');
-        cards.forEach(c => {
-            c.style.display = (c.getAttribute('data-sub') === filterVal) ? "flex" : "none";
-        });
-    }
+        // Logic: Agar match kare toh card-visible, nahi toh card-hidden
+        if (cardSub === filterVal) {
+            c.classList.remove('card-hidden');
+            c.classList.add('card-visible');
+            matchCount++;
+        } else {
+            c.classList.remove('card-visible');
+            c.classList.add('card-hidden');
+        }
+    });
+
+    if(noResults) noResults.style.display = (matchCount === 0) ? "block" : "none";
+}
 });
-// SEARCH INPUT LISTENER
-document.getElementById('toolSearchField').addEventListener('input', filterAndSearch);
 
-// CLOCK
+// 4. SEARCH & CLOCK
+document.getElementById('toolSearchField')?.addEventListener('input', function() {
+    const term = this.value.toLowerCase();
+    document.querySelectorAll('.tool-card-item').forEach(c => {
+        c.style.display = (c.getAttribute('data-name').includes(term)) ? "flex" : "none";
+    });
+});
+
 setInterval(() => {
     const clock = document.getElementById('liveMatrixClock');
-    if(clock) clock.innerText = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    if (clock) {
+        clock.innerText = new Date().toLocaleTimeString('en-IN', { 
+            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
+        });
+    }
 }, 1000);
 </script>
 
