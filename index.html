@@ -613,8 +613,8 @@ position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-g
 </div>
     </main>
 
+<script>
 
-<script src="">
 // 1. REAL-TIME FIREBASE SYNC
 db.collection('data').doc('matrix_config').onSnapshot((doc) => {
     if (doc.exists) {
@@ -875,23 +875,25 @@ function closeModal() { document.getElementById('calcModal').style.display = 'no
 
 
 
-// function renderRecentVisits() {
-   // const grid = document.getElementById('recentVisitsGrid');
-   // const section = document.getElementById('recentVisitsSection');
-  //  const history = JSON.parse(localStorage.getItem('recentVisits')) || [];
+function togglePremiumDropdown(id, event) {
+    event.stopPropagation(); // Click event ko bubble hone se roke
+    const dropdown = document.getElementById(id);
+    dropdown.classList.toggle('show');
+}
 
-  //  if (history.length > 0) {
-  //      section.style.display = 'block'; // Sirf tab dikhao jab history ho
-   //     grid.innerHTML = history.map(item => `
-   //         <a href="${item.link}" class="service-card-block" onclick="saveVisit('${item.name}', '${item.link}', '${item.iconClass}')">
-       //         <div class="square-icon-box" style="background: #4f46e5;"><i class="${item.iconClass}"></i></div>
-        //        <div class="service-meta-text"><h4>${item.name}</h4><p>Click to revisit</p></div>
-     //       </a>
-  //      `).join('');
- //   }
-//}
+// Bahaar click karne par dropdown band ho jaye
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-trigger')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].classList.remove('show');
+        }
+    }
+}
+
+
 </script>
 
-    
 </body>
-</html>
+    </html>
+    
