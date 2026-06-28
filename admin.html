@@ -14,6 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Yeh line CryptoJS library ko load karegi -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -66,96 +68,100 @@
 
         
 
-        /* === PREMIUM REMASTERED SECURITY OVERLAY SHIELD === */
+   /* Premium Glassmorphism Modal */
+/* Full Screen Glassmorphism Overlay */
+#pinModal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 50% 50%, #1e293b, #0f172a);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
 
-        #securityGateOverlay {
+/* Luxury Glass Card */
+.pin-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 45px;
+    border-radius: 35px;
+    box-shadow: 0 40px 60px rgba(0,0,0,0.4);
+    text-align: center;
+    width: 360px;
+}
 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+.pin-card h3 {
+    color: #f8fafc;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
 
-            background: linear-gradient(135deg, rgba(238, 238, 237, 0.8) 0%, rgba(166, 222, 237, 0.5) 100%);
+/* Premium Inputs */
+.pin-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
 
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+.pin-digit {
+    width: 55px; height: 55px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    transition: all 0.3s ease;
+}
 
-            z-index: 99999; display: flex; align-items: center; justify-content: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.pin-digit:focus {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+}
 
-        }
+.verify-btn {
+    display: block; /* बटन को दिखने के लिए */
+    width: 100%;
+    padding: 15px;
+    background: #6366f1; /* Premium Indigo Color */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        .pin-terminal {
+/* Premium Toast Notification */
+/* Input Error Animation */
+@keyframes jiggle {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
 
-            background: rgba(255, 255, 255, 0.85); 
+.input-error {
+    animation: jiggle 0.4s ease-in-out;
+    border-color: #ef4444 !important; /* Premium Red Border */
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3) !important;
+}
 
-            border: 2px solid #A8D5E3;
-
-            padding: 45px 40px; border-radius: 28px; 
-
-            box-shadow: 0 25px 60px -15px rgba(45, 55, 72, 0.1), 0 0 30px rgba(168, 213, 227, 0.2);
-
-            width: 400px; text-align: center; transition: transform 0.3s ease;
-
-        }
-
-        @keyframes terminalErrorShake {
-
-            0%, 100% { transform: translateX(0); }
-
-            20%, 60% { transform: translateX(-10px); }
-
-            40%, 80% { transform: translateX(10px); }
-
-        }
-
-        .terminal-shake-active { animation: terminalErrorShake 0.4s linear; border-color: #FF78AC !important; box-shadow: 0 0 25px rgba(255, 120, 172, 0.25) !important; }
-
-        
-
-        .pin-terminal .icon-badge-shield { 
-
-            width: 70px; height: 70px; 
-
-            background: #ffffff; 
-
-            border: 2px solid #A8D5E3;
-
-            border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; 
-
-            box-shadow: 0 10px 25px rgba(168, 213, 227, 0.3); margin-bottom: 20px; 
-
-        }
-
-        .pin-terminal .icon-badge-shield i { font-size: 28px; color: #02013b; }
-
-        .pin-terminal h4 { font-size: 20px; font-weight: 700; color: #2D3748; margin-bottom: 8px; letter-spacing: -0.3px; }
-
-        .pin-terminal p { font-size: 13px; color: #718096; margin-bottom: 30px; line-height: 1.5; }
-
-        .hidden-pin-buffer-field { position: absolute; opacity: 0; pointer-events: none; width: 100%; }
-
-
-
-        .premium-pin-box-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; cursor: pointer; }
-
-        .pin-digit-cell { 
-
-            width: 52px; height: 52px; 
-
-            background: #ffffff; 
-
-            border: 2px solid #E2E8F0; 
-
-            border-radius: 14px; font-size: 22px; font-weight: 700; color: #2D3748; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
-
-        }
-
-        .pin-digit-cell.cell-focused { border-color: #08297d; box-shadow: 0 0 0 4px rgba(79, 53, 223, 0.2); background: #ffffff; }
-
-        .pin-digit-cell.cell-filled { background: #ffffff; border-color: #A8D5E3; }
-
-        
-
-        .pin-digit-cell.cell-filled .pin-dot-indicator { transform: scale(1); }
-
-        .pin-err-log { color: #E53E3E; font-size: 12.5px; font-weight: 600; margin-top: 10px; display: none; }
-
+/* Text Feedback Styling */
+#statusMessage {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 15px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
 
         /* HEADER & TABS PANEL NAVIGATION SYSTEM */
@@ -343,11 +349,13 @@
 
         .btn-panel { display: flex; justify-content: flex-end; width: 100%; margin-top: 4px; }
 
-        .btn-action-trigger {
+
+
+        .update-btn {
     padding: 12px 24px;
-    background: #8f1342;
-    color: white;
-    border: none;
+    background: linear-gradient(135deg, #eb4d89, #640226);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     font-weight: 700;
     font-size: 13.5px;
@@ -355,22 +363,66 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    /* transition ko short rakha hai taaki smooth feel ho */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(227, 31, 171, 0.25);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* स्मूथ स्प्रिंग जैसा इफ़ेक्ट */
+    box-shadow: 0 6px 20px rgba(143, 19, 66, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Space hata di hai yahan */
+/* प्रीमियम हॉवर इफ़ेक्ट: ग्रीन ट्रांजिशन */
+.update-btn:hover {
+    background: #033dbb !important; /* ग्रीन शेड */
+    transform: translateY(-4px) scale(1.02); /* हल्का सा ज़ूम और ऊपर उठना */
+    box-shadow: 0 10px 25px rgba(228, 63, 63, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* बटन पर क्लिक करने पर 'Press' इफ़ेक्ट */
+.update-btn:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+
+
+.btn-action-trigger {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #eb4d89, #640226);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* स्मूथ स्प्रिंग जैसा इफ़ेक्ट */
+    box-shadow: 0 6px 20px rgba(143, 19, 66, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* प्रीमियम हॉवर इफ़ेक्ट: ग्रीन ट्रांजिशन */
 .btn-action-trigger:hover {
-    background: #43031c;
-    color: #ffffff; /* Text color white rakha hai kyunki background dark hai */
-    transform: translateY(-2px); /* Button halka sa upar uthega */
-    box-shadow: 0 6px 16px rgba(67, 3, 28, 0.4);
+    background: #033dbb !important; /* ग्रीन शेड */
+    transform: translateY(-4px) scale(1.02); /* हल्का सा ज़ूम और ऊपर उठना */
+    box-shadow: 0 10px 25px rgba(228, 63, 63, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Click karne par button thoda dabne ka effect */
+/* बटन पर क्लिक करने पर 'Press' इफ़ेक्ट */
 .btn-action-trigger:active {
-    transform: translateY(0);
+    transform: translateY(0px) scale(0.98);
+}
+
+/* रोटेटिंग स्पिनर (Loading) */
+.rotating-icon {
+    animation: rotate 0.8s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
         .btn-update-mode {
@@ -500,64 +552,80 @@
 }
 
 /* Action Container */
-.action-container-box { 
-    display: flex; 
-    gap: 8px; 
-    justify-content: flex-end; 
+/* Modern Action Container */
+.action-container-box {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
 }
 
-        
-
-        /* Base Row Button Style */
+/* Premium Row Button Base */
 .row-btn {
-    border: 1px solid transparent;
-    padding: 7px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 11.5px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #4A5568;
+    font-size: 0.8rem;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Edit Button - Soft Blue/Teal */
-.row-btn-edit { 
-    background: rgba(168, 213, 227, 0.15); 
-    color: #2b6cb0; 
-    border: 1px solid rgba(168, 213, 227, 0.5); 
-}
-.row-btn-edit:hover { 
-    background: #A8D5E3; 
-    color: #1a365d; 
+/* Hover Effects */
+.row-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(168, 213, 227, 0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Delete Button - Soft Red/Danger */
-.row-btn-delete { 
-    background: rgba(229, 62, 62, 0.05); 
-    color: #c53030; 
-    border: 1px solid rgba(229, 62, 62, 0.2); 
+/* Edit Button - Premium Blue */
+.row-btn-edit {
+    color: #2b6cb0;
+    background: #ebf8ff;
+    border-color: #bee3f8;
 }
-.row-btn-delete:hover { 
-    background: #E53E3E; 
-    color: white; 
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+.row-btn-edit:hover {
+    background: #2b6cb0;
+    color: #ffffff;
 }
 
-/* Sort Button - Neutral/Modern */
-.row-btn-sort { 
-    background: #EDF2F7; 
-    color: #4A5568; 
-    border: 1px solid #E2E8F0; 
+/* Delete Button - Dangerous Red */
+.row-btn-delete {
+    color: #c53030;
+    background: #fff5f5;
+    border-color: #feb2b2;
 }
-.row-btn-sort:hover { 
-    background: #E2E8F0; 
-    transform: translateY(-2px);
+.row-btn-delete:hover {
+    background: #c53030;
+    color: #ffffff;
 }
+
+/* Sort Buttons - Neutral */
+.row-btn-sort {
+    background: #f7fafc;
+    color: #718096;
+}
+.row-btn-sort:hover {
+    background: #e2e8f0;
+    color: #2d3748;
+}
+
+/* Badge (Location) Premium Style */
+.badge {
+    background: rgba(66, 153, 225, 0.1);
+    color: #2b6cb0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(66, 153, 225, 0.2);
+}       
+        
 
 
 
@@ -601,52 +669,156 @@
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
+.control-card-section {
+    background: #ffffff; 
+    border-radius: 20px; 
+    padding: 28px 30px; 
+    box-shadow: none; /* Fixed */
+    border: 1px solid rgba(0, 0, 0, 0.4); 
+    display: flex; flex-direction: column; gap: 20px;
+}
+
+
+
+
+
+
+
+
+
+/* --- PREMIUM NEON-GLOW YELLOW NOTICE BAR --- */
+.premium-notice-container {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px 25px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: #070500; /* गहरा भूरा-पीला टेक्स्ट */
+    cursor: pointer;
+    
+    /* Premium Gradient Yellow Background */
+    background: linear-gradient(135deg, #df4840a3 0%, #f3d80c7c 100%);
+    
+    /* Glass & Glow Effects */
+    border: 2px solid rgba(247, 63, 63, 0.5);
+    box-shadow: 0 10px 30px -5px rgba(247, 224, 54, 0.4);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for premium feel */
+.premium-notice-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px -5px rgba(247, 54, 144, 0.6);
+}
+
+.notice-inner-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Icon Styling */
+.fa-shake {
+    color: #856404;
+    font-size: 20px;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+    animation: ring 3s infinite ease-in-out;
+}
+
+@keyframes ring {
+    0%, 10%, 20%, 30% { transform: rotate(0); }
+    5% { transform: rotate(15deg); }
+    15% { transform: rotate(-15deg); }
+    25% { transform: rotate(10deg); }
+    35% { transform: rotate(0); }
+}
+
+
+
+
+/* Premium Input Error State */
+.input-error {
+    border: 2px solid #E53E3E !important;
+    background-color: #FFF5F5 !important;
+    box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.1) !important; /* Glow ko soft kiya */
+    animation: premium-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Smooth Shake Effect */
+@keyframes premium-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* Premium Error Message - Typography & Layout */
+.error-msg {
+    display: flex;
+    align-items: center;
+    color: #C53030; /* Thoda darker red for better readability */
+    font-size: 0.75rem;
+    margin-top: 5px;
+    font-weight: 500;
+    font-family: 'Segoe UI', sans-serif;
+    transform: translateY(-5px); /* Entrance effect */
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-msg::before {
+    content: "!"; /* '⚠️' ki jagah simple aur elegant '!' ya icon */
+    background: #E53E3E;
+    color: white;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: bold;
+}
     </style>
 
 </head>
 
 <body>
 
+<div id="toastNotification"></div>
 
-
-    <!-- SECURE LUXURY ACCESS WALL GATE -->
-
-    <div id="securityGateOverlay">
-
-        <div class="pin-terminal" id="pinTerminalCard">
-
-            <div class="icon-badge-shield"><i class="fas fa-user-shield"></i></div>
-
-            <h4>Admin Verification</h4>
-
-            <p>Please Enter 4-Digit Secure PIN </p>
-
-            
-
-            <div class="premium-pin-box-row" onclick="focusSecurityPinBufferField()">
-
-                <div class="pin-digit-cell" id="cell-0"><span class="pin-dot-indicator"></span></div>
-
-                <div class="pin-digit-cell" id="cell-1"><span class="pin-dot-indicator"></span></div>
-
-                <div class="pin-digit-cell" id="cell-2"><span class="pin-dot-indicator"></span></div>
-
-                <div class="pin-digit-cell" id="cell-3"><span class="pin-dot-indicator"></span></div>
-
-            </div>
-
-
-
-            <input type="text" pattern="[0-9]*" inputmode="numeric" id="hiddenPinField" class="hidden-pin-buffer-field" maxlength="4" autocomplete="off" oninput="compilePinDisplayLiveFeedback(this.value)">
-
-            <div class="pin-err-log" id="pinErrorLogMsg">Enter Correct Pin.</div>
-
+<div id="pinModal">
+    <div class="pin-card">
+        <h3>SECURE ACCESS</h3>
+        <div class="pin-inputs">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
         </div>
-
+        
+        <!-- Yahan Button add kar diya gaya hai -->
+     
+        
+        <!-- Error status message ke liye -->
+        <p id="statusMessage">Incorrect PIN, try again</p>
     </div>
-
-
-
+</div>
     <div class="master-wrapper">
 
         <header class="admin-header-node">
@@ -753,79 +925,54 @@
 
 
 
-            <!-- CARD 2: SUB-PORTAL CONFIGURATIONS -->
-
-            <div class="control-card-section">
-
-                <div class="section-heading-cluster" id="subPortalFormTitle"><i class="fas fa-folder-open"></i> Creat Sub-Portal</div>
-
-                <input type="hidden" id="subPortalEditIndex" value="-1">
-
-                
-
-                <div class="form-row-matrix-grid">
-
-                    <div class="form-group">
-
-                        <label>Main Folder </label>
-
-                        <select id="subPortalParentSelect"></select>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Sub-Folder Name</label>
-
-                        <input type="text" id="subPortalNameInput" placeholder="Enter Name">
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label> Icon</label>
-
-                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalIconPopover')">
-
-                            <span id="subPortalIconTriggerLabel"><i class="fas fa-folder-open"></i> Select Icon</span>
-
-                            <i class="fas fa-chevron-down"></i>
-
-                        </div>
-
-                        <div class="icon-dropdown-popover" id="subPortalIconPopover"></div>
-
-                    </div>
-
-                    <div class="form-group span-2-cols" style="margin-top: 4px;">
-
-                        <label> Theme </label>
-
-                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalColorPopover')">
-
-                            <span id="subPortalColorTriggerLabel">Select Color </span>
-
-                            <i class="fas fa-chevron-down"></i>
-
-                        </div>
-
-                        <div class="color-dropdown-popover" id="subPortalColorPopover"></div>
-
-                    </div>
-
-                </div>
-
-                
-
-                <div class="btn-panel">
-
-                    <button class="btn-action-trigger" id="subPortalSubmitBtn" onclick="executeSubPortalAddition()"><i class="fas fa-level-down-alt"></i> Create Sub-Portal</button>
-
-                    <button class="btn-revert" id="subPortalCancelBtn" style="display: none;" onclick="resetSubPortalForm()"><i class="fas fa-times"></i> Cancel</button>
-
-                </div>
-
+<div class="control-card-section">
+    <div class="section-heading-cluster" id="subPortalFormTitle">
+        <i class="fas fa-folder-open"></i> Creat Sub-Portal
+    </div>
+    <input type="hidden" id="subPortalEditIndex" value="-1">
+    
+    <div class="form-row-matrix-grid">
+        <div class="form-group">
+            <label>Main Folder</label>
+            <select id="subPortalParentSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Sub-Folder Name</label>
+            <input type="text" id="subPortalNameInput" placeholder="Enter Name">
+        </div>
+        
+        <!-- Icon Selector -->
+        <div class="form-group">
+            <label>Icon</label>
+            <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalIconPopover')">
+                <span id="subPortalIconTriggerLabel"><i class="fas fa-folder-open"></i> Select Icon</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
+            <!-- ID MATCHED: subPortalIconPopover -->
+            <div class="icon-dropdown-popover" id="subPortalIconPopover"></div>
+        </div>
+
+        <!-- Theme Selector -->
+        <div class="form-group span-2-cols" style="margin-top: 4px;">
+            <label>Theme</label>
+            <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalColorPopover')">
+                <span id="subPortalColorTriggerLabel">Select Color</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <!-- ID MATCHED: subPortalColorPopover -->
+            <div class="color-dropdown-popover" id="subPortalColorPopover"></div>
+        </div>
+    </div>
+    
+    <div class="btn-panel">
+        <button class="btn-action-trigger" id="subPortalSubmitBtn" onclick="executeSubPortalAddition()">
+            <i class="fas fa-level-down-alt"></i> Create Sub-Portal
+        </button>
+        <button class="btn-revert" id="subPortalCancelBtn" style="display: none;" onclick="resetSubPortalForm()">
+            <i class="fas fa-times"></i> Cancel
+        </button>
+    </div>
+</div>
 
 
 
@@ -841,13 +988,18 @@
 
                 <div class="form-row-matrix-grid">
 
-                    <div class="form-group">
+                    <!-- FOLDER SELECTION -->
+<div class="form-group">
+    <label>MAIN FOLDER</label>
+    <select id="sideLinkParentSelect" onchange="updateSubDropdownForSideLinks()"></select>
+</div>
 
-                        <label>FOLDERL</label>
-
-                        <select id="sideLinkParentSelect"></select>
-
-                    </div>
+<!-- SUB-FOLDER SELECTION -->
+<div class="form-group">
+    <label>SUB-FOLDER</label>
+    <select id="sideLinkSubSelect"></select> <!-- यहाँ ID बदली है -->
+</div>
+                    
 
                     <div class="form-group">
 
@@ -929,21 +1081,22 @@
 
                 <div class="form-grid">
 
-                    <div class="form-group">
+<!-- STEP 1: SELECT MAIN FOLDER -->
+<div class="form-group">
+    <label>Step 1: Select Main Folder</label>
+    <select id="cardMainFolderContextSelector" onchange="updateSubDropdownForCards()">
+        <!-- ऑप्शंस -->
+    </select>
+</div>
 
-                        <label>Step 1: Select Main Folder</label>
-
-                        <select id="cardMainFolderContextSelector" onchange="filterCardSubPortalDropdownOptionsByParent(this.value)"></select>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Step 2: Chose Sub-Portal </label>
-
-                        <select id="cardSubPortalContextSelector"></select>
-
-                    </div>
+<!-- STEP 2: CHOOSE SUB-PORTAL -->
+<div class="form-group">
+    <label>Step 2: Choose Sub-Portal</label>
+    <!-- यहाँ ID बदली गई है -->
+    <select id="cardSubPortalContextSelector">
+        <option value="">Select Sub-Portal</option>
+    </select>
+</div>
 
                     <div class="form-group">
 
@@ -1017,35 +1170,35 @@
 
 
 
-        <!-- PANEL 3: SYSTEM ALERTS -->
-
-        <div class="workspace-panel-box" id="panelAlerts">
-
-            <div class="control-card-section">
-
-                <div class="section-heading-cluster"><i class="fas fa-bell"></i> Live Notice </div>
-
-                <div class="form-grid">
-
-                    <div class="form-group span-full">
-
-                        <label>System Notification Message</label>
-
-                        <input type="text" id="globalNoticeBoardFeedInput">
-
-                    </div>
-
-                </div>
-
-                <div class="btn-panel">
-
-                    <button class="btn-action-trigger" onclick="executeNoticeBoardUpdateFeed()"><i class="fas fa-sync-alt"></i> Update Notice </button>
-
-                </div>
-
-            </div>
-
+<!-- PANEL 3: SYSTEM ALERTS -->
+<div class="workspace-panel-box" id="panelAlerts">
+    <div class="control-card-section">
+        <div class="section-heading-cluster">
+            <i class="fas fa-bell"></i> Live Notice Management
         </div>
+
+        <!-- नया प्रीमियम नोटिफिकेशन डिस्प्ले (Unique ID: premium-notice-display-zone) -->
+        <div id="premium-notice-display-zone" class="premium-notice-container" style="display: none;">
+            <div class="notice-inner-wrapper">
+                <i class="fas fa-bell fa-shake"></i> 
+                <span id="system-notice-text-content"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group span-full">
+                <label>System Notification Message</label>
+                <input type="text" id="globalNoticeBoardFeedInput" placeholder="Type your notice here...">
+            </div>
+        </div>
+
+        <div class="btn-panel">
+            <button class="btn-action-trigger" onclick="executeNoticeBoardUpdateFeed(this)">
+    <i class="fas fa-sync-alt"></i> Update Notice 
+</button>
+        </div>
+    </div>
+</div>
 
 
 
@@ -1061,9 +1214,9 @@
 
                     <div class="form-group">
 
-                        <label>Enter New 4-Digit  PIN</label>
+                        <input type="password" id="newPinInput" placeholder="Enter New 4-Digit PIN" maxlength="4">
 
-                        <input type="password" id="newSettingsPinField" maxlength="4" placeholder="e.g. 5678">
+                    
 
                     </div>
 
@@ -1071,7 +1224,7 @@
 
                 <div class="btn-panel">
 
-                    <button class="btn-action-trigger" onclick="changeMasterSecurityPin()"><i class="fas fa-lock"></i> Update PIN</button>
+                    <button class="update-btn" onclick="handlePinUpdate()">Update PIN</button>
 
                 </div>
 
@@ -1127,1127 +1280,850 @@
 
 
 
-    <script>
 
-        const premiumIconsPool = [
-
-            "fas fa-gavel", "fas fa-university", "fas fa-train", "fas fa-bolt", "fas fa-id-card", 
-
-            "fas fa-file-pdf", "fas fa-image", "fas fa-wallet", "fas fa-link", "fas fa-shield-heart",
-
-            "fas fa-file-archive", "fas fa-user-tie", "fas fa-calculator", "fas fa-file-invoice-dollar", 
-
-            "fas fa-plug", "fas fa-print", "fas fa-database", "fas fa-server", "fas fa-laptop-code",
-
-            "fas fa-envelope", "fas fa-phone", "fas fa-globe", "fas fa-map-marker-alt", "fas fa-key",
-
-            "fas fa-lock", "fas fa-folder-open", "fas fa-clock", "fas fa-briefcase", "fas fa-tools",
-
-            "fas fa-wrench", "fas fa-book", "fas fa-graduation-cap", "fas fa-users", "fas fa-address-card",
-
-            "fas fa-fingerprint", "fas fa-coins", "fas fa-house-user", "fas fa-receipt", "fas fa-sliders-h",
-
-            "fas fa-network-wired", "fas fa-chart-bar", "fas fa-qrcode", "fas fa-mobile-alt", "fas fa-credit-card"
-
-        ];
+<script >  
 
 
+// 1. GLOBAL STATE
+    let appData = { folders: [], subs: [], sideLinks: [], cards: [], notice: "", secure_hash: "81dc9bdb52d04dc20036dbd8313ed055" };
+    let dataViewActiveTab = 'cards';
 
-        const premiumNeonColorsPool = [
-
-            { className: "orange-glow2", label: "Orange Radiant Neon" },
-
-            { className: "blue-glow2", label: "Blue Radiant Ocean" },
-
-            { className: "emerald-glow2", label: "Emerald Green Forest" },
-
-            { className: "purple-glow", label: "Obsidian Royal Purple" },
-
-            { className: "pink-glow", label: "Soft Magenta Pink" },
-
-            { className: "teal-glow", label: "Teal Mint Cyan" },
-
-            { className: "red-glow2", label: "Cyber Punk Fire Red" },
-
-            { className: "yellow-glow", label: "Gold Amber Yellow" },
-
-            { className: "cyan-glow", label: "Sky Electric Cyan" },
-
-            { className: "indigo-glow", label: "Premium Royal Indigo" },
-
-            { className: "lime-glow", label: "Neon Citrus Lime" },
-
-            { className: "fuchsia-glow", label: "Cyber Fuchsia Purple" },
-
-            { className: "rose-glow", label: "Deep Velvet Rose" }
-
-        ];
-
-
-
-        let selectedMainFolderIconStr = "fas fa-folder";
-
-        let selectedSubPortalIconStr = "fas fa-folder-open";
-
-        let selectedSideLinkIconStr = "fas fa-link";
-
-        let selectedWorkspaceCardIconStr = "fas fa-link";
-
-
-
-        let selectedMainFolderColorToken = "orange-glow2";
-
-        let selectedSubPortalColorToken = "blue-glow2";
-
-        let selectedSideLinkColorToken = "emerald-glow2";
-
-        let selectedWorkspaceCardColorToken = "orange-glow2";
-
-
-
-        function togglePopoverDrawerMenu(popoverId) {
-
-            const el = document.getElementById(popoverId);
-
-            const isVisible = el.classList.contains('popover-visible');
-
-            document.querySelectorAll('.color-dropdown-popover, .icon-dropdown-popover').forEach(p => p.classList.remove('popover-visible'));
-
-            if(!isVisible) el.classList.add('popover-visible');
-
+    // 2. INITIALIZATION
+window.onload = async () => {
+    try {
+        const docRef = db.collection("data").doc("matrix_config");
+        const doc = await docRef.get();
+        if (doc.exists) {
+            appData = doc.data();
+            console.log("Data loaded successfully:", appData);
         }
+    } catch (e) {
+        console.error("Firebase connection error:", e);
+    }
+    
+    // अब सभी फंक्शन्स को क्रम में कॉल करें
+    runDatabaseStateSynchronization();
+    
+    // ये दो फंक्शन UI एलिमेंट्स (Pickers) को पहले ही लोड कर लेंगे
+    compileVisualUISelectionPickers();
+    compileColorSelectionPickers();
+};
 
+function runDatabaseStateSynchronization() {
+    console.log("Syncing Data...");
 
+    // 1. मेन फोल्डर ड्रॉपडाउन अपडेट करें
+    const folderSelectors = [
+        document.getElementById('subPortalParentSelect'),
+        document.getElementById('sideLinkParentSelect'),
+        document.getElementById('cardMainFolderContextSelector')
+    ];
 
-        document.addEventListener('click', function(e) {
-
-            if(!e.target.closest('.premium-color-trigger-field') && !e.target.closest('.color-dropdown-popover') && !e.target.closest('.icon-dropdown-popover')) {
-
-                document.querySelectorAll('.color-dropdown-popover, .icon-dropdown-popover').forEach(p => p.classList.remove('popover-visible'));
-
+    if (appData.folders && appData.folders.length > 0) {
+        const folderOptions = appData.folders.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
+        folderSelectors.forEach(select => {
+            if (select) {
+                const currentVal = select.value;
+                select.innerHTML = '<option value="">Select Folder</option>' + folderOptions;
+                select.value = currentVal;
             }
-
         });
-
-
-
-        function compileVisualUISelectionPickers() {
-
-            const mainIconGrid = document.getElementById('mainFolderIconPopover');
-
-            const subIconGrid = document.getElementById('subPortalIconPopover');
-
-            const sideIconGrid = document.getElementById('sideLinkIconPopover');
-
-            const cardIconGrid = document.getElementById('cardIconPopover');
-
-
-
-            mainIconGrid.innerHTML = ''; subIconGrid.innerHTML = ''; sideIconGrid.innerHTML = ''; cardIconGrid.innerHTML = '';
-
-
-
-            premiumIconsPool.forEach(icon => {
-
-                const d1 = document.createElement('div'); d1.className = "icon-grid-item"; d1.innerHTML = `<i class="${icon}"></i>`;
-
-                d1.onclick = () => { selectedMainFolderIconStr = icon; document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; mainIconGrid.classList.remove('popover-visible'); };
-
-                mainIconGrid.appendChild(d1);
-
-
-
-                const d2 = document.createElement('div'); d2.className = "icon-grid-item"; d2.innerHTML = `<i class="${icon}"></i>`;
-
-                d2.onclick = () => { selectedSubPortalIconStr = icon; document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; subIconGrid.classList.remove('popover-visible'); };
-
-                subIconGrid.appendChild(d2);
-
-
-
-                const dSide = document.createElement('div'); dSide.className = "icon-grid-item"; dSide.innerHTML = `<i class="${icon}"></i>`;
-
-                dSide.onclick = () => { selectedSideLinkIconStr = icon; document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; sideIconGrid.classList.remove('popover-visible'); };
-
-                sideIconGrid.appendChild(dSide);
-
-
-
-                const d3 = document.createElement('div'); d3.className = "icon-grid-item"; d3.innerHTML = `<i class="${icon}"></i>`;
-
-                d3.onclick = () => { selectedWorkspaceCardIconStr = icon; document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="${icon}"></i> Selected: ${icon}`; cardIconGrid.classList.remove('popover-visible'); };
-
-                cardIconGrid.appendChild(d3);
-
-            });
-
-
-
-            const mainColorPopover = document.getElementById('mainFolderColorPopover');
-
-            const subColorPopover = document.getElementById('subPortalColorPopover');
-
-            const sideColorPopover = document.getElementById('sideLinkColorPopover');
-
-            const cardColorPopover = document.getElementById('workspaceCardColorPopover');
-
-            mainColorPopover.innerHTML = ''; subColorPopover.innerHTML = ''; sideColorPopover.innerHTML = ''; cardColorPopover.innerHTML = '';
-
-
-
-            premiumNeonColorsPool.forEach(color => {
-
-                const r1 = document.createElement('div'); r1.className = "color-chip-row";
-
-                r1.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
-
-                r1.onclick = () => { selectedMainFolderColorToken = color.className; document.getElementById('mainFolderColorTriggerLabel').innerText = color.label; mainColorPopover.classList.remove('popover-visible'); };
-
-                mainColorPopover.appendChild(r1);
-
-
-
-                const rSub = document.createElement('div'); rSub.className = "color-chip-row";
-
-                rSub.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
-
-                rSub.onclick = () => { selectedSubPortalColorToken = color.className; document.getElementById('subPortalColorTriggerLabel').innerText = color.label; subColorPopover.classList.remove('popover-visible'); };
-
-                subColorPopover.appendChild(rSub);
-
-
-
-                const rSide = document.createElement('div'); rSide.className = "color-chip-row";
-
-                rSide.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
-
-                rSide.onclick = () => { selectedSideLinkColorToken = color.className; document.getElementById('sideLinkColorTriggerLabel').innerText = color.label; sideColorPopover.classList.remove('popover-visible'); };
-
-                sideColorPopover.appendChild(rSide);
-
-
-
-                const r2 = document.createElement('div'); r2.className = "color-chip-row";
-
-                r2.innerHTML = `<span class="circular-glow-dot glow-token-${color.className}"></span> <span>${color.label}</span>`;
-
-                r2.onclick = () => { selectedWorkspaceCardColorToken = color.className; document.getElementById('workspaceCardColorTriggerLabel').innerText = color.label; cardColorPopover.classList.remove('popover-visible'); };
-
-                cardColorPopover.appendChild(r2);
-
-            });
-
-        }
-
-
-
-        const baselineMainFolders = [
-
-            { name: "Sarkari Hub", icon: "fas fa-gavel", color: "orange-glow2" },
-
-            { name: "PDF Workspace", icon: "fas fa-file-pdf", color: "red-glow2" }
-
-        ];
-
-        const baselineSubPortals = [{ parent: "Sarkari Hub", name: "SSC Portal", icon: "fas fa-university", color: "blue-glow2" }];
-
-        const baselineSideLinks = [{ parent: "SSC Portal", label: "SSC Main Website", url: "https://ssc.gov.in/", icon: "fas fa-link", color: "emerald-glow2" }];
-
-        const baselineCards = [{ parentMain: "Sarkari Hub", parentSub: "SSC Portal", name: "SSC Official Portal", url: "https://ssc.gov.in/", icon: "fas fa-university", glow: "orange-glow2", desc: "Staff Selection Commission ke saare forms online login track." }];
-
-
-
-        if(!localStorage.getItem('matrix_secure_hash')) localStorage.setItem('matrix_secure_hash', "81dc9bdb52d04dc20036dbd8313ed055");
-
-        if(!localStorage.getItem('matrix_folders')) localStorage.setItem('matrix_folders', JSON.stringify(baselineMainFolders));
-
-        if(!localStorage.getItem('matrix_subs')) localStorage.setItem('matrix_subs', JSON.stringify(baselineSubPortals));
-
-        if(!localStorage.getItem('matrix_sideLinks')) localStorage.setItem('matrix_sideLinks', JSON.stringify(baselineSideLinks));
-
-        if(!localStorage.getItem('matrix_cards')) localStorage.setItem('matrix_cards', JSON.stringify(baselineCards));
-
-        if(!localStorage.getItem('matrix_notice')) localStorage.setItem('matrix_notice', "Search bar is connected globally.");
-
-
-
-        function hashSimulateEngine(str) {
-
-            let h1 = 1779033703, h2 = 304734477;
-
-            for (let i = 0; i < str.length; i++) {
-
-                h1 = Math.imul(h1 ^ str.charCodeAt(i), 3432918353); h1 = h1 << 13 | h1 >>> 19;
-
-                h2 = Math.imul(h2 ^ str.charCodeAt(i), 2246822507);
-
-            }
-
-            return (h1 >>> 0).toString(16) + (h2 >>> 0).toString(16);
-
-        }
-
-
-
-        function focusSecurityPinBufferField() { document.getElementById('hiddenPinField').focus(); }
-
-
-
-        function compilePinDisplayLiveFeedback(pinValue) {
-
-            pinValue = pinValue.replace(/[^0-9]/g, '');
-
-            document.getElementById('hiddenPinField').value = pinValue;
-
-
-
-            for(let i = 0; i < 4; i++) {
-
-                const cell = document.getElementById(`cell-${i}`);
-
-                if(i < pinValue.length) { cell.classList.add('cell-filled'); cell.classList.remove('cell-focused'); }
-
-                else if(i === pinValue.length) { cell.classList.remove('cell-filled'); cell.classList.add('cell-focused'); }
-
-                else { cell.classList.remove('cell-filled'); cell.classList.remove('cell-focused'); }
-
-            }
-
-            if(pinValue.length === 4) { checkPinLiveAuthentication(pinValue); }
-
-        }
-
-
-
-        function checkPinLiveAuthentication(inputVal) {
-
-            const targetHash = localStorage.getItem('matrix_secure_hash');
-
-            if((targetHash === "81dc9bdb52d04dc20036dbd8313ed055" && inputVal === "1234") || hashSimulateEngine(inputVal) === targetHash) {
-
-                document.getElementById('securityGateOverlay').style.opacity = "0";
-
-                setTimeout(() => document.getElementById('securityGateOverlay').style.display = "none", 400);
-
-            } else {
-
-                const terminalCard = document.getElementById('pinTerminalCard');
-
-                terminalCard.classList.add('terminal-shake-active');
-
-                document.getElementById('pinErrorLogMsg').style.display = "block";
-
-                setTimeout(() => {
-
-                    terminalCard.classList.remove('terminal-shake-active');
-
-                    document.getElementById('hiddenPinField').value = '';
-
-                    compilePinDisplayLiveFeedback(''); focusSecurityPinBufferField();
-
-                }, 500);
-
-            }
-
-        }
-
-
-
-       async function changeMasterSecurityPin() {
-    const pin = document.getElementById('newSettingsPinField').value.trim();
-    
-    if(pin.length !== 4 || isNaN(pin)) {
-        return alert("PIN must be 4 numeric digits!");
     }
 
-    // 1. New Hash calculate karein
-    const newHash = hashSimulateEngine(pin);
-    
-    // 2. LocalStorage Update
-    localStorage.setItem('matrix_secure_hash', newHash);
-
-    // 3. Firebase Sync
-    try {
-        await db.collection("data").doc("matrix_config").set({
-            secure_hash: newHash // Firebase mein secure_hash update ho jayega
-        }, { merge: true });
-        
-        document.getElementById('newSettingsPinField').value = ''; 
-        alert("Access PIN successfully Update!");
-    } catch (e) {
-        console.error("Cloud Error: ", e);
-        alert("PIN update nahi ho paya, internet check karein.");
-    }
-}
-
-
-
-        function exportFullSystemBackupData() {
-
-            const backupObj = { f: localStorage.getItem('matrix_folders'), s: localStorage.getItem('matrix_subs'), l: localStorage.getItem('matrix_sideLinks'), c: localStorage.getItem('matrix_cards'), n: localStorage.getItem('matrix_notice') };
-
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj));
-
-            const downloadAnchor = document.createElement('a'); downloadAnchor.setAttribute("href", dataStr); downloadAnchor.setAttribute("download", "Apna_Agency_Backup.json");
-
-            document.body.appendChild(downloadAnchor); downloadAnchor.click(); downloadAnchor.remove();
-
+    // 2. साइड-लिंक सब-पोर्टल को सुरक्षित तरीके से इनिशियलाइज़ करें
+    const sideLinkSubSelect = document.getElementById('sideLinkSubSelect');
+    if (sideLinkSubSelect) {
+        // यदि फंक्शन मौजूद है, तो उसे चलाएं
+        if (typeof updateSubDropdownForSideLinks === 'function') {
+            updateSubDropdownForSideLinks();
         }
-
-
-
-        function switchActiveFormPanel(panelId, tabButtonElement) {
-
-            document.querySelectorAll('.workspace-panel-box').forEach(p => p.classList.remove('panel-active'));
-
-            document.querySelectorAll('.mode-tab-btn').forEach(t => t.classList.remove('active'));
-
-            document.getElementById(panelId).classList.add('panel-active');
-
-            tabButtonElement.classList.add('active');
-
-        }
-
-
-
-        function runDatabaseStateSynchronization() {
-
-            compileVisualUISelectionPickers();
-
-            setTimeout(focusSecurityPinBufferField, 300);
-
-            compilePinDisplayLiveFeedback('');
-
-
-
-            const folders = JSON.parse(localStorage.getItem('matrix_folders')) || [];
-
-            const subs = JSON.parse(localStorage.getItem('matrix_subs')) || [];
-
-            document.getElementById('globalNoticeBoardFeedInput').value = localStorage.getItem('matrix_notice') || '';
-
-
-
-            const layoutMainSel = document.getElementById('subPortalParentSelect');
-
-            const cardMainCtxSel = document.getElementById('cardMainFolderContextSelector');
-
-            layoutMainSel.innerHTML = ''; cardMainCtxSel.innerHTML = '';
-
-
-
-            folders.forEach(f => {
-
-                layoutMainSel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
-
-                cardMainCtxSel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
-
-            });
-
-
-
-            const sideLinkSubSel = document.getElementById('sideLinkParentSelect');
-
-            sideLinkSubSel.innerHTML = '';
-
-            subs.forEach(s => { sideLinkSubSel.innerHTML += `<option value="${s.name}">${s.parent} ➔ ${s.name}</option>`; });
-
-
-
-            if(folders.length > 0) { filterCardSubPortalDropdownOptionsByParent(folders[0].name); }
-
-            renderDynamicManagementViewGrid();
-
-        }
-
-
-
-        function filterCardSubPortalDropdownOptionsByParent(mainName) {
-
-            const subs = JSON.parse(localStorage.getItem('matrix_subs')) || [];
-
-            const subDropdown = document.getElementById('cardSubPortalContextSelector');
-
-            subDropdown.innerHTML = ''; const filtered = subs.filter(s => s.parent === mainName);
-
-            if(filtered.length === 0) subDropdown.innerHTML = `<option value="">-- No Sub Portal found --</option>`;
-
-            else filtered.forEach(s => subDropdown.innerHTML += `<option value="${s.name}">${s.name}</option>`);
-
-        }
-
-
-
-     async function executeNoticeBoardUpdateFeed() {
-    const noticeText = document.getElementById('globalNoticeBoardFeedInput').value.trim();
-    
-    // 1. LocalStorage Update
-    localStorage.setItem('matrix_notice', noticeText);
-    
-    // 2. Firebase Sync
-    try {
-        await db.collection("data").doc("matrix_config").set({
-            notice: noticeText
-        }, { merge: true });
-        
-        alert("System Notice successfully Cloud par update ho gaya!");
-    } catch (e) {
-        console.error("Cloud Sync Error: ", e);
-        alert("Cloud par update nahi ho paya, please check internet.");
-    }
-}
-
-
-        async function executeMainFolderAddition() {
-    const name = document.getElementById('mainFolderNameInput').value.trim();
-    const icon = selectedMainFolderIconStr; 
-    const color = selectedMainFolderColorToken;
-    const editIdx = parseInt(document.getElementById('mainFolderEditIndex').value);
-    
-    if(!name) return alert("Folder name required!");
-
-    let list = JSON.parse(localStorage.getItem('matrix_folders')) || [];
-    
-    if(editIdx > -1) {
-        list[editIdx] = { name, icon, color };
-    } else {
-        list.push({ name, icon, color });
     }
 
-    // 1. LocalStorage Update
-    localStorage.setItem('matrix_folders', JSON.stringify(list));
-
-    // 2. Firebase Sync
-    try {
-        await db.collection("data").doc("matrix_config").set({
-            folders: list // 'folders' array sync ho jayega
-        }, { merge: true });
-        alert("Main Folder Cloud par ban gaya!");
-    } catch (e) {
-        console.error("Cloud Error: ", e);
-        alert("Sync failed: " + e.message);
+    // 3. कार्ड्स वाले सब-पोर्टल ड्रॉपडाउन (सिर्फ 'cards' के लिए सभी उपलब्ध सब-पोर्टल दिखाएं)
+    const cardSubSelect = document.getElementById('cardSubPortalContextSelector');
+    if (cardSubSelect && appData.subs) {
+        const currentVal = cardSubSelect.value;
+        const subOptions = appData.subs.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+        cardSubSelect.innerHTML = '<option value="">Select Sub-Portal</option>' + subOptions;
+        cardSubSelect.value = currentVal;
     }
 
-    resetMainFolderForm(); 
-    runDatabaseStateSynchronization();
-}
-
-
-
-        function triggerMainFolderEdit(idx) {
-
-            const list = JSON.parse(localStorage.getItem('matrix_folders'));
-
-            const item = list[idx]; document.getElementById('mainFolderEditIndex').value = idx;
-
-            document.getElementById('mainFolderNameInput').value = item.name;
-
-            selectedMainFolderColorToken = item.color || 'orange-glow2'; selectedMainFolderIconStr = item.icon;
-
-            
-
-            document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected: ${item.icon}`;
-
-            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedMainFolderColorToken);
-
-            if(matchColorObj) document.getElementById('mainFolderColorTriggerLabel').innerText = matchColorObj.label;
-
-
-
-            document.getElementById('mainFolderFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Main Folder Category`;
-
-            document.getElementById('mainFolderSubmitBtn').className = "btn-action-trigger btn-update-mode";
-
-            document.getElementById('mainFolderSubmitBtn').innerHTML = "Update Folder";
-
-            document.getElementById('mainFolderCancelBtn').style.display = "inline-flex";
-
-        }
-
-
-
-        function resetMainFolderForm() {
-
-            document.getElementById('mainFolderEditIndex').value = "-1";
-
-            document.getElementById('mainFolderNameInput').value = '';
-
-            selectedMainFolderIconStr = "fas fa-folder"; selectedMainFolderColorToken = "orange-glow2";
-
-            document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="fas fa-folder"></i> Select Custom Visual Icon...`;
-
-            document.getElementById('mainFolderColorTriggerLabel').innerText = "Select Color...";
-
-            document.getElementById('mainFolderFormTitle').innerHTML = `<i class="fas fa-folder"></i> Main Category Folder Banayein`;
-
-            document.getElementById('mainFolderSubmitBtn').className = "btn-action-trigger";
-
-            document.getElementById('mainFolderSubmitBtn').innerHTML = `<i class="fas fa-plus"></i> Live Create Main Folder`;
-
-            document.getElementById('mainFolderCancelBtn').style.display = "none";
-
-        }
-
-
-async function executeSubPortalAddition() {
-    const parent = document.getElementById('subPortalParentSelect').value;
-    const name = document.getElementById('subPortalNameInput').value.trim();
-    const icon = selectedSubPortalIconStr; 
-    const color = selectedSubPortalColorToken;
-    const editIdx = parseInt(document.getElementById('subPortalEditIndex').value);
-    
-    if(!name) return alert("Sub portal name required!");
-
-    let list = JSON.parse(localStorage.getItem('matrix_subs')) || [];
-    
-    if(editIdx > -1) {
-        list[editIdx] = { parent, name, icon, color };
-    } else {
-        list.push({ parent, name, icon, color });
-    }
-
-    localStorage.setItem('matrix_subs', JSON.stringify(list));
-
-    // Firebase Sync
-    try {
-        await db.collection("data").doc("matrix_config").set({
-            subs: list 
-        }, { merge: true });
-        
-        alert("Sub-Portal Cloud par save ho gaya!");
-        resetSubPortalForm(); 
-        runDatabaseStateSynchronization();
-    } catch (e) {
-        console.error("Cloud Error: ", e);
-        alert("Sync failed: " + e.message);
-    }
-}
-
-
-        function triggerSubPortalEdit(idx) {
-
-            const list = JSON.parse(localStorage.getItem('matrix_subs'));
-
-            const item = list[idx]; 
-
-            document.getElementById('subPortalEditIndex').value = idx;
-
-            document.getElementById('subPortalParentSelect').value = item.parent;
-
-            document.getElementById('subPortalNameInput').value = item.name; 
-
-            selectedSubPortalIconStr = item.icon || 'fas fa-folder-open'; 
-
-            selectedSubPortalColorToken = item.color || 'blue-glow2';
-
-            
-
-            document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="${selectedSubPortalIconStr}"></i> Selected: ${selectedSubPortalIconStr}`;
-
-            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedSubPortalColorToken);
-
-            if(matchColorObj) document.getElementById('subPortalColorTriggerLabel').innerText = matchColorObj.label;
-
-
-
-            document.getElementById('subPortalFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Sub-Portal Details`;
-
-            const submitBtn = document.getElementById('subPortalSubmitBtn');
-
-            submitBtn.className = "btn-action-trigger btn-update-mode";
-
-            submitBtn.innerHTML = "Update Sub-Portal";
-
-            document.getElementById('subPortalCancelBtn').style.display = "inline-flex";
-
-            document.getElementById('subPortalFormTitle').scrollIntoView({ behavior: 'smooth' });
-
-        }
-
-
-
-        function resetSubPortalForm() {
-
-            document.getElementById('subPortalEditIndex').value = "-1";
-
-            document.getElementById('subPortalNameInput').value = ''; selectedSubPortalIconStr = "fas fa-folder-open";
-
-            selectedSubPortalColorToken = "blue-glow2";
-
-            document.getElementById('subPortalColorTriggerLabel').innerText = "Select Sub-Portal Color Theme...";
-
-            document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="fas fa-folder-open"></i> Select Custom Visual Icon...`;
-
-            document.getElementById('subPortalFormTitle').innerHTML = `<i class="fas fa-folder-open"></i> Sub-Portal (Inner Dropdown) Banayein`;
-
-            document.getElementById('subPortalSubmitBtn').className = "btn-action-trigger";
-
-            document.getElementById('subPortalSubmitBtn').innerHTML = `<i class="fas fa-level-down-alt"></i> Create Sub-Portal`;
-
-            document.getElementById('subPortalCancelBtn').style.display = "none";
-
-        }
-
-
-
-        async function executeSideLinkAddition() {
-    const parent = document.getElementById('sideLinkParentSelect').value;
-    const label = document.getElementById('sideLinkLabelInput').value.trim();
-    const url = document.getElementById('sideLinkUrlInput').value.trim();
-    const icon = selectedSideLinkIconStr; 
-    const color = selectedSideLinkColorToken;
-    const editIdx = parseInt(document.getElementById('sideLinkEditIndex').value);
-    
-    if(!label || url === "https://" || url === "") return alert("Parameters missing!");
-
-    let list = JSON.parse(localStorage.getItem('matrix_sideLinks')) || [];
-    
-    if(editIdx > -1) {
-        list[editIdx] = { parent, label, url, icon, color };
-    } else {
-        list.push({ parent, label, url, icon, color });
-    }
-
-    // 1. LocalStorage Update
-    localStorage.setItem('matrix_sideLinks', JSON.stringify(list));
-
-    // 2. Firebase Sync
-    try {
-        await db.collection("data").doc("matrix_config").set({
-            sideLinks: list // Firebase mein 'sideLinks' array update ho jayegi
-        }, { merge: true });
-        
-        alert("Deep-Link Cloud par save ho gaya!");
-        resetSideLinkForm(); 
-        runDatabaseStateSynchronization();
-    } catch (e) {
-        console.error("Cloud Error: ", e);
-        alert("Sync failed: " + e.message);
-    }
-}
-
-
-
-        function triggerSideLinkEdit(idx) {
-
-            const list = JSON.parse(localStorage.getItem('matrix_sideLinks'));
-
-            const item = list[idx]; 
-
-            document.getElementById('sideLinkEditIndex').value = idx;
-
-            document.getElementById('sideLinkParentSelect').value = item.parent;
-
-            document.getElementById('sideLinkLabelInput').value = item.label;
-
-            document.getElementById('sideLinkUrlInput').value = item.url;
-
-            selectedSideLinkIconStr = item.icon || 'fas fa-link';
-
-            selectedSideLinkColorToken = item.color || 'emerald-glow2';
-
-
-
-            document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="${selectedSideLinkIconStr}"></i> Selected: ${selectedSideLinkIconStr}`;
-
-            const matchColorObj = premiumNeonColorsPool.find(c => c.className === selectedSideLinkColorToken);
-
-            if(matchColorObj) document.getElementById('sideLinkColorTriggerLabel').innerText = matchColorObj.label;
-
-
-
-            document.getElementById('sideLinkFormTitle').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Nested Anchor Link Details`;
-
-            const submitBtn = document.getElementById('sideLinkSubmitBtn');
-
-            submitBtn.className = "btn-action-trigger btn-update-mode";
-
-            submitBtn.innerHTML = "Update Side-Link";
-
-            document.getElementById('sideLinkCancelBtn').style.display = "inline-flex";
-
-            document.getElementById('sideLinkFormTitle').scrollIntoView({ behavior: 'smooth' });
-
-        }
-
-
-
-        function resetSideLinkForm() {
-
-            document.getElementById('sideLinkEditIndex').value = "-1";
-
-            document.getElementById('sideLinkLabelInput').value = ''; document.getElementById('sideLinkUrlInput').value = 'https://';
-
-            selectedSideLinkIconStr = "fas fa-link"; selectedSideLinkColorToken = "emerald-glow2";
-
-            document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="fas fa-link"></i> Select Custom Visual Icon...`;
-
-            document.getElementById('sideLinkColorTriggerLabel').innerText = "Select Side-Link Color Theme...";
-
-            document.getElementById('sideLinkFormTitle').innerHTML = `<i class="fas fa-link"></i> Deep Side-Link Anchor Jodein`;
-
-            document.getElementById('sideLinkSubmitBtn').className = "btn-action-trigger";
-
-            document.getElementById('sideLinkSubmitBtn').innerHTML = `<i class="fas fa-link"></i> Inject Deep Side-Link`;
-
-            document.getElementById('sideLinkCancelBtn').style.display = "none";
-
-        }
-
-
-
-       
-        async function processCardPanelFormSubmission() {
-    const parentMain = document.getElementById('cardMainFolderContextSelector').value;
-    const parentSub = document.getElementById('cardSubPortalContextSelector').value;
-    const name = document.getElementById('cardTitleHeaderInput').value.trim();
-    const url = document.getElementById('cardUrlPathInput').value.trim();
-    const icon = selectedWorkspaceCardIconStr; 
-    const glow = selectedWorkspaceCardColorToken;
-    const desc = document.getElementById('cardDescriptionTextSummaryInput').value.trim();
-    const editIdx = parseInt(document.getElementById('cardEditModeTrackerId').value);
-
-    if(!parentSub) return alert("Select target subcategory!");
-    if(!name || !desc) return alert("Fill fields appropriately!");
-
-    let list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
-    
-    if(editIdx > -1) {
-        list[editIdx] = { parentMain, parentSub, name, url, icon, glow, desc };
-    } else {
-        list.push({ parentMain, parentSub, name, url, icon, glow, desc });
-    }
-
-    // 1. Pehle LocalStorage update karein
-    localStorage.setItem('matrix_cards', JSON.stringify(list));
-
-    // 2. Firebase Check & Sync
-    try {
-        // Direct 'db' use karein
-        await db.collection("data").doc("matrix_config").set({
-            cards: list 
-        }, { merge: true });
-        
-        alert("Success!");
-    } catch (e) {
-        console.error("Cloud Error: ", e);
-        alert("Cloud sync failed: " + e.message);
-    }
-
-    clearCardFormInputsToInsertState(); 
-    runDatabaseStateSynchronization();
-}
-        function setupCardEditWorkflowMode(idx) {
-
-            const list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
-
-            const c = list[idx]; document.getElementById('cardEditModeTrackerId').value = idx;
-
-            document.getElementById('cardMainFolderContextSelector').value = c.parentMain;
-
-            filterCardSubPortalDropdownOptionsByParent(c.parentMain);
-
-            document.getElementById('cardSubPortalContextSelector').value = c.parentSub;
-
-            document.getElementById('cardTitleHeaderInput').value = c.name;
-
-            document.getElementById('cardUrlPathInput').value = c.url;
-
-            selectedWorkspaceCardIconStr = c.icon; selectedWorkspaceCardColorToken = c.glow || 'orange-glow2';
-
-            document.getElementById('cardDescriptionTextSummaryInput').value = c.desc;
-
-
-
-            document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="${c.icon}"></i> Selected: ${c.icon}`;
-
-            const matchColorObj = premiumNeonColorsPool.find(col => col.className === selectedWorkspaceCardColorToken);
-
-            if(matchColorObj) document.getElementById('workspaceCardColorTriggerLabel').innerText = matchColorObj.label;
-
-
-
-            document.getElementById('cardFormTitleText').innerHTML = `<i class="fas fa-edit" style="color:#10b981;"></i> Edit Active Card Content`;
-
-            const sBtn = document.getElementById('cardFormSubmitTriggerBtn');
-
-            sBtn.className = "btn-prime btn-update-mode"; document.getElementById('cardFormCancelTriggerBtn').style.display = "inline-flex";
-
-            document.getElementById('cardFormTitleText').scrollIntoView({ behavior: 'smooth' });
-
-        }
-
-
-
-        function clearCardFormInputsToInsertState() {
-
-            document.getElementById('cardEditModeTrackerId').value = "-1";
-
-            document.getElementById('cardTitleHeaderInput').value = ''; document.getElementById('cardUrlPathInput').value = 'https://';
-
-            selectedWorkspaceCardIconStr = "fas fa-link"; selectedWorkspaceCardColorToken = "orange-glow2";
-
-            document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="fas fa-link"></i> Select Custom Visual Icon...`;
-
-            document.getElementById('workspaceCardColorTriggerLabel').innerText = "Select Glow Profile Theme...";
-
-            document.getElementById('cardFormCancelTriggerBtn').style.display = "none";
-
-        }
-
-
-
-        function switchManagementDataGridTab(tab, btn) {
-
-            dataViewActiveTab = tab; document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
-
-            renderDynamicManagementViewGrid();
-
-        }
-
-
-
-      async function moveArrayItemIndexPositionTrack(keyName, direction, idx) {
-    let list = JSON.parse(localStorage.getItem(keyName)) || [];
-    
-    // Position swap logic
-    if (direction === 'up' && idx > 0) {
-        let swapped = list[idx]; 
-        list[idx] = list[idx - 1]; 
-        list[idx - 1] = swapped;
-    } else if (direction === 'down' && idx < list.length - 1) {
-        let swapped = list[idx]; 
-        list[idx] = list[idx + 1]; 
-        list[idx + 1] = swapped;
-    } else {
-        return; // Agar upar ya neeche nahi ja sakta, toh return
-    }
-
-    // 1. LocalStorage update
-    localStorage.setItem(keyName, JSON.stringify(list));
-
-    // 2. Firebase Sync
-    try {
-        const fieldName = keyName.replace('matrix_', ''); // 'matrix_cards' -> 'cards'
-        const updateData = {};
-        updateData[fieldName] = list;
-        
-        await db.collection("data").doc("matrix_config").set(updateData, { merge: true });
-        
-        // UI Refresh
+    // 4. टेबल रेंडर करें (अगर फंक्शन मौजूद है)
+    if (typeof renderDynamicManagementViewGrid === 'function') {
         renderDynamicManagementViewGrid();
-    } catch (e) {
-        console.error("Sync Error: ", e);
-        alert("Sync fail ho gaya, internet check karein.");
     }
+
+    // 5. UI Pickers initialize करें
+    if (typeof compileVisualUISelectionPickers === 'function') compileVisualUISelectionPickers();
+    if (typeof compileColorSelectionPickers === 'function') compileColorSelectionPickers();
+
+    console.log("Sync Complete!");
+}
+
+
+function renderDynamicManagementViewGrid() {
+    const body = document.getElementById('renderTableRowsContentBody');
+    const head = document.getElementById('renderTableColumnsHead');
+    if (!body) return;
+    
+    body.innerHTML = ''; 
+    const tabMap = { 'cards': 'cards', 'sideLinks': 'sideLinks', 'subPortals': 'subs', 'mainFolders': 'folders' };
+    const key = tabMap[dataViewActiveTab];
+    const items = appData[key] || [];
+
+    // हेडर अपडेट करें
+    if (head) {
+        head.innerHTML = `<tr>
+            <th style="width: 60px;">Icon</th>
+            <th>Name</th>
+            <th>Main Folder</th>
+            <th>Sub-Portal</th>
+            <th style="text-align: right;">Actions</th>
+        </tr>`;
+    }
+
+    if (items.length === 0) {
+        body.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px;">No data found in ${dataViewActiveTab}</td></tr>`;
+        return;
+    }
+
+    items.forEach((item, idx) => {
+        const displayName = item.label || item.name || item.title || "Unnamed";
+        const iconClass = item.icon || "fas fa-link";
+        const colorVal = item.color || "#6366f1";
+        
+        // फिक्स्ड डेटा मैपिंग:
+        // Main Folder हमेशा 'folder' या 'parent' से आएगा
+        const mainFolder = item.folder || item.parent || "-";
+        
+        // Sub-Portal हमेशा 'sub' से आएगा (चाहे वो Card हो या Side-Link)
+        const subPortal = item.sub || "-"; 
+
+        body.innerHTML += `
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+            <td style="padding: 15px;">
+                <div style="background:${colorVal}; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:white;">
+                    <i class="${iconClass}"></i>
+                </div>
+            </td>
+            <td><strong>${displayName}</strong></td>
+            <td><span class="badge">${mainFolder}</span></td>
+            <td><span class="badge">${subPortal}</span></td>
+            <td style="text-align: right; padding-right: 15px;">
+                <div class="action-container-box">
+                    <button class="row-btn row-btn-sort" onclick="moveItem('${key}', 'up', ${idx})"><i class="fas fa-chevron-up"></i></button>
+                    <button class="row-btn row-btn-sort" onclick="moveItem('${key}', 'down', ${idx})"><i class="fas fa-chevron-down"></i></button>
+                    <button class="row-btn row-btn-edit" onclick="setupEditMode('${key}', ${idx})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="row-btn row-btn-delete" onclick="purgeEntry('${key}', ${idx})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </td>
+        </tr>`;
+    });
+}
+    // 4. DATA SUBMISSION LOGIC (FIXED)
+ // उदाहरण: executeMainFolderAddition के लिए
+async function executeMainFolderAddition() {
+    // 1. Validation check (Sirf 'mainFolderNameInput' check karega)
+    // Agar user ne edit mode mein bhi naam delete kar diya, toh yeh error dikha dega
+    if (!validateFormFields(['mainFolderNameInput'])) {
+        console.log("Validation Failed: Empty field detected.");
+        return; 
+    }
+
+    // 2. UI se values uthayein
+    const name = document.getElementById('mainFolderNameInput').value;
+    const editIndex = parseInt(document.getElementById('mainFolderEditIndex').value);
+    
+    // Icon aur Color safe extraction
+    const iconElem = document.querySelector('#mainFolderIconTriggerLabel i');
+    const colorElem = document.querySelector('#mainFolderColorTriggerLabel .circular-glow-dot');
+    
+    const icon = iconElem ? iconElem.className : "fas fa-folder";
+    const color = colorElem ? colorElem.style.backgroundColor : "#FF78AC";
+
+    // 3. Update ya Create Logic
+    if (editIndex !== -1) {
+        // --- UPDATE MODE ---
+        appData.folders[editIndex] = { name: name, icon: icon, color: color };
+        alert("Folder Updated!");
+        
+        // Buttons reset karein
+        document.getElementById('mainFolderSubmitBtn').innerHTML = '<i class="fas fa-folder-plus"></i> Create Folder';
+        document.getElementById('mainFolderEditIndex').value = "-1";
+        document.getElementById('mainFolderCancelBtn').style.display = "none";
+    } else {
+        // --- CREATE MODE ---
+        appData.folders.push({ name: name, icon: icon, color: color });
+        
+    }
+
+    // 4. Cleanup
+    document.getElementById('mainFolderNameInput').value = ""; 
+    document.getElementById('mainFolderIconTriggerLabel').innerHTML = '<i class="fas fa-folder"></i> Select Icon'; // Reset Icon UI
+    
+    await syncData('folders');
+}
+
+// --- SUB-PORTAL SUBMISSION ---
+async function executeSubPortalAddition() {
+    if (!validateFormFields(['subPortalParentSelect', 'subPortalNameInput'])) return;
+    const editIndex = parseInt(document.getElementById('subPortalEditIndex').value);
+    const icon = document.querySelector('#subPortalIconTriggerLabel i')?.className || "fas fa-folder-open";
+    const color = document.querySelector('#subPortalColorTriggerLabel .circular-glow-dot')?.style.backgroundColor || "#FF78AC";
+    
+    const data = { 
+        parent: document.getElementById('subPortalParentSelect').value,
+        name: document.getElementById('subPortalNameInput').value,
+        icon: icon, 
+        color: color 
+    };
+    if (!data.name) return alert("Name Required");
+
+    if (editIndex !== -1) {
+        appData.subs[editIndex] = data; 
+    } else {
+        appData.subs.push(data);
+    }
+    await syncData('subs');
+    resetSubPortalForm();
+}
+
+
+// --- CARD SUBMISSION ---
+async function processCardPanelFormSubmission() {
+    // 1. Zaroori fields ka Validation (Inputs)
+    const requiredFields = [
+        'cardMainFolderContextSelector', 
+        'cardSubPortalContextSelector', 
+        'cardTitleHeaderInput', 
+        'cardUrlPathInput'
+    ];
+
+    if (!validateFormFields(requiredFields)) return;
+
+    // 2. Icon aur Color Pickers ka Validation (Custom Pickers)
+    // Agar icon ya theme nahi chuna, toh error dikhaye
+    const pickerFields = ['workspaceCardIconTriggerLabel', 'workspaceCardColorTriggerLabel'];
+    if (!validateFormFields(pickerFields, true)) return;
+
+    // 3. Data prepare karein
+    const editIndex = parseInt(document.getElementById('cardEditModeTrackerId').value);
+    const icon = document.querySelector('#workspaceCardIconTriggerLabel i')?.className || "fas fa-link";
+    const color = document.querySelector('#workspaceCardColorTriggerLabel .circular-glow-dot')?.style.backgroundColor || "#FF78AC";
+    
+    const data = {
+        folder: document.getElementById('cardMainFolderContextSelector').value,
+        sub: document.getElementById('cardSubPortalContextSelector').value,
+        title: document.getElementById('cardTitleHeaderInput').value,
+        url: document.getElementById('cardUrlPathInput').value,
+        desc: document.getElementById('cardDescriptionTextSummaryInput').value,
+        icon: icon, 
+        color: color
+    };
+
+    // 4. Firebase Sync ya Update
+    if (editIndex !== -1) {
+        appData.cards[editIndex] = data; 
+        alert("Card Updated Successfully!");
+    } else {
+        appData.cards.push(data);
+        alert("Card Created Successfully!");
+    }
+
+    await syncData('cards');
+    clearCardFormInputsToInsertState();
+}
+
+    // 5. CORE LOGIC
+ async function moveItem(key, direction, idx) {
+    let list = appData[key];
+    
+    if (direction === 'up' && idx > 0) {
+        // ऊपर वाले के साथ स्वैप करें
+        [list[idx], list[idx - 1]] = [list[idx - 1], list[idx]];
+    } else if (direction === 'down' && idx < list.length - 1) {
+        // नीचे वाले के साथ स्वैप करें
+        [list[idx], list[idx + 1]] = [list[idx + 1], list[idx]];
+    } else {
+        return; // कोई बदलाव नहीं
+    }
+    
+    await syncData(key); // फायरबेस पर सेव करें और टेबल रिफ्रेश करें
+}
+
+    async function purgeEntry(key, idx) {
+        appData[key].splice(idx, 1);
+        await syncData(key);
+    }
+
+    async function syncData(key) {
+        try {
+            await db.collection("data").doc("matrix_config").set(appData, { merge: true });
+            runDatabaseStateSynchronization();
+            alert("Success!");
+        } catch (e) { alert("Sync Error: " + e.message); }
+    }
+
+    // 6. UI HELPERS
+ function togglePopoverDrawerMenu(id) {
+    // पहले बाकी सभी पॉपओवर्स को बंद करें
+    document.querySelectorAll('.icon-dropdown-popover, .color-dropdown-popover').forEach(p => {
+        if(p.id !== id) p.classList.remove('popover-visible');
+    });
+    // फिर सिर्फ जिसे क्लिक किया उसे टॉगल करें
+    document.getElementById(id).classList.toggle('popover-visible');
+}
+
+
+    function switchManagementDataGridTab(tab, btn) {
+        dataViewActiveTab = tab;
+        document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderDynamicManagementViewGrid();
+    }
+function switchActiveFormPanel(panelId, btn) {
+    document.querySelectorAll('.workspace-panel-box').forEach(p => p.style.display = 'none');
+    document.getElementById(panelId).style.display = 'flex';
+    document.querySelectorAll('.mode-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+
+function compileVisualUISelectionPickers() {
+    document.querySelectorAll('.icon-dropdown-popover').forEach(popover => {
+        // सिर्फ एक बार पॉपुलेट करने के लिए चेक
+        if (popover.innerHTML.trim() !== '') return; 
+        
+        // यहाँ से आप अपनी मनपसंद आइकॉन लिस्ट बढ़ा सकते हैं
+        const icons = [
+    // Folder & Files
+    "fas fa-folder", "fas fa-folder-open", "fas fa-file", "fas fa-file-alt", "fas fa-file-pdf", 
+    "fas fa-file-word", "fas fa-file-excel", "fas fa-file-archive", "fas fa-copy", "fas fa-paste",
+    // Web & Internet
+    "fas fa-globe", "fas fa-wifi", "fas fa-link", "fas fa-external-link-alt", "fas fa-cloud", 
+    "fas fa-server", "fas fa-network-wired", "fas fa-rss", "fas fa-plug", "fas fa-bolt",
+    // Security & User
+    "fas fa-user", "fas fa-user-secret", "fas fa-lock", "fas fa-unlock", "fas fa-shield-alt", 
+    "fas fa-key", "fas fa-id-card", "fas fa-user-circle", "fas fa-users", "fas fa-user-tie",
+    // Settings & Tools
+    "fas fa-cog", "fas fa-cogs", "fas fa-sliders-h", "fas fa-wrench", "fas fa-hammer", 
+    "fas fa-tools", "fas fa-broom", "fas fa-paint-brush", "fas fa-database", "fas fa-terminal",
+    // Communication
+    "fas fa-envelope", "fas fa-envelope-open", "fas fa-comment", "fas fa-comments", "fas fa-phone", 
+    "fas fa-phone-alt", "fas fa-sms", "fas fa-headset", "fas fa-share-alt", "fas fa-paper-plane",
+    // Media & Design
+    "fas fa-image", "fas fa-video", "fas fa-music", "fas fa-palette", "fas fa-brush", 
+    "fas fa-camera", "fas fa-pen", "fas fa-edit", "fas fa-font", "fas fa-eye",
+    // Dashboard & Analysis
+    "fas fa-chart-line", "fas fa-chart-pie", "fas fa-chart-bar", "fas fa-tachometer-alt", "fas fa-tasks", 
+    "fas fa-list", "fas fa-clipboard-list", "fas fa-search", "fas fa-filter", "fas fa-sort",
+    // Navigation
+    "fas fa-arrow-up", "fas fa-arrow-down", "fas fa-arrow-left", "fas fa-arrow-right", "fas fa-home", 
+    "fas fa-th", "fas fa-th-large", "fas fa-bars", "fas fa-chevron-down", "fas fa-chevron-right",
+    // Finance & Action
+    "fas fa-wallet", "fas fa-money-bill", "fas fa-credit-card", "fas fa-shopping-cart", "fas fa-plus", 
+    "fas fa-minus", "fas fa-trash", "fas fa-save", "fas fa-sync", "fas fa-check-circle",
+    // Devices
+    "fas fa-desktop", "fas fa-laptop", "fas fa-mobile-alt", "fas fa-tablet-alt", "fas fa-keyboard", 
+    "fas fa-mouse", "fas fa-print", "fas fa-hdd", "fas fa-microchip", "fas fa-usb"
+];
+        icons.forEach(icon => {
+            const div = document.createElement('div');
+            div.className = "icon-grid-item";
+            div.innerHTML = `<i class="${icon}"></i>`;
+            div.onclick = (e) => { 
+                e.stopPropagation(); 
+                // पेरेंट का नाम अपडेट करें
+                const parent = popover.parentElement;
+                parent.querySelector('span').innerHTML = `<i class="${icon}"></i> Selected`; 
+                popover.classList.remove('popover-visible'); 
+            };
+            popover.appendChild(div);
+        });
+    });
+}
+  
+
+
+function compileColorSelectionPickers() {
+    // 40+ Premium Professional Colors
+    const colors = [
+        {name: "Crimson", hex: "#E74C3C"}, {name: "Ocean", hex: "#3498DB"}, {name: "Emerald", hex: "#2ECC71"},
+        {name: "Amethyst", hex: "#9B59B6"}, {name: "Midnight", hex: "#34495E"}, {name: "Sun", hex: "#F1C40F"},
+        {name: "Carrot", hex: "#E67E22"}, {name: "Concrete", hex: "#95A5A6"}, {name: "Peter River", hex: "#2980B9"},
+        {name: "Belize Hole", hex: "#2980B9"}, {name: "Wisteria", hex: "#8E44AD"}, {name: "Nephritis", hex: "#27AE60"},
+        {name: "Orange", hex: "#F39C12"}, {name: "Pumpkin", hex: "#D35400"}, {name: "Pomegranate", hex: "#C0392B"},
+        {name: "Silver", hex: "#BDC3C7"}, {name: "Asbestos", hex: "#7F8C8D"}, {name: "Dark Blue", hex: "#003366"},
+        {name: "Royal Purple", hex: "#4B0082"}, {name: "Forest Green", hex: "#228B22"}, {name: "Gold", hex: "#FFD700"},
+        {name: "Deep Pink", hex: "#FF1493"}, {name: "Teal", hex: "#008080"}, {name: "Indigo", hex: "#4B0082"},
+        {name: "Slate Blue", hex: "#6A5ACD"}, {name: "Tomato", hex: "#FF6347"}, {name: "Dodger Blue", hex: "#1E90FF"},
+        {name: "Lime Green", hex: "#32CD32"}, {name: "Medium Orchid", hex: "#BA55D3"}, {name: "Steel Blue", hex: "#4682B4"},
+        {name: "Fire Brick", hex: "#B22222"}, {name: "Dark Slate Gray", hex: "#2F4F4F"}, {name: "Peru", hex: "#CD853F"},
+        {name: "Cadet Blue", hex: "#5F9EA0"}, {name: "Medium Sea Green", hex: "#3CB371"}, {name: "Hot Pink", hex: "#FF69B4"},
+        {name: "Dark Olive Green", hex: "#556B2F"}, {name: "Sienna", hex: "#A0522D"}, {name: "Midnight Blue", hex: "#191970"}
+    ];
+
+    document.querySelectorAll('.color-dropdown-popover').forEach(popover => {
+        if (popover.innerHTML.trim() !== '') return;
+        
+        colors.forEach(c => {
+            const div = document.createElement('div');
+            div.className = "color-chip-row";
+            div.innerHTML = `<span class="circular-glow-dot" style="background-color: ${c.hex}"></span> ${c.name}`;
+            
+            div.onclick = (e) => { 
+                e.stopPropagation(); 
+                // पेरेंट का लेबल अपडेट करें
+                popover.parentElement.querySelector('span').innerHTML = 
+                    `<span class="circular-glow-dot" style="background-color:${c.hex}"></span> ${c.name}`;
+                popover.classList.remove('popover-visible'); 
+            };
+            popover.appendChild(div);
+        });
+    });
 }
 
 
 
-        function renderDynamicManagementViewGrid() {
 
-            const head = document.getElementById('renderTableColumnsHead');
-
-            const body = document.getElementById('renderTableRowsContentBody'); body.innerHTML = '';
-
-
-
-            if(dataViewActiveTab === 'cards') {
-
-                head.innerHTML = `<tr><th>Icon</th><th>Title</th><th>Main</th><th>Sub Portal</th><th style="text-align:right;">Actions</th></tr>`;
-
-                const list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
-
-                list.forEach((c, idx) => {
-
-                    body.innerHTML += `<tr>
-
-                        <td><div class="icon-thumbnail-preview glow-token-${c.glow}"><i class="${c.icon}"></i></div></td>
-
-                        <td><strong>${c.name}</strong></td><td>${c.parentMain}</td><td>${c.parentSub}</td>
-
-                        <td><div class="action-container-box">
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_cards', 'up', ${idx})">▲</button>
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_cards', 'down', ${idx})">▼</button>
-
-                            <button class="row-btn row-btn-edit" onclick="setupCardEditWorkflowMode(${idx})">Edit</button>
-
-                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_cards', ${idx})">Delete</button>
-
-                        </div></td>
-
-                    </tr>`;
-
-                });
-
-            } else if(dataViewActiveTab === 'sideLinks') {
-
-                head.innerHTML = `<tr><th>Icon</th><th>Label Link</th><th>Target URL</th><th>Sub Portal</th><th style="text-align:right;">Actions</th></tr>`;
-
-                const list = JSON.parse(localStorage.getItem('matrix_sideLinks')) || [];
-
-                list.forEach((l, idx) => {
-
-                    body.innerHTML += `<tr>
-
-                        <td><div class="icon-thumbnail-preview glow-token-${l.color ? l.color : 'default'}"><i class="${l.icon ? l.icon : 'fas fa-link'}"></i></div></td>
-
-                        <td><strong>${l.label}</strong></td><td>${l.url}</td><td>${l.parent}</td>
-
-                        <td><div class="action-container-box">
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_sideLinks', 'up', ${idx})">▲</button>
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_sideLinks', 'down', ${idx})">▼</button>
-
-                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerSideLinkEdit(${idx});">Edit</button>
-
-                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_sideLinks', ${idx})">Delete</button>
-
-                        </div></td>
-
-                    </tr>`;
-
-                });
-
-            } else if(dataViewActiveTab === 'subPortals') {
-
-                head.innerHTML = `<tr><th>Icon Preview</th><th>Sub Portal</th><th>Parent Main</th><th style="text-align:right;">Actions</th></tr>`;
-
-                const list = JSON.parse(localStorage.getItem('matrix_subs')) || [];
-
-                list.forEach((s, idx) => {
-
-                    body.innerHTML += `<tr>
-
-                        <td><div class="icon-thumbnail-preview glow-token-${s.color ? s.color : 'default'}"><i class="${s.icon ? s.icon : 'fas fa-folder-open'}"></i></div></td>
-
-                        <td><strong>${s.name}</strong></td><td>${s.parent}</td>
-
-                        <td><div class="action-container-box">
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_subs', 'up', ${idx})">▲</button>
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_subs', 'down', ${idx})">▼</button>
-
-                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerSubPortalEdit(${idx});">Edit</button>
-
-                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_subs', ${idx})">Delete</button>
-
-                        </div></td>
-
-                    </tr>`;
-
-                });
-
-            } else if(dataViewActiveTab === 'mainFolders') {
-
-                head.innerHTML = `<tr><th>Theme Icon</th><th>Folder Name</th><th style="text-align:right;">Actions</th></tr>`;
-
-                const list = JSON.parse(localStorage.getItem('matrix_folders')) || [];
-
-                list.forEach((f, idx) => {
-
-                    body.innerHTML += `<tr>
-
-                        <td><div class="icon-thumbnail-preview glow-token-${f.color ? f.color : 'default'}"><i class="${f.icon}"></i></div></td>
-
-                        <td><strong>${f.name}</strong></td>
-
-                        <td><div class="action-container-box">
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_folders', 'up', ${idx})">▲</button>
-
-                            <button class="row-btn row-btn-sort" onclick="moveArrayItemIndexPositionTrack('matrix_folders', 'down', ${idx})">▼</button>
-
-                            <button class="row-btn row-btn-edit" onclick="switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); triggerMainFolderEdit(${idx});">Edit</button>
-
-                            <button class="row-btn row-btn-delete" onclick="purgeEntry('matrix_folders', ${idx})">Delete</button>
-
-                        </div></td>
-
-                    </tr>`;
-
-                });
-
-            }
-
+async function executeNoticeBoardUpdateFeed(btn) {
+    // 1. Validation: Sirf notice board wali field check karein
+    if (!validateFormFields(['globalNoticeBoardFeedInput'])) {
+        console.log("Validation Failed: Notice field is required.");
+        return; 
+    }
+
+    const input = document.getElementById('globalNoticeBoardFeedInput');
+    
+    // 2. UI Loading State (Premium Feel)
+    const icon = btn.querySelector('i');
+    const originalClass = icon.className;
+    icon.className = 'fas fa-spinner fa-spin'; // fa-spin automatic animation ke liye
+    btn.disabled = true;
+
+    try {
+        // 3. Data Update
+        appData.notice = input.value;
+        await db.collection("data").doc("matrix_config").set(appData, { merge: true });
+        
+        // 4. Success UI Update
+        loadNotice();
+        alert("Notice Updated Successfully!");
+    } catch (error) {
+        console.error("Error updating notice:", error);
+        alert("Failed to update notice.");
+    } finally {
+        // 5. Reset UI State
+        icon.className = originalClass;
+        btn.disabled = false;
+    }
+}
+
+function validateInputs(fields) {
+    let isValid = true;
+    
+    for (let fieldId of fields) {
+        let element = document.getElementById(fieldId);
+        
+        // पुरानी एरर क्लास हटाएँ
+        element.classList.remove('input-error');
+        
+        if (!element || element.value.trim() === "") {
+            // एरर दिखाएँ
+            element.classList.add('input-error');
+            element.placeholder = "This field is required!";
+            element.focus();
+            isValid = false;
+        }
+    }
+    return isValid;
+}
+
+function setupEditMode(key, idx) {
+    const item = appData[key][idx];
+    console.log("Editing:", key, "at index:", idx);
+
+    // 1. MAIN FOLDERS
+    if (key === 'folders') {
+        switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout'));
+        document.getElementById('mainFolderEditIndex').value = idx;
+        document.getElementById('mainFolderNameInput').value = item.name;
+        
+        // आइकन और कलर अपडेट करें
+        document.getElementById('mainFolderIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected`;
+        document.getElementById('mainFolderColorTriggerLabel').innerHTML = `<span class="circular-glow-dot" style="background-color:${item.color}"></span> ${item.color}`;
+        
+        document.getElementById('mainFolderSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Folder';
+        document.getElementById('mainFolderCancelBtn').style.display = "inline-flex";
+        document.getElementById('mainFolderFormTitle').scrollIntoView({ behavior: 'smooth' });
+    } 
+    // 2. SUB-PORTALS
+    else if (key === 'subs') {
+        switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout'));
+        document.getElementById('subPortalEditIndex').value = idx;
+        document.getElementById('subPortalParentSelect').value = item.parent;
+        document.getElementById('subPortalNameInput').value = item.name;
+        
+        // आइकन और कलर अपडेट करें
+        document.getElementById('subPortalIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected`;
+        document.getElementById('subPortalColorTriggerLabel').innerHTML = `<span class="circular-glow-dot" style="background-color:${item.color}"></span> ${item.color}`;
+        
+        document.getElementById('subPortalSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Sub-Portal';
+        document.getElementById('subPortalCancelBtn').style.display = "inline-flex";
+        document.getElementById('subPortalFormTitle').scrollIntoView({ behavior: 'smooth' });
+    } 
+    // 3. SIDE-LINKS
+    else if (key === 'sideLinks') {
+        switchActiveFormPanel('panelLayout', document.getElementById('tabBtnLayout')); 
+        document.getElementById('sideLinkEditIndex').value = idx;
+        document.getElementById('sideLinkParentSelect').value = item.folder;
+        document.getElementById('sideLinkLabelInput').value = item.label;
+        document.getElementById('sideLinkUrlInput').value = item.url;
+        
+        // आइकन और कलर अपडेट करें
+        document.getElementById('sideLinkIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected`;
+        document.getElementById('sideLinkColorTriggerLabel').innerHTML = `<span class="circular-glow-dot" style="background-color:${item.color}"></span> ${item.color}`;
+        
+        document.getElementById('sideLinkSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Link';
+        document.getElementById('sideLinkCancelBtn').style.display = "inline-flex";
+        document.getElementById('sideLinkFormTitle').scrollIntoView({ behavior: 'smooth' });
+    } 
+    // 4. CARDS
+    else if (key === 'cards') {
+        switchActiveFormPanel('panelCards', document.getElementById('tabBtnCards'));
+        document.getElementById('cardEditModeTrackerId').value = idx;
+        document.getElementById('cardMainFolderContextSelector').value = item.folder;
+        document.getElementById('cardSubPortalContextSelector').value = item.sub;
+        document.getElementById('cardTitleHeaderInput').value = item.title;
+        document.getElementById('cardUrlPathInput').value = item.url;
+        document.getElementById('cardDescriptionTextSummaryInput').value = item.desc || "";
+        
+        // आइकन और कलर अपडेट करें
+        document.getElementById('workspaceCardIconTriggerLabel').innerHTML = `<i class="${item.icon}"></i> Selected`;
+        document.getElementById('workspaceCardColorTriggerLabel').innerHTML = `<span class="circular-glow-dot" style="background-color:${item.color}"></span> ${item.color}`;
+        
+        document.getElementById('cardFormSubmitTriggerBtn').innerHTML = '<i class="fas fa-save"></i> Update Card';
+        document.getElementById('cardFormCancelTriggerBtn').style.display = "inline-flex";
+        document.getElementById('cardFormTitleText').scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// बाहर क्लिक करने पर पॉपओवर बंद करने का फंक्शन
+document.addEventListener('click', function(event) {
+    const isClickInsidePopover = event.target.closest('.icon-dropdown-popover') || 
+                                 event.target.closest('.color-dropdown-popover') ||
+                                 event.target.closest('.premium-color-trigger-field');
+
+    if (!isClickInsidePopover) {
+        document.querySelectorAll('.icon-dropdown-popover, .color-dropdown-popover').forEach(p => {
+            p.classList.remove('popover-visible');
+        });
+    }
+});
+
+
+
+window.onload = async () => {
+    // 1. सबसे पहले आपका पुराना रेंडरिंग और डेटा लोडिंग का काम
+    try {
+        const doc = await db.collection("data").doc("matrix_config").get();
+        if (doc.exists) { 
+            appData = doc.data(); 
+        }
+    } catch (e) { 
+        console.error("Firebase load error:", e); 
+    }
+    
+    // ये आपके मुख्य कार्ड्स और साइडबार को रेंडर करते हैं
+    runDatabaseStateSynchronization(); 
+
+    // 2. अब आपका नया नोटिफिकेशन फंक्शन यहाँ कॉल करें
+    loadNotice();
+};
+
+// नोटिफिकेशन लोड करने वाला फंक्शन (इसे ऐसे ही रहने दें)
+async function loadNotice() {
+    // यहाँ अपनी नई ID का उपयोग करें जो हमने अभी तय की थी
+    const noticeBar = document.getElementById('premium-notice-display-zone');
+    const noticeSpan = document.getElementById('system-notice-text-content');
+    
+    if (!noticeBar || !noticeSpan) return; // अगर आईडी नहीं मिली तो रुकें
+
+    if (appData.notice && appData.notice.trim() !== "") {
+        noticeSpan.innerText = appData.notice;
+        noticeBar.style.display = 'flex'; 
+    }
+}
+// (Note: compile functions for icons/colors keep as they were, they work fine)
+
+
+
+
+function resetSubPortalForm() {
+    document.getElementById('subPortalNameInput').value = "";
+    document.getElementById('subPortalEditIndex').value = "-1";
+    document.getElementById('subPortalSubmitBtn').innerHTML = '<i class="fas fa-level-down-alt"></i> Create Sub-Portal';
+    document.getElementById('subPortalCancelBtn').style.display = "none";
+}
+
+function resetSideLinkForm() {
+    document.getElementById('sideLinkLabelInput').value = "";
+    document.getElementById('sideLinkUrlInput').value = "";
+    document.getElementById('sideLinkEditIndex').value = "-1";
+    document.getElementById('sideLinkSubmitBtn').innerHTML = '<i class="fas fa-link"></i> Add Deep-Link';
+    document.getElementById('sideLinkCancelBtn').style.display = "none";
+}
+
+function clearCardFormInputsToInsertState() {
+    document.getElementById('cardTitleHeaderInput').value = "";
+    document.getElementById('cardUrlPathInput').value = "";
+    document.getElementById('cardDescriptionTextSummaryInput').value = "";
+    document.getElementById('cardEditModeTrackerId').value = "-1";
+    document.getElementById('cardFormSubmitTriggerBtn').innerHTML = '<i class="fas fa-save"></i> Create Card';
+    document.getElementById('cardFormCancelTriggerBtn').style.display = "none";
+}
+
+
+async function executeSideLinkAddition() {
+    if (!validateFormFields(['sideLinkParentSelect', 'sideLinkSubSelect', 'sideLinkLabelInput', 'sideLinkUrlInput'])) return;
+    // 1. सुरक्षित तरीके से ID ढूंढें
+    const parentElem = document.getElementById('sideLinkParentSelect');
+    const subElem = document.getElementById('sideLinkSubSelect');
+    const labelElem = document.getElementById('sideLinkLabelInput');
+    const urlElem = document.getElementById('sideLinkUrlInput');
+    const editIndexElem = document.getElementById('sideLinkEditIndex');
+
+    // 2. अगर कोई भी एलिमेंट गायब है तो यहाँ अलर्ट देगा (इससे एरर का पता चल जाएगा)
+    if (!parentElem || !subElem || !labelElem || !urlElem || !editIndexElem) {
+        alert("Error: Form elements not found! Check HTML IDs.");
+        return;
+    }
+
+    const editIndex = parseInt(editIndexElem.value);
+    const icon = document.querySelector('#sideLinkIconTriggerLabel i')?.className || "fas fa-link";
+    const color = document.querySelector('#sideLinkColorTriggerLabel .circular-glow-dot')?.style.backgroundColor || "#FF78AC";
+    
+    const data = {
+        folder: parentElem.value,
+        sub: subElem.value, // यही लाइन क्रैश कर रही थी अगर subElem नहीं मिला
+        label: labelElem.value,
+        url: urlElem.value,
+        icon: icon, 
+        color: color
+    };
+
+    if (!data.label) return alert("Label Required");
+
+    if (editIndex !== -1) {
+        appData.sideLinks[editIndex] = data;
+    } else {
+        appData.sideLinks.push(data);
+    }
+    
+    await syncData('sideLinks');
+    resetSideLinkForm();
+}
+// यह फंक्शन ड्रॉपडाउन को कंट्रोल करता है (इसे जोड़ना अनिवार्य है)
+function updateSubDropdownForSideLinks() {
+    const parentSelect = document.getElementById('sideLinkParentSelect');
+    const subDropdown = document.getElementById('sideLinkSubSelect'); // सही ID का उपयोग करें
+    
+    if (!parentSelect || !subDropdown) return;
+
+    const selectedFolder = parentSelect.value;
+    
+    subDropdown.innerHTML = '<option value="">Select Sub-Portal</option>';
+    
+    if (appData.subs) {
+        const filtered = appData.subs.filter(sub => sub.parent === selectedFolder);
+        filtered.forEach(sub => {
+            subDropdown.innerHTML += `<option value="${sub.name}">${sub.name}</option>`;
+        });
+    }
+}
+
+
+function updateSubDropdownForCards() {
+    const parentSelect = document.getElementById('cardMainFolderContextSelector');
+    const subDropdown = document.getElementById('cardSubPortalContextSelector'); // नई ID
+    
+    if (!parentSelect || !subDropdown) return;
+
+    const mainFolder = parentSelect.value;
+    
+    // लिस्ट साफ़ करें
+    subDropdown.innerHTML = '<option value="">Select Sub-Portal</option>';
+    
+    if (!mainFolder) {
+        subDropdown.disabled = true;
+        return;
+    }
+    
+    subDropdown.disabled = false;
+    
+    // फिल्टरिंग लॉजिक
+    if (appData.subs) {
+        const filteredSubs = appData.subs.filter(sub => sub.parent === mainFolder);
+        
+        if (filteredSubs.length > 0) {
+            filteredSubs.forEach(sub => {
+                subDropdown.innerHTML += `<option value="${sub.name}">${sub.name}</option>`;
+            });
+        } else {
+            subDropdown.innerHTML = '<option value="">No Sub-Portals Found</option>';
+        }
+    }
+}
+
+function validateFormFields(fieldIds, isCustomPicker = false) {
+    let isValid = true;
+    
+    fieldIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        // Purani error hatayein
+        element.classList.remove('input-error');
+        const existingMsg = element.parentNode.querySelector('.error-msg');
+        if (existingMsg) existingMsg.remove();
+        
+        // Validation Logic
+        let isEmpty = false;
+        if (isCustomPicker) {
+            const labelText = element.querySelector('span').innerText;
+            if (labelText.includes("Select")) isEmpty = true;
+        } else {
+            if (element.value.trim() === "") isEmpty = true;
         }
 
+        if (isEmpty) {
+            // ERROR DIKHAO SIRF TAB AGAR VALUE KHALI HAI
+            element.classList.add('input-error');
+            
+            // Premium Error Message add karein
+            const msg = document.createElement('div');
+            msg.className = 'error-msg';
+            msg.innerText = 'This field is required';
+            element.parentNode.appendChild(msg);
+            
+            isValid = false;
+        }
+    });
+    
+    return isValid;
+}
 
-// Is function ko apne purane purgeEntry ki jagah replace karein
-async function purgeEntry(key, idx) {
-    if (!confirm("Are you sure?")) return;
 
-    let list = JSON.parse(localStorage.getItem(key)) || [];
-    list.splice(idx, 1);
-    localStorage.setItem(key, JSON.stringify(list));
 
-    // Firebase Sync Logic
+async function updateAdminPin() {
+    const newPin = document.getElementById('newPinInput').value; // HTML में अपना input ID दें
+    if (newPin.length !== 4) return alert("PIN must be 4 digits!");
+
+    appData.admin_pin = newPin; // PIN को डेटा में अपडेट किया
+    await db.collection("data").doc("matrix_config").set(appData, { merge: true });
+    alert("PIN Updated Successfully!");
+}
+
+
+async function verifyPin() {
+    const enteredPin = document.getElementById('pinInput').value;
+    
+    // Check if appData.admin_pin exists
+    if (!appData.admin_pin) {
+        alert("PIN not set in database. Please set it via Firebase!");
+        return;
+    }
+
+    if (enteredPin === appData.admin_pin) {
+        // Success animation
+        document.getElementById('pinModal').style.opacity = '0';
+        setTimeout(() => document.getElementById('pinModal').style.display = 'none', 500);
+    } else {
+        // Error feedback
+        const card = document.querySelector('.pin-card');
+        card.style.animation = 'premium-shake 0.4s';
+        document.getElementById('pinInput').value = "";
+        setTimeout(() => card.style.animation = '', 500);
+    }
+}
+
+
+document.querySelectorAll('.pin-digit').forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1) {
+            if (index < 3) document.querySelectorAll('.pin-digit')[index + 1].focus();
+        }
+        checkPin(); // PIN check karega
+    });
+});
+
+async function checkPin() {
+    let inputs = document.querySelectorAll('.pin-digit');
+    let pin = Array.from(inputs).map(i => i.value).join('');
+    
+    if (pin.length === 4) {
+        let hashedInput = CryptoJS.MD5(pin).toString(); 
+        
+        if (hashedInput === appData.secure_hash) {
+            document.getElementById('pinModal').style.display = 'none';
+        } else {
+            // Premium Feedback Sequence
+            const card = document.querySelector('.pin-card');
+            const statusMsg = document.getElementById('statusMessage');
+            
+            // 1. Inputs ko red glow aur shake dein
+            inputs.forEach(i => i.classList.add('input-error'));
+            
+            // 2. Status message show karein
+            statusMsg.style.opacity = "1";
+            
+            // 3. 2 seconds baad reset karein
+            setTimeout(() => {
+                inputs.forEach(i => {
+                    i.classList.remove('input-error');
+                    i.value = "";
+                });
+                statusMsg.style.opacity = "0";
+                inputs[0].focus();
+            }, 2000);
+        }
+    }
+}
+
+
+async function handlePinUpdate() {
+    const newPin = document.getElementById('newPinInput').value;
+    
+    // Validation
+    if (newPin.length !== 4) {
+        alert("PIN must be exactly 4 digits!");
+        return;
+    }
+
+    // MD5 Hash mein convert karein
+    const newHash = CryptoJS.MD5(newPin).toString();
+
+    // Firebase Update
     try {
-        const updateData = {};
-        updateData[key.replace('matrix_', '')] = list; // 'matrix_cards' -> 'cards'
+        appData.secure_hash = newHash; // Firebase mein update
+        await db.collection("data").doc("matrix_config").set(appData, { merge: true });
         
-        await db.collection("data").doc("matrix_config").set(updateData, { merge: true });
-        
-        alert("Success: Database updated!");
-        runDatabaseStateSynchronization();
-    } catch (e) {
-        console.error("Sync Error: ", e);
-        alert("Delete hua, par Cloud Sync fail ho gaya!");
-        runDatabaseStateSynchronization();
+        alert("Success: PIN Updated Successfully!");
+        document.getElementById('newPinInput').value = ""; // Input clear karein
+    } catch (error) {
+        console.error("Error updating PIN:", error);
+        alert("Failed to update PIN. Check console.");
     }
 }
 
 
 
-        let dataViewActiveTab = 'cards';
-
-        window.onload = runDatabaseStateSynchronization;
-
-
-
-
-
-
-
-
-async function deleteCard(index) {
-    // Confirmation lein
-    if (!confirm("Kya aap sach mein ise delete karna chahte hain?")) return;
-
-    // 1. List uthayein
-    let list = JSON.parse(localStorage.getItem('matrix_cards')) || [];
-
-    // 2. Item remove karein
-    if (index > -1) {
-        list.splice(index, 1);
-    }
-
-    // 3. LocalStorage update karein (Underscore ka dhyan rakha hai)
-    localStorage.setItem('matrix_cards', JSON.stringify(list));
-
-    try {
-        // 4. Firebase Sync (Firestore)
-        // Ensure karein ki 'db' variable aapke script mein initialize ho chuka hai
-        await db.collection("data").doc("matrix_config").set({
-            cards: list 
-        }, { merge: true });
-        
-        alert("Card successfully delete ho gaya!");
-        
-        // 5. UI Refresh
-        runDatabaseStateSynchronization(); 
-    } catch (e) {
-        console.error("Delete Error details:", e);
-        alert("Delete failed: " + e.message);
-    }
-}
-    </script>
+</script>
 
 </body>
 
 </html> 
-
