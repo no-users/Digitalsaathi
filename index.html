@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Saathi</title>
+    <!-- Line 6 ko bilkul aisa likhein -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
     <link rel="icon" type="image/png" href="Web_Icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -11,6 +15,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+
 
 <script>
   // Your web app's Firebase configuration
@@ -31,6 +36,7 @@
   window.db = db; // Global access
 </script>
     <style>
+        
       /* === DYNAMIC COLOR SYNC VARIABLES === */
 :root {
     --orange-glow2: #f6924a;
@@ -354,11 +360,67 @@ position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-g
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
 @media (max-width: 768px) {
-    .sidebar { position: fixed; left: -280px; top: 0; width: 260px; height: 100vh; z-index: 1000; transition: 0.4s; }
-    .sidebar.active { left: 0; }
-    .services-grid-container { grid-template-columns: 1fr; }
+    .app-canvas { padding: 15px !important; gap: 15px !important; }
+    .info-grid-row { grid-template-columns: 1fr !important; gap: 15px; } /* Row se Column mein badal diya */
+    .premium-notice-hub-box { padding: 10px 15px !important; }
+    .services-grid-container { grid-template-columns: 1fr !important; gap: 15px !important; }
 }
 
+@media (max-width: 768px) {
+    .search-box-wrap { width: 100% !important; margin-top: 10px; }
+    .top-navbar { padding: 10px 15px !important; flex-wrap: wrap; }
+    .tab-container { width: 100% !important; justify-content: center; }
+}
+@media (max-width: 480px) {
+    .service-meta-text h4 { font-size: 14px !important; }
+    .service-meta-text p { font-size: 11px !important; }
+    .square-icon-box { width: 40px !important; height: 40px !important; font-size: 18px !important; }
+}
+@media (max-width: 768px) {
+    /* Sidebar ko screen ke bahar push kar dein */
+    .sidebar {
+        position: fixed;
+        left: -265px; /* Screen se bahar */
+        top: 0;
+        height: 100%;
+        transition: 0.3s ease;
+        z-index: 1000;
+    }
+    
+    /* Jab active ho toh dikhayein */
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Main content ko poori width dein */
+    .main-content {
+        width: 100%;
+    }
+}
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    z-index: 999;
+}
+.sidebar.active + .sidebar-overlay { display: block; }
+
+/* Default: Desktop par hide rahe */
+.menu-toggler, .sidebar-close-btn {
+    display: none !important;
+}
+
+/* Mobile: Jab screen chhota ho (768px se kam) tab dikhe */
+@media (max-width: 768px) {
+    .menu-toggler {
+        display: block !important; /* Hamburger dikhega */
+    }
+    
+    .sidebar-close-btn {
+        display: block !important; /* 'X' button dikhega */
+    }
+}
 
 
 
@@ -484,17 +546,349 @@ position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-g
 .modal-content input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; }
 .modal-content button { background: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
   
-  
+
+
+/* Mobile Sidebar Premium Look */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%; /* Default hidden */
+        top: 0;
+        width: 260px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(20px);
+        transition: 0.4s ease;
+        z-index: 2000;
+        box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+    }
+    .sidebar.active {
+        left: 0; /* Slide in */
+    }
+    .menu-toggler {
+        display: block !important;
+    }
+}
+
+/*            menew button ko premium */
+/* Premium Menu Button Design */
+.menu-toggler {
+    display: none; /* Desktop par hide */
+    background: rgba(255, 255, 255, 0.7) !important; /* Glassmorphism background */
+    backdrop-filter: blur(12px); /* Blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    color: #4f46e5 !important;
+    cursor: pointer;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Soft depth */
+    outline: none;
+}
+
+/* Hover Effect: Premium feel ke liye */
+.menu-toggler:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
+}
+
+/* Active Effect: Click karte hi halka dabna */
+.menu-toggler:active {
+    transform: translateY(0);
+}
+
+/* Mobile par visible karne ke liye */
+@media (max-width: 768px) {
+    .menu-toggler {
+        display: block !important;
+    }
+}
+
+/*               close button css */
+/* Premium Sidebar Close Button */
+.sidebar-close-btn {
+   
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1) !important; /* Semi-transparent */
+    backdrop-filter: blur(15px); /* Premium Blur */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ef4444 !important; /* Danger Red for close */
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important; /* Perfect Circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px !important;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Premium animation curve */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    outline: none;
+    position: relative !important; /* Absolute se hatakar relative karein */
+    float: right;
+    margin-bottom: 20px;
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Hover Effect: Premium Rotation */
+.sidebar-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+    transform: rotate(90deg) scale(1.1); /* Rotate aur thoda bada hona */
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Active Effect: Click karte hi dabna */
+.sidebar-close-btn:active {
+    transform: rotate(90deg) scale(0.9);
+}
+
+/* Jab sidebar active ho, toh content thoda blur/dark ho */
+.sidebar.active ~ .main-content {
+    filter: blur(5px); /* Background content blur ho jayega */
+    pointer-events: none; /* Background mein click nahi lagega */
+    transition: 0.3s;
+}
+
+/* phone interface ke liye code css */
+
+
+@media (max-width: 480px) {
+    .sidebar { width: 240px !important; }
+    .menu-item { padding: 10px !important; font-size: 14px !important; }
+    .sidebar-close-btn { 
+        width: 35px !important; 
+        height: 35px !important; 
+        font-size: 16px !important; 
+        top: 10px !important; 
+        right: 10px !important; 
+    }
+}
+
+
+
+
+
+.tab-link {
+    padding: 6px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.tab-link.active {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+@media (max-width: 480px) {
+    .search-admin-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 5px !important;
+    }
+    
+    .search-box-wrap {
+        flex: 1 !important; /* Search box bachi jagah le lega */
+        min-width: 0 !important; /* Text overflow roke ga */
+    }
+}
+/* Mobile Specific Overrides */
+
+
+    
+
+/* Sabse niche ye code paste karein, ye guarantee hai ki kaam karega */
+@media (max-width: 480px) {
+    .search-admin-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 5px !important;
+    }
+    .search-box-wrap {
+        width: 10% !important; /* Search bar chhota ho jayega */
+    }
+    .admin-btn {
+        width: 35% !important; /* Button adjust ho jayega */
+        font-size: 10px !important;
+    }
+}
+/* Default: Desktop par ye div hide rahega */
+/* Mobile view ke liye */
+@media (max-width: 480px) {
+    .top-navbar2 {
+        width: 100%;
+        display: flex !important;
+        align-items: center !important; /* Icon aur text ko center karega */
+        justify-content: flex-start !important;
+        gap: 15px !important; /* Icon aur text ke beech ka distance */
+        padding: 10px 20px !important;
+        height: 50px !important; /* Height fix karein */
+        background: white !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .menu-toggler {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 35px !important;
+        height: 35px !important;
+        border-radius: 8px !important;
+        background: #f3f4f6 !important;
+        border: none !important;
+    }
+
+    .bread-crumb2 {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        margin: 0 !important;
+    }
+}
+/* Mobile view (chhoti screen) par hide karne ke liye */
+@media (max-width: 480px) {
+    .bread-crumb {
+        display: none !important;
+    }
+}
+@media (max-width: 480px) {
+    /* Tab Container ko Right side shift aur Sharp karna */
+    .tab-container {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        margin-left: auto !important; /* Ye poore div ko Right side shift karega */
+        margin-right: px !important;
+        background: #ffffff !important;
+        border-radius: 0 !important; /* Sharp corners */
+        margin-top: 2px;
+       
+        padding: 2px !important;
+        width: 100% !important;
+    }
+
+    /* Tabs ke andar ka style */
+    .tab-item {
+        padding: 8px 16px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        border-radius: 0 !important; /* Sharp corners */
+        transition: 0.2s;
+    }
+
+    /* Active Tab */
+    .tab-item dropdown-trigger {
+        background: #000 !important;
+        color: #fff !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 1. Parent container ko force karein */
+    .header-actions {
+        width: 100% !important;
+       
+        box-sizing: border-box !important;
+    }
+
+    /* 2. Search bar ko force 100% width aur block level banayein */
+    .search-box-wrap {
+        display: flex !important; /* Flex rahega taaki icon sahi rahe */
+        width: 100% !important;   /* Ye 100% fix kar dega */
+        max-width: 100% !important;
+        margin-left: 0 !important; /* Margin auto hata dein */
+        margin-right: 0 !important;
+        margin-top: 3px;
+        
+        border-radius: 0 !important;
+        box-sizing: border-box !important;
+       
+        background-color: #ffffff;
+    }
+}
+@media (max-width: 480px) {
+    .search-box-wrap, 
+    .search-box-wrap *, 
+    .search-box-wrap input {
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+    }
+}
+
+    /* 3. Admin Button - Sharp, No Radius */
+   @media (max-width: 480px) {
+    .btn-admin-route {
+        display: none !important;
+    }
+}
+
+    /* 4. Tabs ko Sharp aur Left-Align karna */
+    .tab-item dropdown-trigger {
+        display: flex !important;
+        width: 100% !important;
+        border: 2px solid #000 !important;
+        border-radius: 0 !important;
+        margin-bottom: 10px !important;
+        padding: 0 !important;
+    }
+    #ptr-indicator {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+    z-index: 9999;
+}
+/* 1. Desktop ke liye: Pura navbar hide aur space bhi khatam */
+.top-navbar2 {
+    display: none !important;
+}
+
+/* 2. Mobile (480px) ke liye: Navbar wapas layein */
+@media (max-width: 480px) {
+    .top-navbar2 {
+        display: flex !important; /* Ya block, jo aapke design ke liye sahi ho */
+        align-items: center;
+        width: 100%;
+        /* Yahan apni baaki mobile styling rakhein */
+    }
+}
+/* Mobile (<= 480px) par wapas dikhega */
+
+
   </style>
 </head>
 <body>
+    <!-- Pull-to-Refresh Indicator -->
+<div id="ptr-indicator">Refreshing...</div>
     <aside class="sidebar">
+<!-- Close Button (Sidebar mein) -->
+<button class="sidebar-close-btn">
+    <i class="fas fa-times"></i>
+</button>
+    </button>
         <div class="sidebar-logo"><i class="fas fa-layer-group"></i>DIGITAL SAATHI</div>
         <ul class="menu-list" id="masterLiveSidebarMenu"></ul>
     </aside>
 
     <main class="main-content">
         <nav class="top-navbar">
+
+   <div class="top-navbar2">
+    <button class="menu-toggler">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="bread-crumb2">Dashboard</div>
+</div>
+   
+
             <div class="bread-crumb">Application &gt; <span id="breadCrumbStatus">Dashboard</span></div>
             
             <div class="tab-container">
@@ -614,6 +1008,13 @@ position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-g
     </main>
 
 <script>
+
+    if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Digital Saathi PWA Registered!'));
+}
+
+
 
 // 1. REAL-TIME FIREBASE SYNC
 db.collection('data').doc('matrix_config').onSnapshot((doc) => {
@@ -891,9 +1292,43 @@ window.onclick = function(event) {
     }
 }
 
+// Sidebar ke bahar click karne par close ho jaye
+document.addEventListener('click', function(event) {
+    const sidebar = document.querySelector('.sidebar');
+    const menuBtn = document.querySelector('.menu-toggler');
+    
+    // Agar click sidebar ke bahar aur menu button ke bahar hua hai
+    if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+        sidebar.classList.remove('active');
+    }
+});
+document.querySelector('.menu-toggler').addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.add('active');
+});
 
+document.querySelector('.sidebar-close-btn').addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('active');
+});
+
+let touchStartY = 0;
+const threshold = 150; // Kitna neeche khinchne par refresh ho
+
+window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+});
+
+window.addEventListener('touchend', (e) => {
+    let touchEndY = e.changedTouches[0].clientY;
+    
+    // Agar user scroll top par hai aur kaafi neeche khincha hai
+    if (window.scrollY === 0 && (touchEndY - touchStartY) > threshold) {
+        document.getElementById('ptr-indicator').style.transform = 'translateY(0)';
+        setTimeout(() => {
+            window.location.reload(); // Page Refresh
+        }, 800);
+    }
+});
 </script>
 
 </body>
     </html>
-    
