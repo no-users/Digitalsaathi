@@ -1605,38 +1605,23 @@ function compileVisualUISelectionPickers() {
         if (popover.innerHTML.trim() !== '') return; 
         
         // यहाँ से आप अपनी मनपसंद आइकॉन लिस्ट बढ़ा सकते हैं
-        const icons = [
-    // Folder & Files
-    "fas fa-folder", "fas fa-folder-open", "fas fa-file", "fas fa-file-alt", "fas fa-file-pdf", 
-    "fas fa-file-word", "fas fa-file-excel", "fas fa-file-archive", "fas fa-copy", "fas fa-paste",
-    // Web & Internet
-    "fas fa-globe", "fas fa-wifi", "fas fa-link", "fas fa-external-link-alt", "fas fa-cloud", 
-    "fas fa-server", "fas fa-network-wired", "fas fa-rss", "fas fa-plug", "fas fa-bolt",
-    // Security & User
-    "fas fa-user", "fas fa-user-secret", "fas fa-lock", "fas fa-unlock", "fas fa-shield-alt", 
-    "fas fa-key", "fas fa-id-card", "fas fa-user-circle", "fas fa-users", "fas fa-user-tie",
-    // Settings & Tools
-    "fas fa-cog", "fas fa-cogs", "fas fa-sliders-h", "fas fa-wrench", "fas fa-hammer", 
-    "fas fa-tools", "fas fa-broom", "fas fa-paint-brush", "fas fa-database", "fas fa-terminal",
-    // Communication
-    "fas fa-envelope", "fas fa-envelope-open", "fas fa-comment", "fas fa-comments", "fas fa-phone", 
-    "fas fa-phone-alt", "fas fa-sms", "fas fa-headset", "fas fa-share-alt", "fas fa-paper-plane",
-    // Media & Design
-    "fas fa-image", "fas fa-video", "fas fa-music", "fas fa-palette", "fas fa-brush", 
-    "fas fa-camera", "fas fa-pen", "fas fa-edit", "fas fa-font", "fas fa-eye",
-    // Dashboard & Analysis
-    "fas fa-chart-line", "fas fa-chart-pie", "fas fa-chart-bar", "fas fa-tachometer-alt", "fas fa-tasks", 
-    "fas fa-list", "fas fa-clipboard-list", "fas fa-search", "fas fa-filter", "fas fa-sort",
-    // Navigation
-    "fas fa-arrow-up", "fas fa-arrow-down", "fas fa-arrow-left", "fas fa-arrow-right", "fas fa-home", 
-    "fas fa-th", "fas fa-th-large", "fas fa-bars", "fas fa-chevron-down", "fas fa-chevron-right",
-    // Finance & Action
-    "fas fa-wallet", "fas fa-money-bill", "fas fa-credit-card", "fas fa-shopping-cart", "fas fa-plus", 
-    "fas fa-minus", "fas fa-trash", "fas fa-save", "fas fa-sync", "fas fa-check-circle",
-    // Devices
-    "fas fa-desktop", "fas fa-laptop", "fas fa-mobile-alt", "fas fa-tablet-alt", "fas fa-keyboard", 
-    "fas fa-mouse", "fas fa-print", "fas fa-hdd", "fas fa-microchip", "fas fa-usb"
+      const icons = [
+    // 1-100: Folder, Web, Security
+    "fas fa-folder", "fas fa-folder-open", "fas fa-file", "fas fa-file-alt", "fas fa-file-pdf", "fas fa-file-word", "fas fa-file-excel", "fas fa-file-archive", "fas fa-copy", "fas fa-paste", "fas fa-file-contract", "fas fa-file-download", "fas fa-file-upload", "fas fa-file-code", "fas fa-file-image", "fas fa-file-video", "fas fa-file-audio", "fas fa-save", "fas fa-trash", "fas fa-archive",
+    "fas fa-globe", "fas fa-wifi", "fas fa-link", "fas fa-external-link-alt", "fas fa-cloud", "fas fa-server", "fas fa-network-wired", "fas fa-rss", "fas fa-plug", "fas fa-bolt", "fas fa-broadcast-tower", "fas fa-code-branch", "fas fa-sitemap", "fas fa-anchor", "fas fa-ethernet", "fas fa-satellite", "fas fa-database", "fas fa-hdd", "fas fa-server", "fas fa-cloud-upload-alt",
+    "fas fa-user", "fas fa-user-secret", "fas fa-lock", "fas fa-unlock", "fas fa-shield-alt", "fas fa-key", "fas fa-id-card", "fas fa-user-circle", "fas fa-users", "fas fa-user-tie", "fas fa-user-plus", "fas fa-user-minus", "fas fa-user-edit", "fas fa-user-shield", "fas fa-user-lock", "fas fa-fingerprint", "fas fa-user-check", "fas fa-user-times", "fas fa-user-tag", "fas fa-sign-in-alt",
+    "fas fa-cog", "fas fa-cogs", "fas fa-sliders-h", "fas fa-wrench", "fas fa-hammer", "fas fa-tools", "fas fa-broom", "fas fa-paint-brush", "fas fa-terminal", "fas fa-code", "fas fa-bug", "fas fa-laptop-code", "fas fa-microchip", "fas fa-power-off", "fas fa-redo", "fas fa-sync", "fas fa-history", "fas fa-magic", "fas fa-filter", "fas fa-sort",
+    "fas fa-envelope", "fas fa-envelope-open", "fas fa-comment", "fas fa-comments", "fas fa-phone", "fas fa-phone-alt", "fas fa-sms", "fas fa-headset", "fas fa-share-alt", "fas fa-paper-plane", "fas fa-comments-dollar", "fas fa-phone-slash", "fas fa-mail-bulk", "fas fa-reply", "fas fa-forward", "fas fa-envelope-square", "fas fa-blog", "fas fa-address-book", "fas fa-comments", "fas fa-comment-dots",
+
+    // 101-500: Font Awesome ke aur bhi premium icons ka reference
+    // Note: Yahan aap Font Awesome ki official library se koi bhi icon naam dal sakte hain
+    "fas fa-star", "fas fa-heart", "fas fa-thumbs-up", "fas fa-thumbs-down", "fas fa-smile", "fas fa-meh", "fas fa-frown", "fas fa-laugh", "fas fa-surprise", "fas fa-tired", 
+    "fas fa-car", "fas fa-bus", "fas fa-train", "fas fa-subway", "fas fa-bicycle", "fas fa-motorcycle", "fas fa-plane", "fas fa-ship", "fas fa-rocket", "fas fa-fighter-jet",
+    "fas fa-apple-alt", "fas fa-lemon", "fas fa-pepper-hot", "fas fa-pizza-slice", "fas fa-hamburger", "fas fa-ice-cream", "fas fa-cookie", "fas fa-coffee", "fas fa-glass-martini", "fas fa-beer",
+    "fas fa-graduation-cap", "fas fa-book", "fas fa-bookmark", "fas fa-pen-nib", "fas fa-highlighter", "fas fa-marker", "fas fa-chalkboard", "fas fa-school", "fas fa-university", "fas fa-laptop",
+    // ... [Isi tarah aap FontAwesome ki website se naam copy karke yahan append kar sakte hain]
 ];
+
         icons.forEach(icon => {
             const div = document.createElement('div');
             div.className = "icon-grid-item";
