@@ -1642,21 +1642,27 @@ function compileVisualUISelectionPickers() {
 
 function compileColorSelectionPickers() {
     // 40+ Premium Professional Colors
-    const colors = [
-        {name: "Crimson", hex: "#E74C3C"}, {name: "Ocean", hex: "#3498DB"}, {name: "Emerald", hex: "#2ECC71"},
-        {name: "Amethyst", hex: "#9B59B6"}, {name: "Midnight", hex: "#34495E"}, {name: "Sun", hex: "#F1C40F"},
-        {name: "Carrot", hex: "#E67E22"}, {name: "Concrete", hex: "#95A5A6"}, {name: "Peter River", hex: "#2980B9"},
-        {name: "Belize Hole", hex: "#2980B9"}, {name: "Wisteria", hex: "#8E44AD"}, {name: "Nephritis", hex: "#27AE60"},
-        {name: "Orange", hex: "#F39C12"}, {name: "Pumpkin", hex: "#D35400"}, {name: "Pomegranate", hex: "#C0392B"},
-        {name: "Silver", hex: "#BDC3C7"}, {name: "Asbestos", hex: "#7F8C8D"}, {name: "Dark Blue", hex: "#003366"},
-        {name: "Royal Purple", hex: "#4B0082"}, {name: "Forest Green", hex: "#228B22"}, {name: "Gold", hex: "#FFD700"},
-        {name: "Deep Pink", hex: "#FF1493"}, {name: "Teal", hex: "#008080"}, {name: "Indigo", hex: "#4B0082"},
-        {name: "Slate Blue", hex: "#6A5ACD"}, {name: "Tomato", hex: "#FF6347"}, {name: "Dodger Blue", hex: "#1E90FF"},
-        {name: "Lime Green", hex: "#32CD32"}, {name: "Medium Orchid", hex: "#BA55D3"}, {name: "Steel Blue", hex: "#4682B4"},
-        {name: "Fire Brick", hex: "#B22222"}, {name: "Dark Slate Gray", hex: "#2F4F4F"}, {name: "Peru", hex: "#CD853F"},
-        {name: "Cadet Blue", hex: "#5F9EA0"}, {name: "Medium Sea Green", hex: "#3CB371"}, {name: "Hot Pink", hex: "#FF69B4"},
-        {name: "Dark Olive Green", hex: "#556B2F"}, {name: "Sienna", hex: "#A0522D"}, {name: "Midnight Blue", hex: "#191970"}
-    ];
+const colors = [
+    {name: "Crimson", hex: "#DC143C"}, {name: "Ocean", hex: "#0077BE"}, {name: "Emerald", hex: "#50C878"},
+    {name: "Amethyst", hex: "#9966CC"}, {name: "Midnight", hex: "#191970"}, {name: "Sun", hex: "#FFD700"},
+    {name: "Carrot", hex: "#ED9121"}, {name: "Concrete", hex: "#F2F2F2"}, {name: "Peter River", hex: "#3498DB"},
+    {name: "Belize Hole", hex: "#2980B9"}, {name: "Wisteria", hex: "#8E44AD"}, {name: "Nephritis", hex: "#27AE60"},
+    {name: "Orange", hex: "#FFA500"}, {name: "Pumpkin", hex: "#D35400"}, {name: "Pomegranate", hex: "#C0392B"},
+    {name: "Silver", hex: "#C0C0C0"}, {name: "Asbestos", hex: "#7F8C8D"}, {name: "Dark Blue", hex: "#00008B"},
+    {name: "Slate Blue", hex: "#6A5ACD"}, {name: "Tomato", hex: "#FF6347"}, {name: "Dodger Blue", hex: "#1E90FF"},
+    {name: "Lime Green", hex: "#32CD32"}, {name: "Medium Orchid", hex: "#BA55D3"}, {name: "Steel Blue", hex: "#4682B4"},
+    {name: "Fire Brick", hex: "#B22222"}, {name: "Dark Slate Gray", hex: "#2F4F4F"}, {name: "Peru", hex: "#CD853F"},
+    {name: "Cadet Blue", hex: "#5F9EA0"}, {name: "Medium Sea Green", hex: "#3CB371"}, {name: "Hot Pink", hex: "#FF69B4"},
+    {name: "Dark Olive Green", hex: "#556B2F"}, {name: "Sienna", hex: "#A0522D"}, {name: "Midnight Blue", hex: "#191970"},
+    {name: "Royal Purple", hex: "#7851A9"}, {name: "Gold", hex: "#FFD700"}, {name: "Teal", hex: "#008080"},
+    {name: "Indigo", hex: "#4B0082"}, {name: "Deep Pink", hex: "#FF1493"}, {name: "Cyan", hex: "#00FFFF"},
+    {name: "Coral", hex: "#FF7F50"}, {name: "Dark Khaki", hex: "#BDB76B"}, {name: "Forest Green", hex: "#228B22"},
+    {name: "Light Sea Green", hex: "#20B2AA"}, {name: "Maroon", hex: "#800000"}, {name: "Navy", hex: "#000080"},
+    {name: "Olive", hex: "#808000"}, {name: "Purple", hex: "#800080"}, {name: "Violet", hex: "#EE82EE"},
+    {name: "Dark Orchid", hex: "#9932CC"}, {name: "Salmon", hex: "#FA8072"}, {name: "Dark Orange", hex: "#FF8C00"},
+    {name: "Spring Green", hex: "#00FF7F"}, {name: "Turquoise", hex: "#40E0D0"}, {name: "Medium Violet Red", hex: "#C71585"}
+];
+
 
     document.querySelectorAll('.color-dropdown-popover').forEach(popover => {
         if (popover.innerHTML.trim() !== '') return;
