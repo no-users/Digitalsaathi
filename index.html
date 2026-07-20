@@ -208,8 +208,8 @@
         <button class="hub-close-btn" onclick="closeSupremeHubModal()">&times;</button>
         
         <div class="hub-modal-header">
-            <h2>Digital Saathi Hub</h2>
-            <p>All-in-one professional calculation tools</p>
+            <h2>Digital Saathi</h2>
+            <p>Calculation tools</p>
         </div>
 
         <!-- Tab Navigation Buttons -->
@@ -218,7 +218,7 @@
             <button class="hub-tab-btn" onclick="switchHubTab(event, 'marksTab')"><i class="fas fa-percent"></i> Marks</button>
             <button class="hub-tab-btn" onclick="switchHubTab(event, 'pToC')"><i class="fas fa-exchange-alt"></i> % to CGPA</button>
             <button class="hub-tab-btn" onclick="switchHubTab(event, 'cToP')"><i class="fas fa-graduation-cap"></i> CGPA to %</button>
-            <button class="hub-tab-btn" onclick="switchHubTab(event, 'calcTab')"><i class="fas fa-calculator"></i> Calc</button>
+            <button class="hub-tab-btn" onclick="switchHubTab(event, 'calcTab')"><i class="fas fa-calculator"></i> Calculate</button>
         </div>
 
         <!-- Tab Contents -->
@@ -227,7 +227,7 @@
             <!-- 1. Age Calculator Tab -->
             <div id="ageTab" class="hub-tab-pane active">
                 <div class="hub-input-group">
-                    <label>Select Date of Birth</label>
+                    <label>Select DOB</label>
                     <input type="date" id="hubDobInput">
                 </div>
                 <button class="hub-action-btn" onclick="calculateHubAge()">Calculate Age</button>
@@ -238,11 +238,11 @@
             <div id="marksTab" class="hub-tab-pane">
                 <div class="hub-input-group">
                     <label>Obtained Marks</label>
-                    <input type="number" id="hubObtained" placeholder="e.g. 420">
+                    <input type="number" id="hubObtained" placeholder="enter marks">
                 </div>
                 <div class="hub-input-group">
                     <label>Total Marks</label>
-                    <input type="number" id="hubTotal" placeholder="e.g. 500">
+                    <input type="number" id="hubTotal" placeholder="total marks">
                 </div>
                 <button class="hub-action-btn" onclick="calculateHubMarks()">Get Percentage</button>
                 <div id="hubMarksResult" class="hub-result-box" style="display:none;"></div>
@@ -252,9 +252,9 @@
             <div id="pToC" class="hub-tab-pane">
                 <div class="hub-input-group">
                     <label>Enter Percentage (%)</label>
-                    <input type="number" id="hubPerInput" step="0.01" placeholder="e.g. 85.5">
+                    <input type="number" id="hubPerInput" step="0.01" placeholder="enter cgpa">
                 </div>
-                <button class="hub-action-btn" onclick="calculateHubPerToCgpa()">Convert to CGPA</button>
+                <button class="hub-action-btn" onclick="calculateHubPerToCgpa()">Get CGPA</button>
                 <div id="hubPerToCgpaResult" class="hub-result-box" style="display:none;"></div>
             </div>
 
@@ -262,9 +262,9 @@
             <div id="cToP" class="hub-tab-pane">
                 <div class="hub-input-group">
                     <label>Enter CGPA</label>
-                    <input type="number" id="hubCgpaInput" step="0.01" placeholder="e.g. 8.5">
+                    <input type="number" id="hubCgpaInput" step="0.01" placeholder="enter percent">
                 </div>
-                <button class="hub-action-btn" onclick="calculateHubCgpaToPer()">Convert to %</button>
+                <button class="hub-action-btn" onclick="calculateHubCgpaToPer()">Get Percentage</button>
                 <div id="hubCgpaToPerResult" class="hub-result-box" style="display:none;"></div>
             </div>
 
@@ -272,7 +272,7 @@
             <div id="calcTab" class="hub-tab-pane">
                 <input type="text" id="hubCalcScreen" readonly class="hub-calc-screen">
                 <div class="hub-calc-grid">
-                    <button onclick="hubClear()" class="h-btn ac">C</button>
+                    <button onclick="hubClear()" class="h-btn ac">Ac</button>
                     <button onclick="hubAppend('(')" class="h-btn op">(</button>
                     <button onclick="hubAppend(')')" class="h-btn op">)</button>
                     <button onclick="hubAppend('/')" class="h-btn op">÷</button>
