@@ -946,37 +946,6 @@ text-align: center;
 
 
 
-.fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
-
-.fab-main {
-    width: 60px; height: 60px; background: #4f46e5; border-radius: 50%;
-    color: white; border: none; font-size: 24px; cursor: pointer;
-    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
-    transition: all 0.3s ease;
-}
-
-.fab-main:hover { transform: scale(1.1); background: #4338ca; }
-
-.fab-menu {
-    position: absolute; bottom: 75px; right: 0; display: flex;
-    flex-direction: column; gap: 15px; opacity: 0; visibility: hidden;
-    transform: translateY(20px); transition: all 0.3s ease;
-}
-
-.fab-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
-
-.fab-item {
-    width: 50px; height: 50px; background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px); border-radius: 50%; display: flex;
-    align-items: center; justify-content: center; color: #4f46e5;
-    text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    font-size: 20px; transition: all 0.3s;
-}
-
-.fab-item:hover { transform: scale(1.1); background: #4f46e5; color: white; }
-  
-  
-  
   .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
 .modal-content { 
     background: white; margin: 15% auto; padding: 20px; width: 300px; 
@@ -1249,7 +1218,245 @@ text-align: center;
 
 
 
-/* ye hai 4 them change ka   css  */
+/* ye hai cgp calcuation   */
+/* --- Fixed Bottom-Right Corner Floating Action Button (Updated) --- */
+.supreme-fab-wrapper {
+    position: fixed !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+
+/* Bada aur Glowing Main Button */
+.supreme-main-fab {
+    width: 65px !important;
+    height: 65px !important;
+    background: linear-gradient(135deg, #0b0ecf, #847be1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.6), 0 0 20px rgba(168, 85, 247, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.supreme-main-fab:hover {
+    transform: scale(1.1) !important;
+}
+
+/* Sub Options Menu (By default hidden) */
+.supreme-fab-menu {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px) scale(0.9);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.supreme-fab-wrapper.active .supreme-fab-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Sub Action Buttons */
+.supreme-sub-fab {
+    width: 48px;
+    height: 48px;
+    background: rgba(30, 27, 75, 0.95);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    border-radius: 50%;
+    color: #a5b4fc;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    transition: 0.2s ease;
+}
+
+.supreme-sub-fab:hover {
+    background: #4f46e5;
+    color: #ffffff;
+    transform: scale(1.1);
+    border-color: #818cf8;
+}
+
+/* Icon rotation for X effect */
+#supremeFabIcon {
+    transition: transform 0.3s ease;
+}
+.supreme-fab-wrapper.active #supremeFabIcon {
+    transform: rotate(135deg);
+}
+
+/* --- Dark Glass Modal Styling --- */
+.hub-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 10, 30, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.hub-modal-card {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    padding: 25px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.2);
+    animation: hubScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes hubScaleUp {
+    from { transform: scale(0.85) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.hub-close-btn {
+    position: absolute;
+    top: 18px; right: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.2s;
+}
+.hub-close-btn:hover { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171; }
+
+.hub-modal-header { margin-bottom: 15px; }
+.hub-modal-header h2 { font-size: 20px; color: #fff; font-weight: 700; margin-bottom: 2px; }
+.hub-modal-header p { font-size: 12px; color: #94a3b8; }
+
+/* Tabs Header Row */
+.hub-tabs-row {
+    display: flex;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.hub-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    border-radius: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.hub-tab-btn i { font-size: 13px; }
+
+.hub-tab-btn.active {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Tab Panes */
+.hub-tab-pane { display: none; }
+.hub-tab-pane.active { display: block; animation: fadeInPane 0.25s ease; }
+
+@keyframes fadeInPane {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hub-input-group { margin-bottom: 15px; }
+.hub-input-group label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; }
+.hub-input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+.hub-input-group input:focus { border-color: #818cf8; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 10px rgba(129, 140, 248, 0.3); }
+.hub-input-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+
+.hub-action-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    transition: 0.2s;
+}
+.hub-action-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6); }
+
+.hub-result-box {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #34d399;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Calculator Grid Styling */
+.hub-calc-screen {
+    width: 100%; height: 48px;
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px; color: #fff; font-size: 20px;
+    text-align: right; padding: 0 12px; margin-bottom: 12px; outline: none;
+}
+.hub-calc-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.h-btn {
+    padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; color: #fff; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: 0.15s;
+}
+.h-btn:hover { background: rgba(129, 140, 248, 0.2); border-color: #818cf8; }
+.h-btn.op { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.h-btn.ac { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+.h-btn.eq { background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; }
+
+
 
 
 
