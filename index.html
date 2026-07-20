@@ -12,13 +12,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<!-- <script>// Screen ki width check karne ka function
+    function checkDeviceAndRedirect() {
+        var screenWidth = window.innerWidth;
+        
+        // Agar screen mobile jaisi choti hai (768px ya usse kam)
+        if (screenWidth <= 768) {
+            // Aur agar hum abhi index.html par hain, tabhi mobile.html par bhejo
+            if (window.location.pathname.indexOf('mobile.html') === -1) {
+                window.location.href = 'mobile.html';
+            }
+        } 
+        // Agar screen laptop/desktop jaisi badi hai (768px se upar)
+        else {
+            // Aur agar hum galti se mobile.html par hain, tabhi index.html par wapas bhejo
+            if (window.location.pathname.indexOf('index.html') === -1 && window.location.pathname.endsWith('.html')) {
+                window.location.href = 'index.html';
+            }
+        }
+    }
 
+    // Page load hote hi turant check karega
+    checkDeviceAndRedirect();
+
+    // Jab user browser ki window ko chota ya bada karega, tab bhi ye auto-detect karega
+    window.addEventListener('resize', checkDeviceAndRedirect);
+    </script>   -->
 
 
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+
 
 <script>
   // Your web app's Firebase configuration
@@ -43,12 +69,6 @@
 <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
-
-<link rel="stylesheet" href="index.css">
-<link rel="stylesheet" href="them.css">
-<link rel="stylesheet" href="mobile.css">
-</head>
-<body>
     <!-- Pull-to-Refresh Indicator -->
     <div id="ptr-indicator" style="position:fixed; top:-50px; left:50%; transform:translateX(-50%); z-index:9999; transition:0.3s; background:#fff; padding:10px 20px; border-radius:50px; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
         <i class="fas fa-sync" id="refreshIcon"></i>
@@ -64,7 +84,7 @@
             <div class="bread-crumb">Application &gt; <span id="breadCrumbStatus">Dashboard</span></div>
             
             <div class="tab-container">
-                <div class="tab-item" onclick="window.open('Saathi.html', '_blank')">Saathi</div>
+                <div class="tab-item" onclick="window.open('Saathi.html', '_blank')">Quick</div>
                 
                 <div class="tab-wrapper">
                     <div class="tab-item dropdown-trigger" onclick="togglePremiumDropdown('my-dropdown', event)">
