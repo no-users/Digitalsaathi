@@ -377,17 +377,152 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-function openCalc(type) {
-    alert("🚀 Ye feature bahut jald aa raha hai! Stay tuned.");
+// Toggle Floating Menu
+function toggleSupremeFab(event) {
+    if (event) event.stopPropagation();
+    const wrapper = document.getElementById('supremeFabWrapper');
+    wrapper.classList.toggle('active');
 }
 
-function calcAge() {
-   alert("🚀 Ye feature bahut jald aa raha hai! Stay tuned.");
+// Close Floating Menu
+function closeSupremeFab() {
+    const wrapper = document.getElementById('supremeFabWrapper');
+    if (wrapper) wrapper.classList.remove('active');
 }
 
-function calcPercent() {
-    alert("🚀 Ye feature bahut jald aa raha hai! Stay tuned.");
+// Auto-close when clicking anywhere outside the FAB wrapper
+window.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('supremeFabWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+        wrapper.classList.remove('active');
+    }
+});
+
+// Modal Control Functions
+function openSupremeHubModal() {
+    document.getElementById('supremeHubModal').style.display = 'flex';
 }
+
+function closeSupremeHubModal() {
+    document.getElementById('supremeHubModal').style.display = 'none';
+}
+
+// Tab Switching Logic
+function switchHubTab(evt, tabId) {
+    let panes = document.getElementsByClassName('hub-tab-pane');
+    for (let pane of panes) { pane.classList.remove('active'); }
+
+    let buttons = document.getElementsByClassName('hub-tab-btn');
+    for (let btn of buttons) { btn.classList.remove('active'); }
+
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+}
+
+// 1. Age Calculator Logic
+function calculateHubAge() {
+    const val = document.getElementById('hubDobInput').value;
+    const res = document.getElementById('hubAgeResult');
+    if (!val) { res.style.display='block'; res.innerHTML='Kripya Date of Birth chunein!'; return; }
+
+    const dob = new Date(val);
+    const today = new Date();
+    if (dob > today) { res.style.display='block'; res.innerHTML='Future date select nahi ho sakti!'; return; }
+
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+    let days = today.getDate() - dob.getDate();
+
+    if (days < 0) {
+        months--;
+        let pMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += pMonth.getDate();
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    let status = years < 18 ? '<span style="color:#fbbf24; font-weight:700;">Minor (Under 18)</span>' : '<span style="color:#34d399; font-weight:700;">Adult (18+)</span>';
+
+    res.style.display = 'block';
+    res.innerHTML = `🎂 <b>${years} Years, ${months} Months, ${days} Days</b><br>Status: ${status}`;
+}
+
+// 2. Marks to Percentage Logic
+function calculateHubMarks() {
+    let obt = parseFloat(document.getElementById('hubObtained').value);
+    let tot = parseFloat(document.getElementById('hubTotal').value);
+    let res = document.getElementById('hubMarksResult');
+
+    if (isNaN(obt) || isNaN(tot) || tot <= 0) {
+        res.style.display='block'; res.innerHTML='Kripya sahi ank darj karein!'; return;
+    }
+    let p = (obt / tot) * 100;
+    res.style.display='block';
+    res.innerHTML = `📊 Percentage: <b>${p.toFixed(2)}%</b>`;
+}
+
+// 3. Percentage to CGPA Logic
+function calculateHubPerToCgpa() {
+    let per = parseFloat(document.getElementById('hubPerInput').value);
+    let res = document.getElementById('hubPerToCgpaResult');
+
+    if (isNaN(per) || per < 0 || per > 100) {
+        res.style.display='block'; res.innerHTML='Sahi percentage dalein (0-100)!'; return;
+    }
+    let cgpa = per / 9.5;
+    res.style.display='block';
+    res.innerHTML = `🎓 Estimated CGPA: <b>${cgpa.toFixed(2)}</b>`;
+}
+
+// 4. CGPA to Percentage Logic
+function calculateHubCgpaToPer() {
+    let cgpa = parseFloat(document.getElementById('hubCgpaInput').value);
+    let res = document.getElementById('hubCgpaToPerResult');
+
+    if (isNaN(cgpa) || cgpa < 0 || cgpa > 10) {
+        res.style.display='block'; res.innerHTML='Sahi CGPA dalein (0-10)!'; return;
+    }
+    let per = (cgpa - 0.75) * 10;
+    res.style.display='block';
+    res.innerHTML = `📈 Percentage: <b>${per.toFixed(2)}%</b>`;
+}
+
+// 5. Calculator Logic
+function hubAppend(val) { document.getElementById('hubCalcScreen').value += val; }
+function hubClear() { document.getElementById('hubCalcScreen').value = ''; }
+function hubCalculate() {
+    let scr = document.getElementById('hubCalcScreen');
+    try { scr.value = eval(scr.value); } catch(e) { scr.value = 'Error'; setTimeout(hubClear, 1200); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function closeModal() { document.getElementById('calcModal').style.display = 'none'; }
 
