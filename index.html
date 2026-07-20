@@ -12,32 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<script>// Screen ki width check karne ka function
-    function checkDeviceAndRedirect() {
-        var screenWidth = window.innerWidth;
-        
-        // Agar screen mobile jaisi choti hai (768px ya usse kam)
-        if (screenWidth <= 768) {
-            // Aur agar hum abhi index.html par hain, tabhi mobile.html par bhejo
-            if (window.location.pathname.indexOf('mobile.html') === -1) {
-                window.location.href = 'mobile.html';
-            }
-        } 
-        // Agar screen laptop/desktop jaisi badi hai (768px se upar)
-        else {
-            // Aur agar hum galti se mobile.html par hain, tabhi index.html par wapas bhejo
-            if (window.location.pathname.indexOf('index.html') === -1 && window.location.pathname.endsWith('.html')) {
-                window.location.href = 'index.html';
-            }
-        }
-    }
 
-    // Page load hote hi turant check karega
-    checkDeviceAndRedirect();
-
-    // Jab user browser ki window ko chota ya bada karega, tab bhi ye auto-detect karega
-    window.addEventListener('resize', checkDeviceAndRedirect);
-    </script>
 
 
 
@@ -45,7 +20,29 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
 
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
+    authDomain: "agency-136b6.firebaseapp.com",
+    databaseURL: "https://agency-136b6-default-rtdb.firebaseio.com",
+    projectId: "agency-136b6",
+    storageBucket: "agency-136b6.firebasestorage.app",
+    messagingSenderId: "503663950718",
+    appId: "1:503663950718:web:8a30b18039c279ffac112f",
+    measurementId: "G-1K7QHDXKQ2"
+  };
 
+  firebase.initializeApp(firebaseConfig);
+  // Firestore ko wait karne ki zarurat nahi hoti agar SDK load ho gaya hai
+  const db = firebase.firestore(); 
+  window.db = db; // Global access
+</script>
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="them.css">
+<link rel="stylesheet" href="mobile.css">
+</head>
+<body>
 
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="them.css">
