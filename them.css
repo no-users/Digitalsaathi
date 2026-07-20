@@ -1,0 +1,340 @@
+/* --- Midnight Dark Theme (Ultra-Premium Redefined) --- */
+body.dark {
+    background: radial-gradient(circle at 15% 15%, #182848 0%, #0b1120 45%, #030508 100%) !important;
+    color: #f1f5f9 !important;
+    letter-spacing: 0.015em;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.dark .main-content,
+body.dark .app-canvas {
+    background: transparent !important;
+}
+
+/* --- Ultra-Glass Sidebar with Glow Edge --- */
+body.dark .sidebar {
+    background: linear-gradient(180deg, rgba(13, 20, 38, 0.85) 0%, rgba(7, 11, 20, 0.95) 100%) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- High-End Frosted Glass Cards --- */
+body.dark .card, 
+body.dark div[class*="card"] {
+    background: linear-gradient(135deg, rgba(25, 38, 70, 0.5) 0%, rgba(12, 18, 33, 0.75) 100%) !important;
+    backdrop-filter: blur(16px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important; /* Premium top highlight */
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border-radius: 16px !important; /* Modern smooth radius */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* --- Interactive Card Hover (Neon Cyan Accent) --- */
+body.dark .card:hover {
+    background: linear-gradient(135deg, rgba(30, 45, 82, 0.6) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 
+                0 0 25px rgba(56, 189, 248, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-4px) scale(1.005);
+}
+
+/* --- Floating Glass Navigation & Headers --- */
+body.dark nav,
+body.dark header {
+    background: rgba(11, 17, 32, 0.75) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --- Bonus: Smooth Inputs & Buttons Polish --- */
+body.dark input, 
+body.dark textarea, 
+body.dark select {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+body.dark input:focus, 
+body.dark textarea:focus, 
+body.dark select:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25) !important;
+    outline: none !important;
+}
+
+
+
+
+
+
+
+
+
+/*  ye neon saurav  */
+/* --- Cyberpunk Neon Theme (Ultra-Premium Redefined) --- */
+body.neon {
+    background: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #050811 50%, #010204 100%) !important;
+    color: #00ffcc !important;
+    letter-spacing: 0.03em;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.neon .main-content,
+body.neon .app-canvas {
+    background: transparent !important;
+}
+
+/* --- Holographic Cyber Sidebar --- */
+body.neon .sidebar {
+    background: linear-gradient(180deg, rgba(5, 10, 20, 0.92) 0%, rgba(2, 4, 8, 0.98) 100%) !important;
+    backdrop-filter: blur(25px) saturate(220%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(220%) !important;
+    border-right: 1px solid rgba(0, 255, 204, 0.3) !important;
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.8), inset -1px 0 0 rgba(0, 255, 204, 0.1) !important;
+}
+
+/* --- Cyber-Glass Cards with Electric Glow --- */
+body.neon .card, 
+body.neon div[class*="card"] {
+    background: linear-gradient(135deg, rgba(10, 20, 38, 0.85) 0%, rgba(4, 8, 18, 0.95) 100%) !important;
+    backdrop-filter: blur(20px) saturate(250%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(250%) !important;
+    border: 1px solid rgba(0, 255, 204, 0.3) !important;
+    border-top: 1px solid rgba(0, 255, 204, 0.6) !important; /* Cyber top edge highlight */
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 
+                0 0 20px rgba(0, 255, 204, 0.12),
+                inset 0 1px 0 rgba(0, 255, 204, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* --- Intense Cyberpunk Hover State --- */
+body.neon .card:hover {
+    background: linear-gradient(135deg, rgba(15, 30, 55, 0.9) 0%, rgba(6, 12, 25, 0.98) 100%) !important;
+    border-color: #00ffcc !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 
+                0 0 35px rgba(0, 255, 204, 0.45), 
+                0 0 60px rgba(255, 0, 127, 0.15), /* Subtle secondary magenta tint on deep hover */
+                inset 0 0 15px rgba(0, 255, 204, 0.2) !important;
+    transform: translateY(-4px) scale(1.008);
+}
+
+/* --- Floating Neon Nav & Headers --- */
+body.neon nav,
+body.neon header {
+    background: rgba(3, 7, 15, 0.85) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    border-bottom: 1px solid rgba(0, 255, 204, 0.3) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 1px 15px rgba(0, 255, 204, 0.1) !important;
+}
+
+/* --- Bonus: Cyberpunk Inputs & Buttons Polish --- */
+body.neon input, 
+body.neon textarea, 
+body.neon select {
+    background: rgba(4, 9, 20, 0.8) !important;
+    border: 1px solid rgba(0, 255, 204, 0.3) !important;
+    color: #00ffcc !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+body.neon input:focus, 
+body.neon textarea:focus, 
+body.neon select:focus {
+    border-color: #00ffcc !important;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.4), inset 0 0 5px rgba(0, 255, 204, 0.2) !important;
+    outline: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*  ye  glass   saurav */
+/* --- Pure Glassmorphism Theme (Ultra-Premium Redefined) --- */
+body.glass {
+    background: linear-gradient(135deg, #090d16 0%, #171235 40%, #29103b 70%, #0d0f18 100%) !important;
+    color: #f8fafc !important;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.glass .main-content,
+body.glass .app-canvas {
+    background: transparent !important;
+}
+
+/* --- Crystal Frosted Glass Sidebar --- */
+body.glass .sidebar {
+    background: rgba(255, 255, 255, 0.025) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 15px 0 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- Multi-Layered Specular Glass Cards --- */
+body.glass .card, 
+body.glass div[class*="card"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    backdrop-filter: blur(25px) saturate(220%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(220%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important; /* Crystal top-edge light refraction */
+    border-left: 1px solid rgba(255, 255, 255, 0.2) !important; /* Side light bounce */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.3), 
+                inset 0 -1px 0 rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border-radius: 20px !important; /* Smooth luxury curvature */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* --- Interactive Crystal Hover State --- */
+body.glass .card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    border-top-color: rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba(255, 255, 255, 0.12), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-5px) scale(1.008);
+}
+
+/* --- Floating Translucent Nav & Headers --- */
+body.glass nav,
+body.glass header {
+    background: rgba(255, 255, 255, 0.035) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --- Bonus: Glassmorphic Inputs & Interactive Elements --- */
+body.glass input, 
+body.glass textarea, 
+body.glass select {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+body.glass input:focus, 
+body.glass textarea:focus, 
+body.glass select:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    outline: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+/*   ye   light  saurav */
+/* --- Clean Elite Light Theme (Ultra-Premium Redefined) --- */
+body.light {
+    background: radial-gradient(circle at 15% 15%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%) !important;
+    color: #0f172a !important;
+    letter-spacing: 0.015em;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.light .main-content,
+body.light .app-canvas {
+    background: transparent !important;
+}
+
+/* --- Pristine Frosted Sidebar --- */
+body.light .sidebar {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* --- Elite Pure White Cards with Specular Depth --- */
+body.light .card, 
+body.light div[class*="card"] {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07) !important;
+    border-top: 1px solid rgba(255, 255, 255, 1) !important; /* Premium clean top shine */
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    color: #0f172a !important;
+    border-radius: 16px !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* --- Royal Blue Accent Hover State --- */
+body.light .card:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+    border-color: rgba(37, 99, 235, 0.35) !important;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1), 
+                0 0 25px rgba(37, 99, 235, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    transform: translateY(-4px) scale(1.005);
+}
+
+/* --- Floating Elite Nav & Headers --- */
+body.light nav,
+body.light header {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03) !important;
+}
+
+/* --- Bonus: Polished Inputs & Forms for Light Mode --- */
+body.light input, 
+body.light textarea, 
+body.light select {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    color: #0f172a !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+body.light input:focus, 
+body.light textarea:focus, 
+body.light select:focus {
+    background: #ffffff !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    outline: none !important;
+}

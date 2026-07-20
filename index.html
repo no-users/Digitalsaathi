@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Saathi</title>
+    <!-- Line 6 ko bilkul aisa likhein -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script>// Screen ki width check karne ka function
+    function checkDeviceAndRedirect() {
+        var screenWidth = window.innerWidth;
+        
+        // Agar screen mobile jaisi choti hai (768px ya usse kam)
+        if (screenWidth <= 768) {
+            // Aur agar hum abhi index.html par hain, tabhi mobile.html par bhejo
+            if (window.location.pathname.indexOf('mobile.html') === -1) {
+                window.location.href = 'mobile.html';
+            }
+        } 
+        // Agar screen laptop/desktop jaisi badi hai (768px se upar)
+        else {
+            // Aur agar hum galti se mobile.html par hain, tabhi index.html par wapas bhejo
+            if (window.location.pathname.indexOf('index.html') === -1 && window.location.pathname.endsWith('.html')) {
+                window.location.href = 'index.html';
+            }
+        }
+    }
+
+    // Page load hote hi turant check karega
+    checkDeviceAndRedirect();
+
+    // Jab user browser ki window ko chota ya bada karega, tab bhi ye auto-detect karega
+    window.addEventListener('resize', checkDeviceAndRedirect);
+    </script>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+
+
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
+    authDomain: "agency-136b6.firebaseapp.com",
+    databaseURL: "https://agency-136b6-default-rtdb.firebaseio.com",
+    projectId: "agency-136b6",
+    storageBucket: "agency-136b6.firebasestorage.app",
+    messagingSenderId: "503663950718",
+    appId: "1:503663950718:web:8a30b18039c279ffac112f",
+    measurementId: "G-1K7QHDXKQ2"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  // Firestore ko wait karne ki zarurat nahi hoti agar SDK load ho gaya hai
+  const db = firebase.firestore(); 
+  window.db = db; // Global access
+</script>
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="them.css">
+<link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Pull-to-Refresh Indicator -->
+    <div id="ptr-indicator" style="position:fixed; top:-50px; left:50%; transform:translateX(-50%); z-index:9999; transition:0.3s; background:#fff; padding:10px 20px; border-radius:50px; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
+        <i class="fas fa-sync" id="refreshIcon"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo"><i class="fas fa-layer-group"></i>DIGITAL SAATHI</div>
+        <ul class="menu-list" id="masterLiveSidebarMenu"></ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="top-navbar">
+            <div class="bread-crumb">Application &gt; <span id="breadCrumbStatus">Dashboard</span></div>
+            
+            <div class="tab-container">
+                <div class="tab-item" onclick="window.open('Saathi.html', '_blank')">Saathi</div>
+                
+                <div class="tab-wrapper">
+                    <div class="tab-item dropdown-trigger" onclick="togglePremiumDropdown('my-dropdown', event)">
+                        Kits <span class="arrow">▾</span>
+                    </div>
+                    <div id="my-dropdown" class="dropdown-content">
+                        <a href="#">Tool Kit 1</a>
+                        <a href="#">Tool Kit 2</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="search-box-wrap">
+                    <!-- HTML se purane functions hata diye gaye hain -->
+                    <input type="text" id="toolSearchField" placeholder="Search portals by name...">
+                    <i class="fas fa-search"></i>
+                    <!-- History dropdown ka div ab hataya ja sakta hai ya khali chhod dein -->
+                </div>
+                <a href="admin.html" class="btn-admin-route" target="_blank"></i> Admin </a>
+                
+            </div>
+            
+
+
+
+             <!╌    ye hai profile ka html     ╌>
+            <div class="ds-avatar-wrapper" onclick="window.location.href='profile.html'" style="cursor: pointer;">
+              <img src="" id="dsUserAvatar" class="ds-premium-avatar" alt="Profile">
+           </div>
+    </div>
+<!-- Modal Structure (ds- prefix) 
+<div id="dsProfileModal" class="ds-premium-modal">
+    <div class="ds-modal-content ds-glass-effect">
+        <span class="ds-close-btn" onclick="closeDsProfileModal()"><i class="fas fa-times"></i></span>
+        <div class="ds-modal-header">
+            <h2>Profile Setup</h2>
+            <p>Apni identity aur settings manage karein</p>
+        </div>
+        <div class="ds-modal-body">
+            <div class="ds-placeholder-box">
+                <i class="fas fa-user-circle"></i>
+                <p>Profile content loading...</p>
+            </div>
+        </div>
+    </div>
+</div>  -->
+
+
+
+
+        </nav>
+
+     <div class="app-canvas">
+    <div class="info-grid-row">
+        <!-- Notice Box -->
+        <div class="premium-notice-hub-box">
+            <div class="live-pulse-container">
+                <div class="live-pulse-dot"></div>
+                <div class="live-pulse-ring"></div>
+            </div>
+            <div class="notice-text-details">
+                <span class="static-label">SYSTEM LIVE UPDATE:</span>
+                <div class="scrolling-text-wrapper">
+                    <p id="liveNoticeBoardHeadlineText">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unified Clock Block -->
+        <div class="premium-status-indicator">
+            <div>
+                <h5 style="font-weight: 700; color:#64748b; font-size:10px; text-transform:uppercase;">Clock Node</h5>
+            </div>
+            <div class="premium-clock">
+    <!-- Ye IDs JS mein use ho rahi hain -->
+    <div class="time" id="digital-clock">--:--:--</div>
+    <div class="date" id="date-text">--- ---</div>
+</div>
+        </div>
+    </div>
+
+
+<!-- Recent Visits Section -->
+<div class="tools-section-heading" id="gridSectionTitle">Sarkari Portals & Recruitment Desks</div>
+
+<div class="services-grid-container" id="toolsDisplayGrid">
+    <div id="noResultsMessage" style="display: none;">
+        <i class="fas fa-search-minus" style="font-size: 32px; color: #4f46e5; margin-bottom: 12px; display: block;"></i>
+        <p style="color: #64748b; font-weight: 500; margin-bottom: 20px;">Koi active card nahi mila!</p>
+        
+        <button class="show-all-btn" onclick="resetSearch()">
+            <i class="fas fa-redo"></i> Show All Portals
+        </button>
+    </div>
+</div>
+
+<button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('active')" 
+        style="display: none; background: none; border: none; font-size: 20px; position: absolute; top: 20px; left: 20px; z-index: 1001;">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Floating Action Button -->
+<div class="fab-container">
+    <button class="fab-main" onclick="toggleFabMenu()">
+        <i class="fas fa-plus"></i>
+    </button>
+    <div class="fab-menu" id="fabMenu">
+        <!-- Age Calculator -->
+        <a href="#" class="fab-item" onclick="openCalc('age')" title="Coming Soon!">
+            <i class="fas fa-birthday-cake"></i>
+        </a>
+        <!-- CGPA Calculator -->
+        <a href="#" class="fab-item" onclick="openCalc('cgpa')" title="Coming Soon!">
+            <i class="fas fa-graduation-cap"></i>
+        </a>
+        <!-- Contact -->
+        <a href="mailto:your@email.com" class="fab-item" title="Email Us">
+            <i class="fas fa-envelope"></i>
+        </a>
+        <!-- WhatsApp -->
+        <a href="https://wa.me/yournumber" class="fab-item" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="#" class="fab-item" onclick="alert('Calculator Feature Coming Soon!')"><i class="fas fa-calculator"></i></a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="calcModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+
+<div id="reusableModal" class="premium-modal" style="display: none;">
+
+    <div class="premium-modal-content">
+        <button id="closeModalBtn" class="close-icon-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+</button>
+        <!-- Title -->
+        <h2 id="popupTitle" style="margin-bottom: 20px;">Service Details</h2>
+        
+        <!-- Links grid -->
+        <div id="popupLinks" class="link-grid"></div>
+
+        <!-- Footer mein SIRF EK Close button -->
+
+    </div>
+</div>
+
+</main>
+
+        
+<script src="profile.js"></script>
+<script src="them.js"></script>
+<script src="index.js">
+    
+// Agar screen width 768px se kam hai (mobile phone), toh mobile.html par bhej do
+    if (window.innerWidth <= 768 && window.location.pathname.indexOf('mobile.html') === -1) {
+        window.location.href = 'mobile.html';}
+</script>
+</body>
+    </html>

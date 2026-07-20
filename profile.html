@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Saathi Profile</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="them.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+ <div class="profile-container">
+    <!-- Profile Page Corner Close Button -->
+<button type="button" class="page-close-btn" title="Go Back" onclick="goBack()">
+    <i class="fas fa-times"></i>
+</button>     
+
+    <div class="left-panels">
+        <!-- Profile Menu Card -->
+        <div class="card profile-menu">
+           <div class="user-header">
+    <img src="" id="profileImage" class="profile-user-img ds-premium-avatar" alt="Profile">
+    <div>
+        <h4>Your name</h4>
+        <p>username@email.com</p>
+    </div>
+</div>
+<nav class="nav-menu">
+    <a href="#" class="nav-item active" data-target="profileCard">
+    <span><i class="fas fa-user"></i> My Profile</span> 
+    <i class="fas fa-chevron-right"></i>
+        </a>
+    <a href="#" class="nav-item" data-target="settingsCard">
+        <span><i class="fas fa-cog"></i> Settings</span> 
+        <i class="fas fa-chevron-right"></i>
+    </a>
+    <a href="#" class="nav-item">
+        <span><i class="fas fa-bell"></i> Notification</span> 
+        <span class="status">Allow</span>
+    </a>
+    <a href="#" class="nav-item logout">
+        <span><i class="fas fa-sign-out-alt"></i> Log Out</span>
+    </a>
+</nav>
+        </div>
+
+        <!-- Settings Card -->
+        <div class="card settings-mini">
+            <div class="card-header"><h4>Settings</h4> <i class="fas fa-times"></i></div>
+<div class="setting-item">
+    <span>Theme</span>
+    <select id="globalThemeSelector" onchange="changeGlobalTheme(this.value)">
+        <option value="default">Main</option>
+        <option value="dark">Dark</option>
+        <option value="neon">Neon</option>
+        <option value="glass">Glass</option>
+        <option value="light">Light</option>
+    </select>
+</div>
+            <div class="setting-item"><span>Language</span> <p>Eng <i class="fas fa-chevron-down"></i></p></div>
+        </div>
+    </div>
+
+   <!-- Main Edit Card -->
+<div class="card main-edit" id="mainEditCard">
+    <div class="edit-header">
+        <div class="avatar-box">
+            <img src="" alt="Profile" class="profile-user-img" id="profileImage">
+            <button class="pencil-btn" type="button"><i class="fas fa-pencil-alt"></i></button>
+        </div>
+        <div>
+            <h3>Your name</h3>
+            <p>username@email.com</p>
+        </div>
+        <!-- Fixed Close Icon with Direct Function -->
+        <i class="fas fa-times close-icon" onclick="closeMainEditCard()"></i>
+    </div>
+    
+    <form class="profile-form" id="profileForm">
+        <div class="input-group"> 
+            <label>Name</label> 
+            <input type="text" value="your name" class="editable-input"> 
+        </div>
+        <div class="input-group"> 
+            <label>Email account</label> 
+            <input type="email" value="username@email.com" class="editable-input" disabled> 
+        </div>
+        <div class="input-group"> 
+            <label>Mobile number</label> 
+            <input type="text" placeholder="Add number" class="editable-input"> 
+        </div>
+        <div class="input-group"> 
+            <label>Location</label> 
+            <input type="text" value="USA" class="editable-input"> 
+        </div>
+        <button type="submit" class="save-btn">Save Change</button>
+    </form>
+</div>
+
+
+
+
+    <!-- Modal Background Overlay -->
+<div id="profileModal" class="ds-modal-overlay">
+    <div class="ds-modal-content">
+        <div class="ds-modal-header">
+            <h3>Change Profile</h3>
+            <i class="fas fa-times close-icon" onclick="document.getElementById('profileModal').classList.remove('active')"></i>
+        </div>
+        
+        <div class="ds-modal-body">
+            <button class="ds-option-btn" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-upload"></i> Upload from Device
+            </button>
+            <button class="ds-option-btn" onclick="openGooglePicker()">
+                <i class="fab fa-google"></i> Import from Google
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden inputs -->
+<input type="file" id="fileInput" style="display: none;" accept="image/*">
+<script src="profile.js"></script>
+<script src="them.js"></script>
+</body>
+</html>

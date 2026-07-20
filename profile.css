@@ -1,0 +1,731 @@
+body { background: #086a7a; font-family: 'Inter', sans-serif; }
+
+
+/* Top-Right Corner Close Button for Profile Page */
+.page-close-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+}
+
+.page-close-btn:hover {
+    background: #01061b; /* Hover par red warning look */
+    color: #f5f5f8;
+    border-color: #ef4444;
+    transform: scale(1.1) rotate(90deg); /* Smooth spin and zoom effect */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.page-close-btn:active {
+    transform: scale(0.95) rotate(90deg);
+}
+.profile-container, .main-edit {
+    position: relative; /* Button ko corner mein lock karne ke liye */
+}
+
+
+.profile-container {
+    display: flex; gap: 30px; padding: 50px; justify-content: center;
+}
+
+
+/* Sidebar Styling */
+
+
+/* Main Edit Card Styling */
+.main-edit { width: 500px; }
+
+/*  secon profile */
+.edit-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* Subtle separator */
+}
+
+/* Premium Avatar Box */
+.avatar-box {
+    position: relative;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Soft depth */
+    transition: transform 0.3s ease;
+}
+
+.avatar-box:hover {
+    transform: scale(1.03);
+}
+
+
+
+/* Container Layout */
+.left-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 320px;
+}
+
+/* Base Card Style */
+.card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(2, 219, 57, 0.03);
+}
+
+/* User Header */
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.user-header img {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px; /* Rounded-square look is very premium */
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.user-header h4 { margin: 0; font-size: 16px; color: #1a1a1a; }
+.user-header p { margin: 4px 0 0; font-size: 13px; color: #717171; }
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Elements ke beech perfect balance */
+}
+
+.nav-menu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14.5px;
+    border-radius: 14px;
+    background: transparent;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Ultra smooth transition */
+    border: 1px solid transparent;
+}
+
+/* Premium Hover Effect */
+.nav-menu a:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #1e75ff;
+    box-shadow: 0 4px 15px rgba(30, 117, 255, 0.15); /* Subtle glowing shadow */
+    border: 1px solid rgba(30, 117, 255, 0.1);
+}
+
+/* Icon Styling */
+.nav-menu i { 
+    font-size: 16px; 
+    margin-right: 14px; 
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.nav-menu a:hover i {
+    opacity: 1;
+    transform: translateX(2px); /* Subtle movement on hover */
+}
+
+/* ==========================================================
+   ACTIVE STATE (Jab card/link par click ho aur wo active rahe)
+   ========================================================== */
+.nav-menu a.active {
+    background: linear-gradient(135deg, #1e75ff 0%, #1d64d9 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px rgba(30, 117, 255, 0.35) !important;
+    border: 1px solid transparent !important;
+}
+
+.nav-menu a.active i {
+    opacity: 1 !important;
+    color: #ffffff !important;
+}
+
+.nav-menu a.active .status {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* Status Badge: Premium Glassy Look */
+.status { 
+    background: #e0f2fe; 
+    color: hsl(201, 86%, 35%);
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    font-size: 11px; 
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Logout Button Special Style */
+.nav-menu a.logout:hover {
+    background: #fff5f5;
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.1);
+}
+
+.nav-menu a.logout.active {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35) !important;
+}
+/* Settings Card */
+/* Card Header Utility */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   ✨ Settings Card Container (Fixed & Clean)
+   ========================================== */
+.settings-mini {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-mini:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.settings-mini .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.settings-mini .card-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a; /* Fixed: High contrast clear text */
+    letter-spacing: -0.3px;
+}
+
+/* Fixed: Proper Circular Close Button alignment */
+.settings-mini .card-header i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.settings-mini .card-header i:hover {
+    background: #fee2e2;
+    color: #ef4444; /* Clean red close hover */
+    transform: rotate(90deg);
+}
+
+/* Setting Items Container */
+.settings-mini .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid #f7f9fc;
+}
+
+.settings-mini .setting-item:last-child {
+    border-bottom: none;
+}
+
+/* Fixed: High contrast visible labels (Theme & Language text) */
+.settings-mini .setting-item span {
+    font-size: 16px;
+    color: #334155; /* Fixed: Proper dark slate color instead of faded/hidden text */
+    font-weight: 600;
+}
+
+/* Setting Action Buttons */
+.settings-mini .setting-item p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #2563eb; /* Premium Blue */
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 10px;
+    background: #f0f7ff;
+    border-radius: 10px;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    transition: all 0.2s ease;
+}
+
+.settings-mini .setting-item p:hover {
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.settings-mini .setting-item i {
+    font-size: 10px;
+    color: inherit;
+}
+
+/* Card Container: Modern Floating Style */
+.main-edit {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 550px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Edit Header: Sophisticated Layout */
+.edit-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 45px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f1f5f9;
+    position: relative;
+}
+
+/* Avatar Box: Premium Rounded-Square */
+.avatar-box {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+.avatar-box img {
+    width: 100%;
+    height: 100%;
+    border-radius: 22px; /* Smooth rounded square */
+    object-fit: cover;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+/* Pencil Button: Glassmorphic Floating */
+.pencil-btn {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: #ffffff;
+    color: #1e75ff;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pencil-btn:hover {
+    background: #1e75ff;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Header Text Styling */
+.edit-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.edit-header p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Close Icon: Subtle Close */
+.close-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #cbd5e1;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.close-icon:hover {
+    color: #ef4444;
+}
+
+
+
+
+
+/* Form Layout */
+/* Editable Form Inputs Inside Main Edit Card */
+.profile-form .input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.profile-form .editable-input {
+    border: 1px solid transparent;
+    background: transparent;
+    text-align: right;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    width: 200px;
+}
+
+.profile-form .editable-input:focus {
+    background: #f8fafc;
+    border-color: #3b82f6;
+    outline: none;
+    text-align: left;
+}
+
+.profile-form .editable-input:disabled {
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+.input-group label {
+    font-size: 14px;
+    color: #6e7987; /* Soft gray for labels */
+    font-weight: 550;
+}
+
+.input-group span {
+    font-size: 14px;
+    color: #073378; /* Darker text for values */
+    font-weight: 600;
+}
+
+/* Save Button: Ultra-Premium & Centered */
+/* Save Button: Ultra-Premium with Click Animation */
+.save-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px auto 0 auto;
+    background: linear-gradient(135deg, #1e75ff 0%, #1d64d9 100%);
+    color: #ffffff;
+    padding: 16px 36px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(30, 117, 255, 0.3);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: fit-content;
+    min-width: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.save-btn:hover {
+    background: linear-gradient(135deg, #2b7fff, #1653b8);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(30, 117, 255, 0.4);
+}
+
+/* Click hone par button dabne (press) ka animation */
+.save-btn:active {
+    transform: scale(0.96) translateY(0);
+    box-shadow: 0 4px 10px rgba(30, 117, 255, 0.2);
+}
+
+/* Success State Class (Jab details save ho jayengi) */
+.save-btn.success {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3) !important;
+}
+
+/* Focused State (Agar aap input fields ko click-to-edit banana chahein) */
+.input-group:hover {
+    background: #f8fafc;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 8px;
+    border-bottom-color: transparent;
+}
+
+
+
+
+
+
+
+/* --- Modal Overlay: Cinematic Blur --- */
+
+.ds-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Slightly darker focus */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-left: 80px;
+}
+
+.ds-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Modal Content: Premium Interior Layout */
+.ds-modal-content {
+    background: #ffffff;
+    width: 380px;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    position: relative; /* Close button positioning ke liye zaroori */
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Internal Close Button */
+/* Internal Close Button */
+.ds-modal-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 25px; 
+}
+
+.ds-modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.close-icon {
+    font-size: 12px;
+    padding: 8px 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.close-icon:hover { 
+    background: #e2e8f0; 
+    color: #e83232; 
+}
+
+
+
+/* Jab ye class add hogi, modal dikhega */
+.ds-modal-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Content Animation */
+.ds-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 24px;
+    transform: scale(0.9);
+    transition: all 0.3s ease-in-out;
+}
+
+.ds-modal-overlay.is-visible .ds-modal-content {
+    transform: scale(1);
+}
+
+.ds-modal-header { 
+    margin-bottom: 24px; 
+    text-align: center;
+}
+
+.ds-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* --- Option Buttons: Premium Touch --- */
+ .ds-option-btn {
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1e293b;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Icons aur text ko left-aligned modern look dene ke liye */
+    gap: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Icons ke liye extra styling taaki wo aur premium lagein */
+.ds-option-btn i {
+    font-size: 1.1rem;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.ds-option-btn:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+}
+
+.ds-option-btn:hover i {
+    background: #3b82f6;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.ds-option-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px -2px rgba(59, 130, 246, 0.1);
+}
+
+/* --- Animation --- */
+@keyframes modalPop {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+
+
+
+
+
+/* --- them by saurav --- */
+/* Setting Item Container (Agar pehle se nahi hai) */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.setting-item span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ultra-Premium Dropdown Styling */
+#globalThemeSelector {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: rgba(30, 117, 255, 0.08) url("data:image/svg+xml;utf8,<svg fill='%231e75ff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
+    background-size: 16px;
+    color: inherit;
+    padding: 10px 36px 10px 16px;
+    border: 1px solid rgba(30, 117, 255, 0.2);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown Hover & Focus Effects */
+#globalThemeSelector:hover {
+    background-color: rgba(30, 117, 255, 0.15);
+    border-color: #1e75ff;
+    box-shadow: 0 4px 12px rgba(30, 117, 255, 0.2);
+}
+
+#globalThemeSelector:focus {
+    border-color: #1e75ff;
+    box-shadow: 0 0 0 3px rgba(30, 117, 255, 0.25);
+}
+
+/* Dropdown Options Styling */
+#globalThemeSelector option {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px;
+    font-weight: 500;
+}

@@ -1,0 +1,564 @@
+ <!DOCTYPE html>
+
+<html lang="hi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Saathi</title>
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Yeh line CryptoJS library ko load karegi -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+ <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
+    authDomain: "agency-136b6.firebaseapp.com",
+    projectId: "agency-136b6",
+    storageBucket: "agency-136b6.firebasestorage.app",
+    messagingSenderId: "503663950718",
+    appId: "1:503663950718:web:8a30b18039c279ffac112f",
+    measurementId: "G-1K7QHDXKQ2"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  // Hum yahan direct 'db' variable bana rahe hain jo puri file mein access hoga
+  const db = firebase.firestore(); 
+</script>
+
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="them.css">
+    <link rel="stylesheet" href="mobile.css">
+
+</head>
+
+<body>
+
+<div id="toastNotification"></div>
+
+<div id="pinModal">
+    <div class="pin-card">
+        <h3>SECURE ACCESS</h3>
+        <div class="pin-inputs">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
+            <input type="password" class="pin-digit" maxlength="1">
+        </div>
+        
+        <!-- Yahan Button add kar diya gaya hai -->
+     
+        
+        <!-- Error status message ke liye -->
+        <p id="statusMessage">Incorrect PIN, try again</p>
+    </div>
+</div>
+    <div class="master-wrapper">
+
+        <header class="admin-header-node">
+
+            <div class="header-title-meta">
+
+                <h2><i class="fas fa-sliders-h"></i> DIGITAL SAATHI</h2>
+
+                <p>live folders, inner sub-portals, deep side-links aur colors sync kijiye.</p>
+
+            </div>
+
+            <a href="index.html" class="btn-back"><i class="fas fa-home"></i> View Site</a>
+
+        </header>
+
+
+
+        <nav class="control-modes-bar">
+
+            <button class="mode-tab-btn active" id="tabBtnLayout" onclick="switchActiveFormPanel('panelLayout', this)"><i class="fas fa-folder-tree"></i> 1. Sidebar Structure</button>
+
+            <button class="mode-tab-btn" id="tabBtnCards" onclick="switchActiveFormPanel('panelCards', this)"><i class="fas fa-th-large"></i> 2. Workspace Cards</button>
+
+            <button class="mode-tab-btn" id="tabBtnAlerts" onclick="switchActiveFormPanel('panelAlerts', this)"><i class="fas fa-bullhorn"></i> 3. System Alerts</button>
+
+            <button class="mode-tab-btn" id="tabBtnSettings" onclick="switchActiveFormPanel('panelSettings', this)"><i class="fas fa-cog"></i> 4. Control Settings</button>
+
+        </nav>
+
+
+
+        <!-- PANEL 1: SIDEBAR STRUCTURE MANAGEMENT -->
+
+        <div class="workspace-panel-box panel-active" id="panelLayout">
+
+            
+
+            <!-- CARD 1: MAIN FOLDER GENERATION -->
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="mainFolderFormTitle"><i class="fas fa-folder"></i> Creat Main Folder</div>
+
+                <input type="hidden" id="mainFolderEditIndex" value="-1">
+
+                
+
+                <div class="form-row-matrix-grid">
+
+                    <div class="form-group">
+
+                        <label>Folder Name</label>
+
+                        <input type="text" id="mainFolderNameInput" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Select Icon</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('mainFolderIconPopover')">
+
+                            <span id="mainFolderIconTriggerLabel"><i class="fas fa-folder"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="mainFolderIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Icon Theme</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('mainFolderColorPopover')">
+
+                            <span id="mainFolderColorTriggerLabel">Select Color</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="mainFolderColorPopover"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="mainFolderSubmitBtn" onclick="executeMainFolderAddition()"><i class="fas fa-plus"></i> Create Folder</button>
+
+                    <button class="btn-revert" id="mainFolderCancelBtn" style="display: none;" onclick="resetMainFolderForm()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+
+
+<div class="control-card-section">
+    <div class="section-heading-cluster" id="subPortalFormTitle">
+        <i class="fas fa-folder-open"></i> Creat Sub-Portal
+    </div>
+    <input type="hidden" id="subPortalEditIndex" value="-1">
+    
+    <div class="form-row-matrix-grid">
+        <div class="form-group">
+            <label>Main Folder</label>
+            <select id="subPortalParentSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Sub-Folder Name</label>
+            <input type="text" id="subPortalNameInput" placeholder="Enter Name">
+        </div>
+        
+        <!-- Icon Selector -->
+        <div class="form-group">
+            <label>Icon</label>
+            <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalIconPopover')">
+                <span id="subPortalIconTriggerLabel"><i class="fas fa-folder-open"></i> Select Icon</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <!-- ID MATCHED: subPortalIconPopover -->
+            <div class="icon-dropdown-popover" id="subPortalIconPopover"></div>
+        </div>
+
+        <!-- Theme Selector -->
+        <div class="form-group span-2-cols" style="margin-top: 4px;">
+            <label>Theme</label>
+            <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('subPortalColorPopover')">
+                <span id="subPortalColorTriggerLabel">Select Color</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <!-- ID MATCHED: subPortalColorPopover -->
+            <div class="color-dropdown-popover" id="subPortalColorPopover"></div>
+        </div>
+    </div>
+    
+    <div class="btn-panel">
+        <button class="btn-action-trigger" id="subPortalSubmitBtn" onclick="executeSubPortalAddition()">
+            <i class="fas fa-level-down-alt"></i> Create Sub-Portal
+        </button>
+        <button class="btn-revert" id="subPortalCancelBtn" style="display: none;" onclick="resetSubPortalForm()">
+            <i class="fas fa-times"></i> Cancel
+        </button>
+    </div>
+</div>
+
+
+
+            <!-- CARD 3: DEEP SIDE-LINKS -->
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="sideLinkFormTitle"><i class="fas fa-link"></i> CREATE DEEP LINKS </div>
+
+                <input type="hidden" id="sideLinkEditIndex" value="-1">
+
+                
+
+                <div class="form-row-matrix-grid">
+
+                    <!-- FOLDER SELECTION -->
+<div class="form-group">
+    <label>MAIN FOLDER</label>
+    <select id="sideLinkParentSelect" onchange="updateSubDropdownForSideLinks()"></select>
+</div>
+
+<!-- SUB-FOLDER SELECTION -->
+<div class="form-group">
+    <label>SUB-FOLDER</label>
+    <select id="sideLinkSubSelect"></select> <!-- यहाँ ID बदली है -->
+</div>
+                    
+
+                    <div class="form-group">
+
+                        <label>LINK NAME</label>
+
+                        <input type="text" id="sideLinkLabelInput" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Icon</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('sideLinkIconPopover')">
+
+                            <span id="sideLinkIconTriggerLabel"><i class="fas fa-link"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="sideLinkIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-2-cols" style="margin-top: 4px;">
+
+                        <label> URL</label>
+
+                        <input type="text" id="sideLinkUrlInput" value="Paste Link">
+
+                    </div>
+
+                    <div class="form-group" style="margin-top: 4px;">
+
+                        <label>Theme</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('sideLinkColorPopover')">
+
+                            <span id="sideLinkColorTriggerLabel">Select Color </span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="sideLinkColorPopover"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="sideLinkSubmitBtn" onclick="executeSideLinkAddition()"><i class="fas fa-link"></i> Add Deep-Link</button>
+
+                    <button class="btn-revert" id="sideLinkCancelBtn" style="display: none;" onclick="resetSideLinkForm()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PANEL 2: WORKSPACE DISPLAY GRID CARDS -->
+
+        <div class="workspace-panel-box" id="panelCards">
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster" id="cardFormTitleText"><i class="fas fa-plus-circle"></i> Workspace Cards</div>
+
+                <input type="hidden" id="cardEditModeTrackerId" value="-1">
+
+                
+
+                <div class="form-grid">
+
+<!-- STEP 1: SELECT MAIN FOLDER -->
+<div class="form-group">
+    <label>Step 1: Select Main Folder</label>
+    <select id="cardMainFolderContextSelector" onchange="updateSubDropdownForCards()">
+        <!-- ऑप्शंस -->
+    </select>
+</div>
+
+<!-- STEP 2: CHOOSE SUB-PORTAL -->
+<div class="form-group">
+    <label>Step 2: Choose Sub-Portal</label>
+    <!-- यहाँ ID बदली गई है -->
+    <select id="cardSubPortalContextSelector">
+        <option value="">Select Sub-Portal</option>
+    </select>
+</div>
+
+                    <div class="form-group">
+
+                        <label>Card Heading</label>
+
+                        <input type="text" id="cardTitleHeaderInput" placeholder="Enter Hading">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Redirect URL</label>
+
+                        <input type="text" id="cardUrlPathInput" value="Links">
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>SELECT CARD ICON</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('cardIconPopover')">
+
+                            <span id="workspaceCardIconTriggerLabel"><i class="fas fa-link"></i> Select Icon</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="icon-dropdown-popover" id="cardIconPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>THEME</label>
+
+                        <div class="premium-color-trigger-field" onclick="togglePopoverDrawerMenu('workspaceCardColorPopover')">
+
+                            <span id="workspaceCardColorTriggerLabel">Select Theme</span>
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </div>
+
+                        <div class="color-dropdown-popover" id="workspaceCardColorPopover"></div>
+
+                    </div>
+
+                    <div class="form-group span-full">
+
+                        <label>Card Description</label>
+
+                        <input type="text" id="cardDescriptionTextSummaryInput" placeholder="Details">
+
+                    </div>
+                   <!-- Line 400-403 ke badle ye rakhein -->
+<!-- Card Image URL Input -->
+<div class="form-group">
+    <label>Card Image URL</label>
+    <input type="text" id="cardImageUrlInput" placeholder="Paste image link here..." 
+           oninput="document.getElementById('cardImagePreview').src = this.value || 'default-icon.png'">
+</div>
+
+<!-- Image Preview Box -->
+<div class="form-group">
+    <label>Card Image Preview</label>
+    <div id="imagePreviewContainer" style="margin-top: 10px;">
+        <img id="cardImagePreview" src="default-icon.png" 
+             style="width: 60px; height: 60px; border-radius: 15px; object-fit: cover; border: 1px solid #ddd;">
+    </div>
+</div>
+
+
+                    <!-- NAYA: Dynamic Link Adder Area -->
+<div class="form-group span-full" style="border-top: 1px solid #eee; padding-top: 15px;">
+    <label style="color:#4f46e5; font-weight:600;">ADD MULTIPLE LINKS (Optional)</label>
+    <div id="linkContainer">
+        
+    </div>
+    <button type="button" class="premium-add-btn" onclick="addMoreLinks()">
+    <i class="fas fa-plus-circle"></i> Add More Link
+</button>
+</div>
+
+                </div>
+
+                <div class="btn-panel">
+
+                    <button class="btn-action-trigger" id="cardFormSubmitTriggerBtn" onclick="processCardPanelFormSubmission()"><i class="fas fa-save"></i> Create Card</button>
+
+                    <button class="btn-action-trigger btn-revert" id="cardFormCancelTriggerBtn" style="display: none;" onclick="clearCardFormInputsToInsertState()"><i class="fas fa-times"></i> Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+<!-- PANEL 3: SYSTEM ALERTS -->
+<div class="workspace-panel-box" id="panelAlerts">
+    <div class="control-card-section">
+        <div class="section-heading-cluster">
+            <i class="fas fa-bell"></i> Live Notice Management
+        </div>
+
+        <!-- नया प्रीमियम नोटिफिकेशन डिस्प्ले (Unique ID: premium-notice-display-zone) -->
+        <div id="premium-notice-display-zone" class="premium-notice-container" style="display: none;">
+            <div class="notice-inner-wrapper">
+                <i class="fas fa-bell fa-shake"></i> 
+                <span id="system-notice-text-content"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group span-full">
+                <label>System Notification Message</label>
+                <input type="text" id="globalNoticeBoardFeedInput" placeholder="Type your notice here...">
+            </div>
+        </div>
+
+        <div class="btn-panel">
+            <button class="btn-action-trigger" onclick="executeNoticeBoardUpdateFeed(this)">
+    <i class="fas fa-sync-alt"></i> Update Notice 
+</button>
+        </div>
+    </div>
+</div>
+
+
+
+        <!-- PANEL 4: CONTROL SETTINGS -->
+
+        <div class="workspace-panel-box" id="panelSettings">
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster"><i class="fas fa-key"></i> Modify Pass-PIN</div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <input type="password" id="newPinInput" placeholder="Enter New 4-Digit PIN" maxlength="4">
+
+                    
+
+                    </div>
+
+                </div>
+
+                <div class="btn-panel">
+
+                    <button class="update-btn" onclick="handlePinUpdate()">Update PIN</button>
+
+                </div>
+
+            </div>
+
+            <div class="control-card-section">
+
+                <div class="section-heading-cluster"><i class="fas fa-download"></i> System Database Export Node</div>
+
+                <div class="btn-panel" style="justify-content: flex-start;">
+
+                    <button class="btn-action-trigger" style="background:#A8D5E3; color:#2D3748; box-shadow: 0 4px 12px rgba(168, 213, 227, 0.3);" onclick="exportFullSystemBackupData()"><i class="fas fa-file-download"></i> Download Full JSON Backup</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOWER MONITOR TABLES DATAGRID PORTAL -->
+
+        <section class="database-manager-card">
+
+            <div class="manager-table-header-tabs">
+
+                <button class="sub-tab-btn active" onclick="switchManagementDataGridTab('cards', this)"><i class="fas fa-th-large"></i> Active Cards</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('sideLinks', this)"><i class="fas fa-link"></i> Side-Links</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('subPortals', this)"><i class="fas fa-folder-open"></i> Sub-Portals</button>
+
+                <button class="sub-tab-btn" onclick="switchManagementDataGridTab('mainFolders', this)"><i class="fas fa-folder"></i> Main Folders</button>
+
+            </div>
+
+            <div style="overflow-x: auto; max-height: 400px;">
+
+                <table class="data-viewport-table">
+
+                    <thead id="renderTableColumnsHead"></thead>
+
+                    <tbody id="renderTableRowsContentBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+<script src="them.js"></script>
+<script src="admin.js">  
+
+
+
+</script>
+
+</body>
+
+</html> 
