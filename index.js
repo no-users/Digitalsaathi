@@ -399,6 +399,7 @@ window.addEventListener('click', function(e) {
 });
 
 // Modal Control Functions
+// Modal Control Functions (Updated with clean blur toggle)
 function openSupremeHubModal() {
     document.getElementById('supremeHubModal').style.display = 'flex';
 }
@@ -463,7 +464,7 @@ function calculateHubMarks() {
     res.innerHTML = `📊 Percentage: <b>${p.toFixed(2)}%</b>`;
 }
 
-// 3. Percentage to CGPA Tab (Exact inverse formula)
+// 3. Percentage to CGPA Logic
 function calculateHubPerToCgpa() {
     let per = parseFloat(document.getElementById('hubPerInput').value);
     let res = document.getElementById('hubPerToCgpaResult');
@@ -476,7 +477,7 @@ function calculateHubPerToCgpa() {
     res.innerHTML = `🎓 Estimated CGPA: <b>${cgpa.toFixed(2)}</b>`;
 }
 
-// 4. CGPA to Percentage Tab (Exact inverse of per / 9.5 is cgpa * 9.5)
+// 4. CGPA to Percentage Logic
 function calculateHubCgpaToPer() {
     let cgpa = parseFloat(document.getElementById('hubCgpaInput').value);
     let res = document.getElementById('hubCgpaToPerResult');
@@ -484,11 +485,10 @@ function calculateHubCgpaToPer() {
     if (isNaN(cgpa) || cgpa < 0 || cgpa > 10) {
         res.style.display='block'; res.innerHTML='Sahi CGPA dalein (0-10)!'; return;
     }
-    let per = cgpa * 9.5;
+    let per = (cgpa - 0.75) * 10;
     res.style.display='block';
     res.innerHTML = `📈 Percentage: <b>${per.toFixed(2)}%</b>`;
 }
-
 
 // 5. Calculator Logic
 function hubAppend(val) { document.getElementById('hubCalcScreen').value += val; }
@@ -658,3 +658,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
     setTheme(savedTheme);
 });
+// Screen ki width check karne ka function
+    function checkDeviceAndRedirect() {
+        var screenWidth = window.innerWidth;
+        
+        // Agar screen mobile jaisi choti hai (768px ya usse kam)
+        if (screenWidth <= 768) {
+            // Aur agar hum abhi index.html par hain, tabhi mobile.html par bhejo
+            if (window.location.pathname.indexOf('mobile.html') === -1) {
+                window.location.href = 'mobile.html';
+            }
+        } 
+        // Agar screen laptop/desktop jaisi badi hai (768px se upar)
+        else {
+            // Aur agar hum galti se mobile.html par hain, tabhi index.html par wapas bhejo
+            if (window.location.pathname.indexOf('index.html') === -1 && window.location.pathname.endsWith('.html')) {
+                window.location.href = 'index.html';
+            }
+        }
+    }
+
+    // Page load hote hi turant check karega
+    checkDeviceAndRedirect();
+
+    // Jab user browser ki window ko chota ya bada karega, tab bhi ye auto-detect karega
+    window.addEventListener('resize', checkDeviceAndRedirect);
