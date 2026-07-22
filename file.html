@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Saathi Billing</title>
+    <title>Digital Saathi Upload</title>
      <link rel="icon" type="image/png" href="Web_Icon.png">
     <style>
         
@@ -458,7 +458,7 @@
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg">🏆 18. Epic Boss Fight Motivation</option>
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/week7.ogg">📢 19. Motivational Boss Speech Vibe</option>
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg">🚀 20. Ultimate Productivity Boost</option>
-</select>
+
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/Evillaugh.ogg">😂 1. Comedy Laugh Track Loop</option>
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg">⚠️ 2. Funny Alarm Wakeup Vibe</option>
     <option value="https://commondatastorage.googleapis.com/codeskulptor-assets/jump7.ogg">⚡ 3. Arcade Jump Boost (Funny Boost)</option>
@@ -488,7 +488,7 @@
         </div>
     </div>
 
-    <!-- Workspace Area -->
+    <!-- Workspace Area -->a
     <section class="workspace-main">
         <!-- Animated Sliding Banner -->
         <div class="slider-container" id="sliderSection">
@@ -772,7 +772,16 @@ function fetchNewHindiJoke() {
     "पप्पू: पापा, क्या मैं कल स्कूल ना जाऊं?\nपिता: क्यों बेटा, क्या हुआ?\nपप्पू: पेट में दर्द है!\nपिता: कल रविवार है मूर्ख, कल स्कूल बंद रहता है!\nपप्पू: ओह सॉरी पापा, भूल गया था, तो क्या मैं कल भी छुट्टी मना सकता हूँ?"
 ];
 
+let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * thousandHindiJokes.length);
+    } while (randomIndex === lastJokeIndex && thousandHindiJokes.length > 1);
 
+    lastJokeIndex = randomIndex;
+    const selectedJoke = thousandHindiJokes[randomIndex];
+    
+    openModal("😂 मजेदार हिंदी जोक", selectedJoke.replace(/\n/g, '<br>'));
+}
         let timeLeft = 25 * 60;
         let timerInterval = null;
         function startPomodoro() {
