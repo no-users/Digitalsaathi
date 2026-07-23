@@ -348,8 +348,14 @@ function openServicePopup(card) {
     } else {
         container.innerHTML = '<p class="no-data">No services available.</p>';
     }
+
+    // Popup khulte hi sidebar aur main-content par blur class add hogi (popup par nahi)
+    document.querySelector('.sidebar')?.classList.add('blurred');
+    document.querySelector('.main-content')?.classList.add('blurred');
+
     modal.style.display = 'flex';
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Close Button ko select karein
     const closeBtn = document.getElementById('closeModalBtn');
@@ -359,6 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
+            // Modal band hone par blur hata diya jayega
+            document.querySelector('.sidebar')?.classList.remove('blurred');
+            document.querySelector('.main-content')?.classList.remove('blurred');
         });
     }
 
@@ -366,6 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
+            // Modal band hone par blur hata diya jayega
+            document.querySelector('.sidebar')?.classList.remove('blurred');
+            document.querySelector('.main-content')?.classList.remove('blurred');
         }
     });
 });
@@ -678,8 +690,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Page load hote hi turant check karega
-    checkDeviceAndRedirect();
+    
 
-    // Jab user browser ki window ko chota ya bada karega, tab bhi ye auto-detect karega
-    window.addEventListener('resize', checkDeviceAndRedirect);
+
+
+
+
+
+
+
+
+
+
+
+
+    
