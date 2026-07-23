@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Saathi</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
+        authDomain: "agency-136b6.firebaseapp.com",
+        databaseURL: "https://agency-136b6-default-rtdb.firebaseio.com",
+        projectId: "agency-136b6",
+        storageBucket: "agency-136b6.firebasestorage.app",
+        messagingSenderId: "503663950718",
+        appId: "1:503663950718:web:8a30b18039c279ffac112f",
+        measurementId: "G-1K7QHDXKQ2"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore(); 
+      window.db = db;
+    </script>
+   
+    <link rel="stylesheet" href="them.css">
+    <link rel="stylesheet" href="mobdigitalsaathi.css">
+</head>
+<body>
+<!-- Mobile App Header (Yeh sirf mobile screens par dikhega) -->
+<!-- Exact Reference Image Style Top Header -->
+<div class="mobile-top-header">
+    <!-- Top Row: Location & Notification -->
+    <div class="header-top-row">
+        <div class="location-container">
+            <span class="location-title">Location</span>
+            <div class="location-target">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="loc-text">New York, USA</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+        <div class="notification-badge-btn">
+            <i class="fas fa-bell"></i>
+        </div>
+    </div>
+
+    <!-- Second Row: Search Bar & Filter Button -->
+    <div class="search-filter-container">
+        <div class="search-input-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="toolSearchField" placeholder="Search...">
+        </div>
+        <button class="filter-action-btn">
+            <i class="fas fa-sliders-h"></i>
+        </button>
+    </div>
+</div>
+
+
+
+
+
+<!-- Mobile Urgent Update Banner -->
+<!-- Banner Section with Auto-Scroll & Dynamic Hashtags -->
+<div class="banner-section-wrapper">
+    <div class="banner-header-row">
+        <h3 id="bannerHashtag">#SpecialForYou</h3>
+        <a href="#" class="see-all-banners">See All</a>
+    </div>
+
+    <!-- Banner Carousel Container -->
+    <div class="banner-carousel-container" id="bannerCarousel">
+        <!-- Banner will be loaded dynamically via JS -->
+    </div>
+
+    <!-- Pagination Dots -->
+    <div class="banner-dots" id="bannerDots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+</div>
+
+
+
+
+<!-- Firebase se dynamic categories yahan horizontal scroll mein load hongi -->
+<div class="mobile-category-wrapper">
+
+    <!-- Category Section with Heading -->
+<div class="mobile-category-wrapper">
+    <div class="category-section-header">
+        <h4>Categories</h4>
+        <a href="#" class="see-all-link">See All</a>
+    </div>
+    
+</div>
+    <div class="mobile-category-scroll" id="firebaseMobileCategories">
+        <!-- JS yahan automatically categories inject karega -->
+        <span class="loading-text">Loading ....</span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Sub-Folders / Dynamic Services Section -->
+<!-- Sub-folders Horizontal Scroll Chips -->
+<div class="filter-chips-wrapper">
+    <div class="filter-chips-scroll" id="firebaseSubChips">
+        <!-- Static All & Recent buttons + Dynamic Firebase chips -->
+        <button class="chip-btn active" onclick="this.classList.toggle('active')">All</button>
+        <button class="chip-btn" onclick="this.classList.toggle('active')">Recent</button>
+    </div>
+</div>
+
+
+<!-- Multi-Link Popup Modal -->
+<div class="mobile-modal-overlay" id="multiLinkModal">
+    <div class="mobile-modal-content">
+        <div class="mobile-modal-header">
+            <h3 id="modalTitle">Service Links</h3>
+            <button class="mobile-modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+        <div class="mobile-modal-body" id="modalLinksList">
+            <!-- Links will be generated here dynamically -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Firebase Dynamic Cards Container -->
+<div class="mobile-cards-feed-container" id="firebaseCardsContainer">
+    <!-- Cards will be loaded dynamically here -->
+    <div style="text-align: center; padding: 20px; color: #64748b; font-size: 13px;">Loading cards from Firebase...</div>
+</div>
+
+
+<!-- Mobile Bottom Floating Navigation Bar -->
+<nav class="mobile-bottom-dock">
+    <a href="index.html" class="dock-item active">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="Saathi.html" class="dock-item">
+        <i class="fas fa-th-large"></i>
+        <span>Kits</span>
+    </a>
+    <a href="chatsupport.html" class="dock-item">
+        <i class="fas fa-headset"></i>
+        <span>Support</span>
+    </a>
+    <a href="profile.html" class="dock-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+    </a>
+</nav>
+
+
+
+<!-- Yeh aapke desktop wali main JavaScript file ko mobile.html se jod dega -->
+<script src="../index.js"></script>
+    <script src="mobile.js"></script>
+<script>
+// --- Main Firebase Loading Function ---
+async function loadCardsFromFirebase() {
+    try {
+        const docRef = db.collection("data").doc("matrix_config");
+        const doc = await docRef.get();
+
+        if (doc.exists) {
+            const data = doc.data();
+            const cardsArray = data.cards || [];
+            
+            const container = document.getElementById('firebaseCardsContainer');
+            container.innerHTML = ""; 
+
+            let i = 0;
+            while (i < cardsArray.length) {
+                // Pattern: 2 Vertical Cards Group
+                let verticalGroup = document.createElement('div');
+                verticalGroup.className = 'mobile-vertical-group';
+                
+                for (let v = 0; v < 2 && i < cardsArray.length; v++, i++) {
+                    // Type bhejenge taaki sahi class lage
+                    verticalGroup.appendChild(createCardElementMixed(cardsArray[i]));
+                }
+                container.appendChild(verticalGroup);
+
+                if (i >= cardsArray.length) break;
+
+                // Pattern: Horizontal Scroll Row (Fixed for scroll)
+                let horizontalScroll = document.createElement('div');
+                horizontalScroll.className = 'mobile-horizontal-scroll-row';
+                
+                // Horizontal container scroll init (if not using drag-to-scroll)
+                // (Agar drag-to-scroll lagaya hai toh yeh scroll-behavior smooth css se handle hoga)
+
+                for (let h = 0; h < 3 && i < cardsArray.length; h++, i++) {
+                    horizontalScroll.appendChild(createCardElementMixed(cardsArray[i]));
+                }
+                container.appendChild(horizontalScroll);
+            }
+        }
+    } catch (error) {
+        console.error("Error loading cards:", error);
+    }
+}
+
+// --- Updated Helper Function to handle Mixed Layout AND Link Types ---
+function createCardElementMixed(card) {
+    const cardElement = document.createElement('div');
+    // Dono layout mein 'mobile-utility-card' common class rahegi
+    cardElement.className = 'mobile-utility-card'; 
+
+    // Icon Box
+    const iconBoxHTML = `
+        <div class="card-icon-box" style="background-color: ${card.color || '#1e293b'}; color: #fff;">
+            <i class="${card.icon || 'fas fa-star'}"></i>
+        </div>
+    `;
+
+    // Text Info Box
+    const infoBoxHTML = `
+        <div class="card-info-box">
+            <h4>${card.title || 'Service'}</h4>
+            <p>${card.desc || 'Click to proceed'}</p>
+        </div>
+    `;
+
+    cardElement.innerHTML = iconBoxHTML + infoBoxHTML;
+
+    // --- CRITICAL LOGIC: Handle Click based on Firebase 'type' field ---
+    cardElement.onclick = (e) => {
+        e.preventDefault(); // Prevent default anchor behavior
+
+        if (card.type === 'single' && card.url) {
+            // **Case 1: Direct Open** (Agar 'type' 'single' hai)
+            window.open(card.url, '_blank'); 
+
+        } else if (card.type === 'multiple' && card.links && card.links.length > 0) {
+            // **Case 2: Open Popup** (Agar 'type' 'multiple' hai)
+            openMultiLinkPopup(card.title, card.links);
+
+        } else if (!card.type && card.url) {
+            // Fallback: Agar purana data hai jisme 'type' nahi hai, toh direct open karein
+            window.open(card.url, '_blank');
+            
+        } else {
+            console.warn("Card data incomplete:", card);
+        }
+    };
+
+    return cardElement;
+}
+
+
+// --- Function to open the Popup Modal ---
+const multiLinkModal = document.getElementById('multiLinkModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalLinksList = document.getElementById('modalLinksList');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+function openMultiLinkPopup(title, linksArray) {
+    // Title update karein
+    modalTitle.textContent = title;
+    
+    // Purani list clear karein
+    modalLinksList.innerHTML = "";
+
+    // Nayee links dynamically generate karein
+    linksArray.forEach(link => {
+        const linkAnchor = document.createElement('a');
+        linkAnchor.href = link.url;
+        linkAnchor.target = '_blank';
+        linkAnchor.className = 'modal-link-item';
+        
+        linkAnchor.innerHTML = `
+            <span>${link.name || 'Visit Link'}</span>
+            <i class="fas fa-external-link-alt"></i>
+        `;
+        
+        modalLinksList.appendChild(linkAnchor);
+    });
+
+    // Popup show karein
+    multiLinkModal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Background scroll disable
+}
+
+// --- Function to close the Popup Modal ---
+function closeMultiLinkPopup() {
+    multiLinkModal.classList.remove('active');
+    document.body.style.overflow = ''; // Background scroll enable
+    // Optional: Kuch seconds baad links list clear kar sakte hain
+}
+
+// Event Listener for Close Button
+modalCloseBtn.addEventListener('click', closeMultiLinkPopup);
+
+// Event Listener for clicking outside the modal content to close it
+multiLinkModal.addEventListener('click', (e) => {
+    if (e.target === multiLinkModal) {
+        closeMultiLinkPopup();
+    }
+});
+
+// Page load hone par function call karein
+document.addEventListener("DOMContentLoaded", () => {
+    loadCardsFromFirebase();
+});
+
+
+</script>
+</body>
+</html>
