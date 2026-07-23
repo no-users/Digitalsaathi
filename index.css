@@ -9,29 +9,8 @@
     --accent: #6366f1;
 }
 
-[data-theme="light"] {
-    --bg-color: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #1e293b;
-    --text-sub: #64748b;
-    --accent: #4f46e5;
-}
 
-[data-theme="ocean"] {
-    --bg-color: #083344;
-    --card-bg: #155e75;
-    --text-main: #ffffff;
-    --text-sub: #bae6fd;
-    --accent: #06b6d4;
-}
 
-[data-theme="sunset"] {
-    --bg-color: #450a0a;
-    --card-bg: #7f1d1d;
-    --text-main: #fff1f2;
-    --text-sub: #fca5a5;
-    --accent: #ef4444;
-}
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
 body {
@@ -71,8 +50,7 @@ body::before {
     box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
 }
 /* --- 1. LOGO & SIDEBAR FIX --- */
-/* --- 1. LOGO & SIDEBAR LAYOUT FIX (Absolute Unblurred Layer) --- */
-/* --- 1. FIXED SIDEBAR & CLEAN STACKING --- */
+
 .sidebar {
     width: 280px !important;
     min-width: 280px !important;
@@ -86,7 +64,7 @@ body::before {
     left: 0 !important;
     overflow-y: auto !important;
     flex-shrink: 0 !important;
-    z-index: 999999 !important; /* Sidebar ko sabse upar rakha hai taaki blur is par asar na dale */
+    z-index: 10 !important; /* Isko 999999 se hata kar 10 ya 50 kar dein */
 }
 
 /* --- Main Content Layout --- */
@@ -100,12 +78,32 @@ body::before {
 }
 
 /* Jab popup khulega toh yeh class main-content ke andar ke parts ko blur karegi, sidebar ko nahi */
-.main-content.blur-active > *:not(.hub-modal-overlay) {
+
+.sidebar.blurred,
+.main-content.blurred {
     filter: blur(8px);
     transition: filter 0.3s ease;
 }
-
 /* --- Modal Overlay (Blur sirf dashboard par aayega) --- */
+.sidebar-logo {
+    padding: 20px 24px; 
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+    
+    /* --- Yeh nayi properties add karni hain --- */
+    position: sticky !important;
+    top: 0 !important;
+    background: #ffffff !important; /* Scroll karte waqt peeche ka text na dikhe isliye background solid white rahega */
+    z-index: 10 !important;
+    border-bottom: 1px solid #f1f5f9; /* Halka sa divider niche aa jayega jo header jaisa feel dega */
+}
 
 .sidebar-logo {
     padding: 30px 24px; /* Fix: Padding balance ki hai */
@@ -1290,13 +1288,12 @@ text-align: center;
 /* Sub Options Menu - Ab yeh NEECHE se UPAR ki taraf khulega */
 .supreme-fab-menu {
     display: flex;
-    flex-direction: column-reverse; /* Icons ek ke upar ek upar ki taraf aayenge */
+    flex-direction: column-reverse;
     align-items: center;
     gap: 12px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px) scale(0.8);
-    transition: all 0.3s cubic-keyframes cubic-bezier(0.16, 1, 0.3, 1);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1340,12 +1337,7 @@ text-align: center;
     transform: rotate(135deg);
 }
 
-/* --- Dark Glass Modal Styling --- */
-/* Jab popup active hoga, tab yeh class main-content ko blur kar degi */
 
-
-/* Modal overlay par wapas blur laga denge */
-/* --- 100% Stable Modal Overlay (No Filter Blur Issues) --- */
 .hub-modal-overlay {
     display: none;
     position: fixed;
