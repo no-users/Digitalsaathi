@@ -1581,3 +1581,72 @@ text-align: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 3;
 }
+
+
+
+
+
+/* Jab screen mobile ya choti ho (768px ya usse kam) */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Body ko column direction dein taaki side-by-side overflow na ho */
+    body {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+
+    /* 2. Sidebar ko mobile ke upar full width banayein */
+    .sidebar {
+        width: 100% !important;
+        min-width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+    }
+
+    /* 3. Main content area ko full width dein */
+    .main-content {
+        width: 100% !important;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
+
+    /* 4. Top Navbar ki items ko vertically stack karein taaki overlap na ho */
+    .top-navbar {
+        padding: 15px 20px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 15px !important;
+    }
+
+    /* 5. Center tabs (Quick & Kits) ka absolute positioning hata kar normal karein */
+    .tab-container {
+        position: relative !important;
+        left: auto !important;
+        transform: none !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    /* 6. Header actions aur Search box ko fit karein */
+    .header-actions {
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .search-box-wrap {
+        width: 100% !important;
+    }
+
+    /* 7. Cards grid ko mobile par 1 column mein set karein */
+    .services-grid-container {
+        grid-template-columns: 1fr !important;
+        padding: 10px !important;
+    }
+
+    /* 8. Notice box aur clock row ko column banayein */
+    .info-grid-row {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+}
