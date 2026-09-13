@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Saathi Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-deep:#0e3b30;
+    --teal:#12503f;
+    --teal-bright:#1a6e54;
+    --cream:#f7f3ea;
+    --ink:#16221d;
+    --muted:#6b7a72;
+    --line:#e7e2d6;
+    --card:#ffffff;
+    --gold:#e7a944;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter','Noto Sans Devanagari',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hi{font-family:'Noto Sans Devanagari','Inter',sans-serif;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .stars{color:var(--gold);letter-spacing:1px;font-size:12px;}
+
+  .utility{background:var(--teal-deep);color:#cfe7dc;font-size:12px;}
+  .utility .wrap{display:flex;justify-content:space-between;align-items:center;padding:6px 28px;}
+  .utility a{text-decoration:none;color:#cfe7dc;font-weight:600;}
+
+  header.site{background:var(--teal);color:#fff;padding:14px 0;}
+  header.site .wrap{display:flex;align-items:center;gap:26px;}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;white-space:nowrap;}
+  .logo .mark{
+    width:32px;height:32px;border-radius:9px;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+    color:var(--teal-deep);font-weight:800;
+  }
+  nav.main{display:flex;gap:22px;font-size:13.5px;font-weight:600;white-space:nowrap;}
+  nav.main a{text-decoration:none;color:#eaf3ee;opacity:.92;}
+  nav.main a:hover{opacity:1;text-decoration:underline;}
+  .searchbar{
+    flex:1;display:flex;align-items:center;background:#fff;border-radius:9px;overflow:hidden;
+    min-width:160px;
+  }
+  .searchbar input{
+    border:none;outline:none;flex:1;padding:10px 14px;font-size:13.5px;font-family:inherit;
+  }
+  .searchbar button{
+    border:none;background:var(--gold);color:var(--teal-deep);padding:0 16px;cursor:pointer;
+    font-weight:800;font-size:14px;
+  }
+  .header-icons{display:flex;align-items:center;gap:20px;font-size:13px;font-weight:600;white-space:nowrap;}
+  .header-icons .item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
+  .header-icons .icon{font-size:18px;}
+  .badge-count{
+    position:absolute;top:-6px;right:-10px;background:var(--gold);color:var(--teal-deep);
+    font-size:10px;font-weight:800;border-radius:50%;width:16px;height:16px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .hero{background:linear-gradient(120deg,#efe6d3 0%, #f7f3ea 55%);padding:0;}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:30px;padding:52px 28px;}
+  .hero .eyebrow{font-size:13px;font-weight:700;color:var(--teal-bright);letter-spacing:.3px;margin-bottom:12px;}
+  .hero h1{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,4vw,44px);
+    line-height:1.14;margin:0 0 18px;letter-spacing:-.4px;
+  }
+  .hero h1 em{font-style:normal;color:var(--teal-bright);}
+  .hero p{font-size:15.5px;color:var(--muted);max-width:420px;margin:0 0 26px;}
+  .btn-buy{
+    display:inline-flex;align-items:center;gap:9px;background:var(--teal-deep);color:#fff;
+    text-decoration:none;font-weight:700;font-size:14.5px;padding:14px 28px;border-radius:100px;
+    box-shadow:0 10px 22px -10px rgba(14,59,48,.55);
+    transition:transform .12s ease, background .12s ease;
+  }
+  .btn-buy:hover{transform:translateY(-1px);background:var(--teal-bright);}
+
+  .hero-art{
+    background:linear-gradient(160deg,var(--teal) 0%, var(--teal-deep) 100%);
+    border-radius:22px;padding:26px;position:relative;
+    box-shadow:0 24px 50px -22px rgba(14,59,48,.45);
+  }
+  .browser-mock{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px -14px rgba(0,0,0,.4);}
+  .browser-bar{background:#e9ede9;padding:8px 10px;display:flex;gap:6px;align-items:center;}
+  .browser-bar span{width:8px;height:8px;border-radius:50%;background:#c7cec8;}
+  .browser-body{padding:22px 20px 26px;}
+  .ext-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eee;}
+  .ext-row .ic{width:34px;height:34px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .ext-row .tt{font-weight:700;font-size:12.5px;color:#1b241f;}
+  .ext-row .ss{font-size:10.5px;color:#8a938d;}
+  .ext-row:last-child{border-bottom:none;}
+  .float-badge{
+    position:absolute;top:-14px;right:18px;background:var(--gold);color:var(--teal-deep);
+    font-weight:800;font-size:12px;padding:8px 16px;border-radius:100px;
+    box-shadow:0 8px 18px -8px rgba(0,0,0,.35);
+  }
+
+  .filterbar{border-bottom:1px solid var(--line);background:#fff;}
+  .filterbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;flex-wrap:wrap;gap:10px;}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{
+    font-size:12.5px;font-weight:600;color:var(--ink);border:1.5px solid var(--line);
+    padding:8px 14px;border-radius:100px;background:#fff;cursor:default;display:flex;align-items:center;gap:6px;
+  }
+  .sortby{font-size:12.5px;color:var(--muted);font-weight:600;}
+
+  section.products{padding:44px 0 70px;}
+  .products h2{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin:0 0 22px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:flex;flex-direction:column;
+    transition:box-shadow .15s ease, transform .15s ease;
+    text-decoration:none;color:inherit;position:relative;
+  }
+  .card.live:hover{box-shadow:0 16px 34px -18px rgba(14,59,48,.35);transform:translateY(-3px);}
+  .card-media{
+    background:#f1efe6;height:150px;display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .card-media .ic{font-size:44px;}
+  .wish{
+    position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;
+    background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:13px;
+  }
+  .tag-free{
+    position:absolute;top:10px;left:10px;background:var(--teal-deep);color:#fff;
+    font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:100px;
+  }
+  .card-body{padding:14px 15px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-cat{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .card-name{font-weight:700;font-size:14.5px;line-height:1.3;}
+  .card-rating{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);}
+  .card-desc{font-size:12px;color:var(--muted);line-height:1.5;flex:1;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:6px;}
+  .price{font-weight:800;font-size:15px;color:var(--teal-deep);}
+  .btn-cart{
+    border:1.5px solid var(--teal-deep);color:var(--teal-deep);background:#fff;
+    font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:100px;
+    transition:background .15s, color .15s;
+  }
+  .card.live:hover .btn-cart{background:var(--teal-deep);color:#fff;}
+
+  .card.soon{opacity:.65;}
+  .card.soon .card-media{background:repeating-linear-gradient(135deg,#f1efe6,#f1efe6 10px,#eae7db 10px,#eae7db 20px);}
+  .card.soon .btn-cart{border-color:var(--line);color:var(--muted);cursor:default;}
+
+  footer.site{background:var(--teal-deep);color:#cfe7dc;padding:30px 0;margin-top:20px;}
+  footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;}
+  footer.site a{text-decoration:none;color:#cfe7dc;font-weight:600;}
+
+  @media (max-width:920px){
+    header.site .wrap{flex-wrap:wrap;}
+    nav.main{order:3;width:100%;overflow-x:auto;}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+
+  /* ---------- Password gate ---------- */
+  #saathiGate{
+    position:fixed;inset:0;z-index:99999;
+    background:
+      radial-gradient(900px 500px at 15% 0%, rgba(231,169,68,.10), transparent 60%),
+      var(--teal-deep);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  #saathiGate.hidden{display:none;}
+  body.locked > *:not(#saathiGate){display:none !important;}
+  .gate-card{
+    background:#fff;border-radius:18px;padding:36px 32px;max-width:360px;width:100%;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.5);text-align:center;
+  }
+  .gate-mark{
+    width:52px;height:52px;border-radius:14px;margin:0 auto 18px;
+    background:linear-gradient(145deg,var(--gold) 0%, #c98d2e 100%);
+    display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;
+  }
+  .gate-card h2{font-family:'Fraunces',serif;font-size:20px;margin:0 0 8px;}
+  .gate-card p{font-size:13px;color:var(--muted);margin:0 0 22px;}
+  #saathiGateInput{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:15px;text-align:center;letter-spacing:2px;margin-bottom:12px;font-family:inherit;
+    outline:none;
+  }
+  #saathiGateInput:focus{border-color:var(--teal-bright);}
+  #saathiGateBtn{
+    width:100%;padding:12px;border:none;border-radius:10px;background:var(--teal-deep);
+    color:#fff;font-weight:700;font-size:14.5px;cursor:pointer;transition:background .15s;
+  }
+  #saathiGateBtn:hover{background:var(--teal-bright);}
+  #saathiGateError{color:#c0394a;font-size:12.5px;font-weight:600;margin-top:12px;min-height:16px;}
+  .gate-shake{animation:saathiShake .35s;}
+  @keyframes saathiShake{
+    25%{transform:translateX(-6px);} 75%{transform:translateX(6px);}
+  }
+</style>
+</head>
+<body class="locked">
+
+  <!-- Password gate — blocks the page until the right password is
+       entered. This is a simple client-side lock (good for keeping
+       casual visitors out); it is NOT real security, since anyone can
+       view this page's source and see the password. Don't put
+       anything here you'd need to protect from a determined person. -->
+  <div id="saathiGate">
+    <div class="gate-card">
+      <div class="gate-mark">🔒</div>
+      <h2>Digital Saathi Store</h2>
+      <p class="hi">Aage badhne ke liye password daalein</p>
+      <input type="password" id="saathiGateInput" placeholder="Password" autocomplete="off">
+      <button id="saathiGateBtn" type="button">Enter</button>
+      <div id="saathiGateError"></div>
+    </div>
+  </div>
+
+  <div class="utility">
+    <div class="wrap">
+      <span class="hi">100% मुफ़्त डाउनलोड — कोई पैसा नहीं</span>
+      <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder खोलें</a>
+    </div>
+  </div>
+
+  <header class="site">
+    <div class="wrap">
+      <div class="logo"><span class="mark">DS</span> Digital Saathi</div>
+      <nav class="main">
+        <a href="#products">Categories</a>
+        <a href="#products">Extensions</a>
+        <a href="#products">New</a>
+        <a href="#">Support</a>
+      </nav>
+      <div class="searchbar">
+        <input type="text" placeholder="Tools खोजें...">
+        <button>Search</button>
+      </div>
+      <div class="header-icons">
+        <div class="item"><span class="icon">👤</span>Account</div>
+        <div class="item">
+          <span class="icon">⬇️</span>Downloads
+          <span class="badge-count">1</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow hi">आपके सेवा केंद्र के लिए</div>
+        <h1 class="hi">रोज़ के फॉर्म-भरने के काम को <em>तेज़</em> बनाएं</h1>
+        <p class="hi">दस्तावेज़ अपलोड, CAPTCHA, और सारी फॉर्म-फिलिंग — Digital Saathi extension से मिनटों में। पूरी तरह मुफ़्त।</p>
+        <a class="btn-buy" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">अभी Download करें</a>
+      </div>
+      <div class="hero-art">
+        <span class="float-badge">100% Free</span>
+        <div class="browser-mock">
+          <div class="browser-bar"><span></span><span></span><span></span></div>
+          <div class="browser-body">
+            <div class="ext-row">
+              <div class="ic">🧩</div>
+              <div><div class="tt">Digital Saathi</div><div class="ss">Active on this page</div></div>
+            </div>
+            <div class="ext-row">
+              <div class="ic">📎</div>
+              <div><div class="tt">Documents</div><div class="ss">4 uploaded</div></div>
+            </div>
+            <div class="ext-row">
+              <div class="ic">✅</div>
+              <div><div class="tt">Form auto-filled</div><div class="ss">Ready to submit</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="filterbar">
+    <div class="wrap">
+      <div class="filters">
+        <span class="chip">Tool Type ⌄</span>
+        <span class="chip">Platform ⌄</span>
+        <span class="chip">Rating ⌄</span>
+        <span class="chip">Category ⌄</span>
+      </div>
+      <div class="sortby">Sort by: Popular ⌄</div>
+    </div>
+  </div>
+
+  <section class="products wrap" id="products">
+    <h2>Tools For You!</h2>
+    <div class="grid">
+
+      <a class="card live" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">
+        <div class="card-media">
+          <span class="tag-free">FREE</span>
+          <span class="wish">♡</span>
+          <span class="ic">🧩</span>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Chrome Extension</div>
+          <div class="card-name">Digital Saathi</div>
+          <div class="card-rating"><span class="stars">★★★★★</span> (128)</div>
+          <p class="card-desc hi">RTPS/e-District फॉर्म, दस्तावेज़ अपलोड और CAPTCHA — सब एक जगह।</p>
+          <div class="card-foot">
+            <span class="price">Free</span>
+            <span class="btn-cart">Download</span>
+          </div>
+        </div>
+      </a>
+
+      <div class="card soon">
+        <div class="card-media"><span class="ic">🗂️</span></div>
+        <div class="card-body">
+          <div class="card-cat hi">जल्द आ रहा है</div>
+          <div class="card-name hi">अगला Tool</div>
+          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
+          <p class="card-desc hi">यहाँ आपका अगला बनाया हुआ tool दिखेगा।</p>
+          <div class="card-foot">
+            <span class="price">—</span>
+            <span class="btn-cart">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card soon">
+        <div class="card-media"><span class="ic">🖨️</span></div>
+        <div class="card-body">
+          <div class="card-cat hi">जल्द आ रहा है</div>
+          <div class="card-name hi">अगला Tool</div>
+          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
+          <p class="card-desc hi">एक और खाली जगह — नए tool के लिए तैयार।</p>
+          <div class="card-foot">
+            <span class="price">—</span>
+            <span class="btn-cart">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card soon">
+        <div class="card-media"><span class="ic">📊</span></div>
+        <div class="card-body">
+          <div class="card-cat hi">जल्द आ रहा है</div>
+          <div class="card-name hi">अगला Tool</div>
+          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
+          <p class="card-desc hi">एक और खाली जगह — नए tool के लिए तैयार।</p>
+          <div class="card-foot">
+            <span class="price">—</span>
+            <span class="btn-cart">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© 2026 Digital Saathi Store</span>
+      <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder</a>
+    </div>
+  </footer>
+
+<script>
+(function () {
+  // ---- Change the password here ----
+  var SAATHI_PASSWORD = "saathi123";
+  // -----------------------------------
+
+  var gate = document.getElementById("saathiGate");
+  var input = document.getElementById("saathiGateInput");
+  var btn = document.getElementById("saathiGateBtn");
+  var errorBox = document.getElementById("saathiGateError");
+  var card = gate.querySelector(".gate-card");
+
+  function unlock() {
+    document.body.classList.remove("locked");
+    gate.classList.add("hidden");
+    sessionStorage.setItem("saathiUnlocked", "1");
+  }
+
+  function tryUnlock() {
+    if (input.value === SAATHI_PASSWORD) {
+      unlock();
+    } else {
+      errorBox.textContent = "Galat password, dobara try karein.";
+      card.classList.remove("gate-shake");
+      void card.offsetWidth; // restart animation
+      card.classList.add("gate-shake");
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  // Already unlocked earlier in this browser tab/session? Skip the
+  // gate — re-typing the password every single reload would be
+  // annoying. Closing the browser/tab clears this (sessionStorage),
+  // so it's asked for again next visit.
+  if (sessionStorage.getItem("saathiUnlocked") === "1") {
+    unlock();
+  } else {
+    input.focus();
+  }
+
+  btn.addEventListener("click", tryUnlock);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") tryUnlock();
+  });
+})();
+</script>
+</body>
+</html>

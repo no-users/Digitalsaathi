@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Saathi - Official OTR Smart Card Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .card-container { box-shadow: none !important; border: 1px solid #cbd5e1 !important; page-break-inside: avoid; margin: 0 auto 20px auto !important; }
+        }
+        :root {
+            --ink: #0d1b2a;
+            --teal: #0f766e;
+            --amber: #b45309;
+            --paper: #fbfaf7;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ink);
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(15, 118, 110, 0.20), transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(180, 83, 9, 0.14), transparent 45%);
+        }
+        .display-font { font-family: 'Space Grotesk', sans-serif; }
+        .mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+
+        /* CR80 card proportions */
+        .smart-card {
+            width: 460px;
+            height: 280px;
+            background: var(--paper);
+            border-radius: 14px;
+            box-shadow: 0 24px 48px -14px rgba(0,0,0,0.5), 0 0 0 1px rgba(13,27,42,0.06);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 14px 1fr;
+        }
+        .side-rail {
+            background: repeating-linear-gradient(
+                180deg,
+                var(--teal) 0px, var(--teal) 10px,
+                transparent 10px, transparent 18px
+            );
+            position: relative;
+        }
+        .guilloche-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.06;
+            background-image: radial-gradient(circle, var(--teal) 0.7px, transparent 0.7px);
+            background-size: 10px 10px;
+        }
+        .photo-frame {
+            position: relative;
+            border-radius: 8px;
+            padding: 3px;
+            background: linear-gradient(145deg, #0f766e, #14b8a6 45%, #0d1b2a);
+            box-shadow: 0 3px 10px -3px rgba(13,27,42,0.35);
+        }
+        .photo-frame-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .photo-frame-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            image-rendering: -webkit-optimize-contrast;
+            filter: contrast(1.07) saturate(1.08) brightness(1.02);
+        }
+        .chip {
+            width: 26px;
+            height: 20px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #e9d8a6 0%, #d4af6a 35%, #b8860b 60%, #e9d8a6 100%);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .chip::before, .chip::after {
+            content: "";
+            position: absolute;
+            background: rgba(0,0,0,0.18);
+        }
+        .chip::before { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+        .chip::after { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+        .sheen {
+            position: absolute;
+            top: -60%;
+            right: -25%;
+            width: 55%;
+            height: 220%;
+            background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.15) 52%, transparent 65%);
+            transform: rotate(8deg);
+            pointer-events: none;
+        }
+        .ref-id { letter-spacing: 0.08em; }
+        .qr-frame {
+            position: relative;
+            padding: 6px;
+        }
+        .qr-frame::before, .qr-frame::after,
+        .qr-frame .corner-tl, .qr-frame .corner-br {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: var(--teal);
+        }
+        .qr-frame::before { top: 0; left: 0; border-top: 2px solid var(--teal); border-left: 2px solid var(--teal); }
+        .qr-frame::after { bottom: 0; right: 0; border-bottom: 2px solid var(--teal); border-right: 2px solid var(--teal); }
+        .corner-tr { position: absolute; top: 0; right: 0; width: 8px; height: 8px; border-top: 2px solid var(--teal); border-right: 2px solid var(--teal); }
+        .corner-bl { position: absolute; bottom: 0; left: 0; width: 8px; height: 8px; border-bottom: 2px solid var(--teal); border-left: 2px solid var(--teal); }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 14px 18px 12px 16px;
+            min-width: 0;
+        }
+        .otr-groups {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+        .field-label {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #64748b;
+        }
+        .truncate-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        input:focus { outline: none; }
+        .notice-strip {
+            background: repeating-linear-gradient(135deg, #fde68a, #fde68a 8px, #fffbeb 8px, #fffbeb 16px);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 flex flex-col items-center justify-center">
+
+    <!-- 1. Input Form Section -->
+    <div id="formSection" class="max-w-md w-full bg-[var(--paper)] rounded-2xl shadow-2xl p-6 border border-slate-200">
+        <div class="flex items-center gap-2.5 mb-1">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style="background: var(--teal);">
+                <i class="fas fa-graduation-cap text-white text-sm"></i>
+            </div>
+            <div>
+                <h2 class="display-font text-base font-bold text-[var(--ink)] leading-tight">National Scholarship Portal &mdash; OTR Smart Card</h2>
+                <p class="text-[10.5px] text-slate-500 leading-tight">Digital Saathi &middot; Official OTR Layout Generator</p>
+            </div>
+        </div>
+        <p class="text-[10.5px] text-slate-600 bg-teal-50 border border-teal-100 rounded-lg px-2.5 py-2 mt-3 mb-4 leading-snug">
+            <i class="fas fa-shield-halved text-teal-700 mr-1"></i>
+            Apna NSP One Time Registration (OTR) detail bharein. Yeh card aapke OTR data ko secure aur premium format mein print/download karne ke liye taiyar kiya gaya hai.
+        </p>
+
+        <div class="space-y-3">
+            <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">Student Photo</label>
+                <input type="file" id="inputPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-800 hover:file:bg-teal-100 cursor-pointer">
+            </div>
+            <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">Student Name</label>
+                <input type="text" id="inputName" placeholder="Jaise: PALLAVI KUMARI" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-teal-600 uppercase">
+            </div>
+            <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">Father's Name</label>
+                <input type="text" id="inputFather" placeholder="Jaise: RAJKUMAR YADAV" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-teal-600 uppercase">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">Date of Birth</label>
+                    <input type="text" id="inputDob" placeholder="29-01-2006" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-teal-600">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">OTR Number</label>
+                    <input type="text" id="inputOtr" placeholder="26010181014408" maxlength="20" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-teal-600">
+                </div>
+            </div>
+            <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1 tracking-wide">Registered Mobile (optional)</label>
+                <input type="text" id="inputMobile" placeholder="9876543210" maxlength="10" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs outline-none focus:border-teal-600">
+            </div>
+
+            <p id="formError" class="hidden text-[11px] text-rose-700 font-semibold bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5"></p>
+
+            <button onclick="generateSmartCard()" class="w-full text-white py-2.5 rounded-xl font-bold text-xs transition shadow-md mt-1" style="background: var(--teal);">
+                <i class="fas fa-id-card mr-1"></i> Generate OTR Smart Card
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Card Preview & Action View -->
+    <div id="cardPreview" class="hidden flex flex-col items-center gap-6 w-full max-w-lg">
+
+        <div class="flex items-center gap-3 no-print w-full justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+            <button onclick="goBackToForm()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                <i class="fas fa-arrow-left"></i> Back to Edit
+            </button>
+            <div class="flex gap-2">
+                <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button onclick="downloadCardImage('cardFront', 'OTR_Smart_Card_Front.png')" class="text-white px-4 py-2 rounded-lg font-bold text-xs transition flex items-center gap-1.5 shadow-sm" style="background: var(--teal);">
+                    <i class="fas fa-download"></i> Front Side
+                </button>
+                <button onclick="downloadCardImage('cardBack', 'OTR_Smart_Card_Back.png')" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fas fa-download"></i> Back Side
+                </button>
+            </div>
+        </div>
+
+        <!-- FRONT -->
+        <div id="cardFront" class="smart-card card-container">
+            <div class="side-rail"></div>
+            <div class="guilloche-bg"></div>
+            <div class="sheen"></div>
+            <div class="card-body relative">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style="background: var(--teal);">
+                            <i class="fas fa-graduation-cap text-white text-[11px]"></i>
+                        </div>
+                        <div class="leading-tight min-w-0">
+                            <span class="display-font font-bold text-[var(--ink)] text-[11px] tracking-tight block">NATIONAL SCHOLARSHIP PORTAL</span>
+                            <span class="text-[7.5px] font-bold text-slate-500 uppercase tracking-wider">Government of India &middot; OTR Portal</span>
+                        </div>
+                    </div>
+                    <span class="text-white text-[7.5px] font-black px-2 py-1 rounded shrink-0 tracking-wider flex items-center gap-1" style="background: var(--teal);">
+                        <i class="fas fa-shield-check"></i> OTR VERIFIED
+                    </span>
+                </div>
+
+                <div class="flex items-stretch gap-3 mt-1">
+                    <div class="shrink-0 flex flex-col items-center gap-1.5">
+                        <div class="photo-frame w-[80px] h-[98px]">
+                            <div class="photo-frame-inner">
+                                <img id="displayPhoto" src="" alt="Photo" class="hidden">
+                                <div id="noPhotoText" class="absolute text-[8px] text-slate-400 font-bold text-center px-1">NO PHOTO</div>
+                            </div>
+                        </div>
+                        <div class="chip"></div>
+                    </div>
+
+                    <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                        <div>
+                            <span class="field-label block">STUDENT NAME</span>
+                            <span id="cardName" class="font-black text-[var(--ink)] text-[13px] truncate-cell block">--</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <span class="field-label block">FATHER'S NAME</span>
+                            <span id="cardFather" class="font-bold text-slate-700 text-[11px] truncate-cell block">--</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-1.5">
+                            <div class="min-w-0">
+                                <span class="field-label block">DATE OF BIRTH</span>
+                                <span id="cardDob" class="mono font-semibold text-slate-700 text-[10.5px] truncate-cell block">--</span>
+                            </div>
+                            <div id="mobileWrap" class="hidden min-w-0">
+                                <span class="field-label block">MOBILE</span>
+                                <span id="cardMobile" class="mono font-semibold text-slate-700 text-[10.5px] truncate-cell block">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-teal-200 rounded-lg py-1.5 px-2 flex flex-col items-center justify-center shadow-2xs" style="background: #f0fdfa;">
+                    <span class="text-[6.5px] font-bold uppercase tracking-widest text-teal-800 text-center leading-tight">ONE TIME REGISTRATION (OTR) NUMBER</span>
+                    <span id="cardOtr" class="otr-groups mono text-[13px] font-extrabold mt-0.5" style="color: var(--ink);">--</span>
+                    <span id="cardRefId" class="ref-id mono text-[6.5px] text-teal-700 font-semibold mt-0.5">REF --</span>
+                </div>
+
+                <div class="flex justify-between items-center pt-0.5 text-[7.5px] text-slate-500 font-semibold">
+                    <span class="text-teal-900 font-bold"><i class="fas fa-check-circle text-teal-600 mr-0.5"></i> Valid for NSP Student Portal</span>
+                    <span id="cardStamp" class="text-slate-400 font-bold tracking-wide">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BACK -->
+        <div id="cardBack" class="smart-card card-container">
+            <div class="side-rail"></div>
+            <div class="guilloche-bg"></div>
+            <div class="card-body relative">
+                <div class="flex justify-between items-center">
+                    <span class="display-font text-[11px] font-bold text-[var(--ink)] uppercase tracking-widest">NSP OTR Guidelines</span>
+                    <span class="text-[9px] font-bold" style="color: var(--teal);">Ministry of Education</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-3 mt-1">
+                    <div class="text-[8.5px] text-slate-600 space-y-1.5 font-medium leading-normal flex-1 min-w-0">
+                        <p>1. Yeh OTR Smart Card National Scholarship Portal ke One Time Registration data par adharit hai.</p>
+                        <p>2. Scholarship renewal aur naye aavedan ke liye official portal <span class="font-bold text-teal-800">scholarships.gov.in</span> ka hi prayog karein.</p>
+                        <p class="text-[7.5px] text-slate-400 font-bold">Issued via Digital Saathi Secure Framework &middot; Govt of India Portal Guidelines.</p>
+                    </div>
+                    <div class="bg-white p-1 rounded-lg border border-slate-300 shadow-xs shrink-0 flex flex-col items-center">
+                        <div class="qr-frame">
+                            <span class="corner-tr"></span>
+                            <span class="corner-bl"></span>
+                            <div id="qrcode" class="w-[62px] h-[62px]"></div>
+                        </div>
+                        <span class="text-[6.5px] font-black text-slate-600 mt-0.5 tracking-tighter">SCAN OTR INFO</span>
+                    </div>
+                </div>
+
+                <div class="notice-strip border-t border-b border-teal-200 -mx-4 px-4 py-1 text-center text-[7px] text-teal-950 font-bold tracking-tight">
+                    OFFICIAL NSP OTR REFERENCE CARD &mdash; SECURE STUDENT VERIFICATION
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let uploadedPhotoUrl = "";
+        const PHOTO_TARGET_W = 480;
+        const PHOTO_TARGET_H = 588;
+
+        document.getElementById('inputPhoto').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = PHOTO_TARGET_W;
+                    canvas.height = PHOTO_TARGET_H;
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+
+                    const targetRatio = PHOTO_TARGET_W / PHOTO_TARGET_H;
+                    const srcRatio = img.width / img.height;
+                    let sx, sy, sw, sh;
+                    if (srcRatio > targetRatio) {
+                        sh = img.height;
+                        sw = sh * targetRatio;
+                        sx = (img.width - sw) / 2;
+                        sy = 0;
+                    } else {
+                        sw = img.width;
+                        sh = sw / targetRatio;
+                        sx = 0;
+                        sy = (img.height - sh) * 0.15;
+                    }
+                    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, PHOTO_TARGET_W, PHOTO_TARGET_H);
+
+                    uploadedPhotoUrl = canvas.toDataURL('image/jpeg', 0.95);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function formatAadhaarStyle(str) {
+            let cleaned = str.replace(/\s+/g, '');
+            return cleaned.match(/.{1,4}/g)?.join(' ') || cleaned;
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('formError');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+        function clearError() { document.getElementById('formError').classList.add('hidden'); }
+
+        function generateSmartCard() {
+            clearError();
+            const name = document.getElementById('inputName').value.trim().toUpperCase();
+            const father = document.getElementById('inputFather').value.trim().toUpperCase();
+            const dob = document.getElementById('inputDob').value.trim();
+            const rawOtr = document.getElementById('inputOtr').value.trim().replace(/\s+/g, '');
+            const mobile = document.getElementById('inputMobile').value.trim();
+
+            if (!name) { showError("Kripya Student Name bharein."); return; }
+            if (!rawOtr) { showError("Kripya OTR Number bharein."); return; }
+            if (!/^\d{10,20}$/.test(rawOtr)) {
+                showError("OTR Number sirf digits mein aur 10-20 ank ka hona chahiye.");
+                return;
+            }
+            if (mobile && !/^\d{10}$/.test(mobile)) {
+                showError("Mobile number 10 digit ka hona chahiye.");
+                return;
+            }
+
+            const formattedOtr = formatAadhaarStyle(rawOtr);
+            document.getElementById('cardName').innerText = name;
+            document.getElementById('cardFather').innerText = father || 'N/A';
+            document.getElementById('cardDob').innerText = dob || 'N/A';
+            document.getElementById('cardOtr').innerText = formattedOtr;
+
+            const mobileWrap = document.getElementById('mobileWrap');
+            if (mobile) {
+                document.getElementById('cardMobile').innerText = mobile;
+                mobileWrap.classList.remove('hidden');
+            } else {
+                mobileWrap.classList.add('hidden');
+            }
+
+            const photoImg = document.getElementById('displayPhoto');
+            const noPhotoText = document.getElementById('noPhotoText');
+            if (uploadedPhotoUrl) {
+                photoImg.src = uploadedPhotoUrl;
+                photoImg.classList.remove('hidden');
+                noPhotoText.classList.add('hidden');
+            } else {
+                photoImg.classList.add('hidden');
+                noPhotoText.classList.remove('hidden');
+            }
+
+            const now = new Date();
+            const stampStr = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('cardStamp').innerHTML = '<i class="fas fa-clock mr-0.5"></i> ' + stampStr;
+
+            const refSuffix = rawOtr.slice(-4) + '-' + now.getFullYear().toString().slice(-2) +
+                String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+            document.getElementById('cardRefId').innerText = 'REF ' + refSuffix;
+
+            document.getElementById('qrcode').innerHTML = "";
+            const qrText = `NATIONAL SCHOLARSHIP PORTAL - OTR VERIFIED CARD\nName: ${name}\nFather: ${father}\nDOB: ${dob}\nOTR No: ${rawOtr}${mobile ? '\nMobile: ' + mobile : ''}`;
+
+            new QRCode(document.getElementById("qrcode"), {
+                text: qrText, width: 62, height: 62,
+                colorDark: "#0d1b2a", colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('cardPreview').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBackToForm() {
+            document.getElementById('cardPreview').classList.add('hidden');
+            document.getElementById('formSection').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function downloadCardImage(elementId, filename) {
+            const cardElement = document.getElementById(elementId);
+            html2canvas(cardElement, { scale: 5, useCORS: true, imageTimeout: 0 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
