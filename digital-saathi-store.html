@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Saathi Store - Flipkart Pro Edition</title>
+<title>Digital Saathi Store - Ultimate Pro Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,8 +20,22 @@
     --gold:#e7a944;
     --gold-light:#f3c675;
     --accent-red:#d9534f;
-    --flipkart-blue:#2874f0;
+    --buy-yellow:#f3c158;
   }
+  
+  /* Dark Mode Theme Variables */
+  body.dark-mode{
+    --teal-deep:#0b1310;
+    --teal-base:#111d18;
+    --teal-bright:#1a2e26;
+    --cream:#121815;
+    --ink:#e4ede9;
+    --muted:#9aa8a1;
+    --line:#22332b;
+    --card:#18241f;
+    --gold:#f0b95c;
+  }
+
   *{box-sizing:border-box;}
   body{
     margin:0;
@@ -30,45 +44,35 @@
     font-family:'Inter','Noto Sans Devanagari',sans-serif;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    transition:background 0.3s, color 0.3s;
   }
   .hi{font-family:'Noto Sans Devanagari','Inter',sans-serif;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
 
-  /* Flash Sale Countdown Bar */
   .flash-bar{background:linear-gradient(90deg, #ff9f00, #ff5722);color:#fff;font-size:12.5px;font-weight:700;text-align:center;padding:8px 15px;}
   .flash-bar span{background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;margin-left:6px;}
 
-  .utility{background:var(--teal-deep);color:#cfe7dc;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
-  .utility .wrap{display:flex;justify-content:space-between;align-items:center;padding:6px 28px;}
-  .utility a{color:var(--gold);font-weight:600;}
-
-  .admin-bar{background:#041511;color:#fff;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
-  .admin-bar .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
-  .admin-btn{background:var(--gold);color:var(--teal-deep);border:none;padding:7px 16px;font-weight:800;border-radius:6px;cursor:pointer;font-size:12.5px;transition:background 0.2s;}
-  .admin-btn:hover{background:var(--gold-light);}
-
   header.site{background:var(--teal-base);color:#fff;padding:14px 0;position:sticky;top:0;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
-  header.site .wrap{display:flex;align-items:center;gap:26px;}
+  header.site .wrap{display:flex;align-items:center;gap:20px;}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;white-space:nowrap;letter-spacing:-0.3px;cursor:pointer;}
   .logo .mark{
     width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#c98d2e);
     display:flex;align-items:center;justify-content:center;font-size:16px;
     color:var(--teal-deep);font-weight:800;box-shadow:0 4px 10px rgba(231,169,68,0.3);
   }
-  nav.main{display:flex;gap:22px;font-size:13.5px;font-weight:600;white-space:nowrap;}
+  nav.main{display:flex;gap:18px;font-size:13.5px;font-weight:600;white-space:nowrap;}
   nav.main a{color:#eaf3ee;opacity:0.85;transition:opacity 0.2s;cursor:pointer;}
   nav.main a:hover{opacity:1;color:var(--gold);}
   
   .searchbar{
     flex:1;display:flex;align-items:center;background:#fff;border-radius:10px;overflow:hidden;
-    min-width:160px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.06);
+    min-width:140px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.06);
   }
-  .searchbar input{border:none;outline:none;flex:1;padding:10px 14px;font-size:13.5px;font-family:inherit;color:var(--ink);}
-  .searchbar button{border:none;background:var(--gold);color:var(--teal-deep);padding:0 16px;cursor:pointer;font-weight:800;font-size:13.5px;transition:background 0.2s;}
-  .searchbar button:hover{background:var(--gold-light);}
+  .searchbar input{border:none;outline:none;flex:1;padding:10px 14px;font-size:13.5px;font-family:inherit;color:#131c18;}
+  .searchbar button{border:none;background:var(--gold);color:var(--teal-deep);padding:0 14px;cursor:pointer;font-weight:800;font-size:13px;}
 
-  .header-icons{display:flex;align-items:center;gap:20px;font-size:13px;font-weight:600;white-space:nowrap;}
+  .header-icons{display:flex;align-items:center;gap:16px;font-size:13px;font-weight:600;white-space:nowrap;}
   .header-icons .item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
   .header-icons .icon{font-size:18px;}
   .badge-count{
@@ -76,8 +80,15 @@
     font-size:10px;font-weight:800;border-radius:50%;width:18px;height:18px;
     display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,0.2);
   }
+  
+  .theme-toggle-btn{
+    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;
+    width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:16px;transition:background 0.2s;
+  }
+  .theme-toggle-btn:hover{background:rgba(255,255,255,0.2);}
 
-  /* Hero Slider */
+  /* 5 Premium Banners Slider */
   .hero-slider{position:relative;background:var(--teal-base);overflow:hidden;}
   .slides-container{display:flex;transition:transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);}
   
@@ -128,16 +139,15 @@
   .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.3s;}
   .dot.active{background:var(--gold);width:26px;border-radius:6px;}
 
-  /* Filter Bar */
-  .filterbar{border-bottom:1px solid var(--line);background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.02);}
+  .filterbar{border-bottom:1px solid var(--line);background:var(--card);box-shadow:0 4px 12px rgba(0,0,0,0.02);}
   .filterbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;flex-wrap:wrap;gap:10px;}
   .filters{display:flex;gap:10px;flex-wrap:wrap;}
   .chip{
     font-size:12.5px;font-weight:600;color:var(--ink);border:1.5px solid var(--line);
-    padding:8px 16px;border-radius:100px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;
+    padding:8px 16px;border-radius:100px;background:var(--card);cursor:pointer;display:flex;align-items:center;gap:6px;
     transition:all 0.2s;
   }
-  .chip:hover{border-color:var(--teal-bright);color:var(--teal-bright);background:#f0f7f4;}
+  .chip:hover{border-color:var(--teal-bright);color:var(--teal-bright);background:var(--line);}
   .sortby{font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;}
 
   /* Products Section */
@@ -145,63 +155,62 @@
   .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
   .products h2{font-family:'Fraunces',serif;font-size:26px;font-weight:700;margin:0;color:var(--ink);}
   
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
 
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
-    display:flex;flex-direction:column;transition:box-shadow 0.2s ease, transform 0.2s ease;
-    position:relative;box-shadow:0 8px 20px rgba(0,0,0,0.03);
+    background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:0 4px 12px rgba(0,0,0,0.03);position:relative;
+    transition:transform 0.15s ease;
   }
-  .card.live:hover{box-shadow:0 20px 40px -15px rgba(14,59,48,0.25);transform:translateY(-4px);}
-  
+  .card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.08);}
+
   .card-media{
-    background:#f1ede4;height:170px;display:flex;align-items:center;justify-content:center;
-    position:relative;overflow:hidden;
+    background:linear-gradient(135deg, var(--card), var(--line));height:170px;display:flex;align-items:center;justify-content:center;
+    position:relative;border-bottom:1px solid var(--line);overflow:hidden;
   }
   .card-media img{width:100%;height:100%;object-fit:cover;}
-  .card-media .ic{font-size:46px;}
-  
-  .tag-free{
-    position:absolute;top:12px;left:12px;background:var(--teal-deep);color:#fff;
-    font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:100px;z-index:2;
-    box-shadow:0 2px 6px rgba(0,0,0,0.2);
-  }
-  .delete-prod-btn{
-    position:absolute;top:12px;right:12px;background:var(--accent-red);color:#fff;border:none;
-    width:28px;height:28px;border-radius:50%;font-weight:bold;cursor:pointer;display:flex;
-    align-items:center;justify-content:center;z-index:3;box-shadow:0 4px 10px rgba(0,0,0,0.2);
-    transition:transform 0.2s;
-  }
-  .delete-prod-btn:hover{transform:scale(1.1);}
+  .card-media .ic{font-size:48px;}
 
-  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1;}
-  .card-cat{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
-  .card-name{font-weight:700;font-size:15px;color:var(--ink);}
-  .card-rating{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);}
-  .card-desc{font-size:12.5px;color:var(--muted);line-height:1.5;flex:1;}
-  
-  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line);margin-top:6px;}
-  .price{font-weight:800;font-size:16px;color:var(--teal-deep);}
-  .btn-cart{
-    border:1.5px solid var(--teal-deep);color:var(--teal-deep);background:#fff;
-    font-weight:700;font-size:12px;padding:8px 16px;border-radius:100px;
-    transition:all 0.2s;text-decoration:none;cursor:pointer;
+  .delete-prod-btn{
+    position:absolute;top:8px;right:8px;background:var(--accent-red);color:#fff;border:none;
+    width:24px;height:24px;border-radius:50%;font-weight:bold;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;z-index:3;font-size:12px;
   }
-  .card.live:hover .btn-cart{background:var(--teal-deep);color:#fff;}
+
+  .card-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-cat{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;}
+  .card-name{font-weight:700;font-size:14px;color:var(--ink);line-height:1.3;}
+  .card-desc{font-size:12px;color:var(--muted);line-height:1.4;flex:1;}
+  
+  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line);margin-top:4px;}
+  .price{font-weight:700;font-size:13px;color:var(--gold);}
+  
+  .buy-action-area{display:flex;align-items:center;gap:8px;}
+  .btn-buy-ref{
+    background:linear-gradient(180deg, #fff7e6, #fcebc5);border:1px solid #d4af37;color:#8a6d15;
+    font-weight:800;font-size:11.5px;padding:5px 10px;border-radius:4px;cursor:pointer;text-decoration:none;
+    box-shadow:0 2px 4px rgba(0,0,0,0.05);transition:background 0.2s;
+  }
+  .btn-buy-ref:hover{background:#f3c158;color:#06231c;}
+  .wishlist-count{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:3px;cursor:pointer;}
+  .wishlist-count span{color:#e74c3c;}
+
+  .pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:40px;font-size:13.5px;font-weight:600;}
+  .page-num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--line);border-radius:4px;cursor:pointer;color:var(--ink);}
+  .page-num.active{background:var(--gold);color:var(--teal-deep);font-weight:800;}
+  .page-link{color:var(--gold);cursor:pointer;padding:0 6px;}
 
   /* Slide-over Cart Drawer */
   .cart-drawer{
-    position:fixed;top:0;right:-400px;width:380px;height:100%;background:#fff;z-index:99999;
-    box-shadow:-10px 0 30px rgba(0,0,0,0.2);transition:right 0.3s ease;display:flex;flex-direction:column;
+    position:fixed;top:0;right:-400px;width:380px;height:100%;background:var(--card);color:var(--ink);z-index:99999;
+    box-shadow:-10px 0 30px rgba(0,0,0,0.3);transition:right 0.3s ease;display:flex;flex-direction:column;
   }
   .cart-drawer.open{right:0;}
   .cart-header{background:var(--teal-deep);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;}
   .cart-body{padding:20px;flex:1;overflow-y:auto;}
-  .cart-footer{padding:20px;border-top:1px solid var(--line);background:#faf7f0;}
+  .cart-footer{padding:20px;border-top:1px solid var(--line);background:var(--card);}
   .btn-checkout{display:block;width:100%;background:#ff9f00;color:#fff;border:none;padding:12px;font-weight:800;border-radius:8px;cursor:pointer;text-align:center;font-size:15px;}
-  .btn-checkout:hover{background:#fb8c00;}
 
-  /* Toast Notification */
   #toast{
     position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
     background:var(--teal-deep);color:#fff;padding:12px 24px;border-radius:100px;font-weight:700;font-size:13.5px;
@@ -209,33 +218,9 @@
   }
   #toast.show{transform:translateX(-50%) translateY(0);}
 
-  /* Footer */
   footer.site{background:var(--teal-deep);color:#cfe7dc;padding:35px 0;margin-top:30px;font-size:13px;}
   footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;}
   footer.site a{color:var(--gold);text-decoration:none;font-weight:600;}
-
-  /* Modal Form */
-  .modal-overlay{
-    position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;
-    display:flex;align-items:center;justify-content:center;padding:20px;
-    opacity:0;pointer-events:none;transition:opacity 0.2s ease;
-  }
-  .modal-overlay.open{opacity:1;pointer-events:auto;}
-  .modal-box{
-    background:#fff;border-radius:18px;padding:30px;max-width:440px;width:100%;
-    box-shadow:0 30px 60px rgba(0,0,0,0.3);color:var(--ink);
-  }
-  .modal-box h3{margin-top:0;font-family:'Fraunces',serif;color:var(--teal-deep);font-size:22px;}
-  .form-group{margin-bottom:14px;}
-  .form-group label{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;color:var(--ink);}
-  .form-group input, .form-group textarea{
-    width:100%;padding:10px 14px;border:1.5px solid var(--line);border-radius:8px;
-    font-family:inherit;font-size:13.5px;outline:none;background:#faf7f0;
-  }
-  .form-group input:focus, .form-group textarea:focus{border-color:var(--teal-bright);background:#fff;}
-  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
-  .btn-cancel{background:#e7e2d6;border:none;padding:10px 18px;font-weight:700;border-radius:8px;cursor:pointer;}
-  .btn-submit{background:var(--teal-deep);color:#fff;border:none;padding:10px 18px;font-weight:700;border-radius:8px;cursor:pointer;}
 
   @media(max-width:920px){
     header.site .wrap{flex-wrap:wrap;}
@@ -243,7 +228,6 @@
     .slide{grid-template-columns:1fr;padding:40px 20px;}
   }
 
-  /* Password Gate */
   #saathiGate{
     position:fixed;inset:0;z-index:999999;
     background:radial-gradient(900px 500px at 15% 0%, rgba(231,169,68,0.15), transparent 60%), var(--teal-deep);
@@ -253,7 +237,7 @@
   body.locked > *:not(#saathiGate){display:none !important;}
   .gate-card{
     background:#fff;border-radius:20px;padding:36px;max-width:360px;width:100%;
-    box-shadow:0 30px 60px rgba(0,0,0,0.5);text-align:center;color:var(--ink);
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);text-align:center;color:#131c18;
   }
   .gate-mark{
     width:54px;height:54px;border-radius:14px;margin:0 auto 16px;
@@ -261,17 +245,16 @@
     box-shadow:0 6px 15px rgba(231,169,68,0.3);
   }
   .gate-card h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 6px;}
-  .gate-card p{font-size:13px;color:var(--muted);margin:0 0 20px;}
+  .gate-card p{font-size:13px;color:#607269;margin:0 0 20px;}
   #saathiGateInput{
-    width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+    width:100%;padding:12px;border:1.5px solid #e2ded0;border-radius:10px;
     font-size:15px;text-align:center;letter-spacing:2px;margin-bottom:12px;outline:none;background:#faf7f0;
   }
   #saathiGateInput:focus{border-color:var(--teal-bright);}
   #saathiGateBtn{
     width:100%;padding:12px;border:none;border-radius:10px;background:var(--teal-deep);
-    color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s;
+    color:#fff;font-weight:700;font-size:14px;cursor:pointer;
   }
-  #saathiGateBtn:hover{background:var(--teal-bright);}
   #saathiGateError{color:var(--accent-red);font-size:12px;font-weight:600;margin-top:10px;min-height:16px;}
   .gate-shake{animation:shake 0.35s;}
   @keyframes shake{ 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
@@ -279,7 +262,6 @@
 </head>
 <body class="locked">
 
-  <!-- Password Gate -->
   <div id="saathiGate">
     <div class="gate-card">
       <div class="gate-mark">🔒</div>
@@ -291,24 +273,8 @@
     </div>
   </div>
 
-  <!-- Flash Sale Timer Top Bar -->
   <div class="flash-bar">
     🔥 MEGA FLASH SALE LIVE! Extra 50% Off on All Digital Tools. Ends in: <span id="timer">04h : 35m : 12s</span>
-  </div>
-
-  <div class="utility">
-    <div class="wrap">
-      <span class="hi">100% मुफ़्त डिजिटल टूल्स & सेवाएं — Flipkart Pro Experience</span>
-      <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder खोलें</a>
-    </div>
-  </div>
-
-  <!-- Admin Bar -->
-  <div class="admin-bar">
-    <div class="wrap">
-      <span style="font-size: 12.5px; font-weight: 600;">👑 Admin Control Panel</span>
-      <button class="admin-btn" id="openAddModalBtn">+ नया प्रोडक्ट जोड़ें (Add Product)</button>
-    </div>
   </div>
 
   <header class="site">
@@ -325,6 +291,7 @@
         <button id="searchBtn">Search</button>
       </div>
       <div class="header-icons">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark/Light Mode">🌙</button>
         <div class="item" id="accountBtn"><span class="icon">👤</span>Account</div>
         <div class="item" id="cartBtn">
           <span class="icon">🛒</span>Cart
@@ -334,11 +301,9 @@
     </div>
   </header>
 
-  <!-- Ultra Premium 5-Banner Auto-Scrolling Slider -->
+  <!-- 5 Premium Banners Slider -->
   <section class="hero-slider">
     <div class="slides-container" id="slidesContainer">
-      
-      <!-- Banner 1 -->
       <div class="slide b1">
         <div class="slide-content">
           <div class="eyebrow hi">🌟 आपके सेवा केंद्र के लिए स्पेशल</div>
@@ -352,8 +317,6 @@
           <p class="hi">सुपरफास्ट ऑटोमेशन और स्मार्ट फॉर्म फिलिंग टूल।</p>
         </div>
       </div>
-
-      <!-- Banner 2 -->
       <div class="slide b2">
         <div class="slide-content">
           <div class="eyebrow hi">💻 प्रीमियम डिजिटल कलेक्शन</div>
@@ -367,8 +330,6 @@
           <p class="hi">कस्टमर रिकॉर्ड और फाइल मैनेजमेंट अब हुआ आसान।</p>
         </div>
       </div>
-
-      <!-- Banner 3 -->
       <div class="slide b3">
         <div class="slide-content">
           <div class="eyebrow hi">⚡ सुपरफास्ट परफॉरमेंस</div>
@@ -382,8 +343,6 @@
           <p class="hi">एक क्लिक में सभी जरूरी डिटेल्स ऑटो-फिल करें।</p>
         </div>
       </div>
-
-      <!-- Banner 4 -->
       <div class="slide b4">
         <div class="slide-content">
           <div class="eyebrow hi">🛡️ 100% सुरक्षित और भरोसेमंद</div>
@@ -397,8 +356,6 @@
           <p class="hi">डायरेक्ट गूगल ड्राइव से सुरक्षित और वेरीफाइड डाउनलोड।</p>
         </div>
       </div>
-
-      <!-- Banner 5 -->
       <div class="slide b5">
         <div class="slide-content">
           <div class="eyebrow hi">🚀 नए अपडेट्स और फीचर्स</div>
@@ -412,10 +369,7 @@
           <p class="hi">आने वाले सभी नए टूल्स का लाइफटाइम एक्सेस पाएं।</p>
         </div>
       </div>
-
     </div>
-    
-    <!-- Slider Dots -->
     <div class="slider-nav" id="sliderDots">
       <span class="dot active" data-index="0"></span>
       <span class="dot" data-index="1"></span>
@@ -425,7 +379,6 @@
     </div>
   </section>
 
-  <!-- Filter & Interactive Chips Bar -->
   <div class="filterbar">
     <div class="wrap">
       <div class="filters">
@@ -444,19 +397,25 @@
       <span style="font-size: 13px; color: var(--muted);" id="productCountText">Showing items</span>
     </div>
     
-    <!-- Dynamic Product Grid -->
     <div class="grid" id="productGrid"></div>
+
+    <div class="pagination">
+      <span class="page-num active">1</span>
+      <span class="page-num">2</span>
+      <span class="page-num">3</span>
+      <span class="page-num">4</span>
+      <span class="page-num">5</span>
+      <span class="page-link">Next &gt;</span>
+      <span class="page-link">Last &gt;&gt;</span>
+    </div>
   </section>
 
-  <!-- Slide-over Cart Drawer -->
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
       <h3 style="margin:0; font-family:'Fraunces',serif;">🛒 Your Shopping Cart</h3>
       <button id="closeCartBtn" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;">×</button>
     </div>
-    <div class="cart-body" id="cartItemsList">
-      <!-- Cart items will appear here -->
-    </div>
+    <div class="cart-body" id="cartItemsList"></div>
     <div class="cart-footer">
       <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:12px; font-size:15px;">
         <span>Total Items:</span>
@@ -466,7 +425,6 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
   <div id="toast">Notification Message</div>
 
   <footer class="site">
@@ -475,43 +433,6 @@
       <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder</a>
     </div>
   </footer>
-
-  <!-- Modal: Add New Product -->
-  <div class="modal-overlay" id="addProductModal">
-    <div class="modal-box">
-      <h3>नया प्रोडक्ट या टूल जोड़ें</h3>
-      <form id="newProductForm">
-        <div class="form-group">
-          <label>प्रोडक्ट का नाम (Product Name)</label>
-          <input type="text" id="pName" placeholder="जैसे: AutoFill Pro" required>
-        </div>
-        <div class="form-group">
-          <label>श्रेणी (Category)</label>
-          <input type="text" id="pCat" placeholder="जैसे: Extension / Dashboard" required>
-        </div>
-        <div class="form-group">
-          <label>कीमत (Price)</label>
-          <input type="text" id="pPrice" placeholder="जैसे: Free या ₹499" required>
-        </div>
-        <div class="form-group">
-          <label>छवि यूआरएल (Image URL - Optional)</label>
-          <input type="url" id="pImage" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="form-group">
-          <label>डाउनलोड लिंक (Link URL)</label>
-          <input type="url" id="pLink" placeholder="https://drive.google.com/..." required>
-        </div>
-        <div class="form-group">
-          <label>विवरण (Short Description)</label>
-          <textarea id="pDesc" rows="3" placeholder="प्रोडक्ट के बारे में विवरण..." required></textarea>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" id="closeModalBtn">रद्द करें</button>
-          <button type="submit" class="btn-submit">जोड़ें (Add)</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
 <script>
 (function () {
@@ -552,42 +473,57 @@
     if (e.key === "Enter") tryUnlock();
   });
 
-  // Toast Function
+  // Dark / Light Mode Toggle
+  var themeBtn = document.getElementById("themeToggleBtn");
+  themeBtn.addEventListener("click", function() {
+    document.body.classList.toggle("dark-mode");
+    if(document.body.classList.contains("dark-mode")) {
+      themeBtn.textContent = "☀️";
+      localStorage.setItem("ds_theme", "dark");
+    } else {
+      themeBtn.textContent = "🌙";
+      localStorage.setItem("ds_theme", "light");
+    }
+  });
+
+  if(localStorage.getItem("ds_theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    themeBtn.textContent = "☀️";
+  }
+
   function showToast(msg) {
     var toast = document.getElementById("toast");
     toast.textContent = msg;
     toast.classList.add("show");
-    setTimeout(function() {
-      toast.classList.remove("show");
-    }, 3000);
+    setTimeout(function() { toast.classList.remove("show"); }, 3000);
   }
 
-  // Default Products
+  /* --- Exactly 20 Permanent Default Products with Direct WhatsApp Buy --- */
   var defaultProducts = [
-    {
-      id: 1,
-      name: "Digital Saathi Assistant",
-      category: "Chrome Extension",
-      price: "Free",
-      image: "",
-      icon: "🧩",
-      link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link",
-      desc: "RTPS/e-District फॉर्म, दस्तावेज़ अपलोड और CAPTCHA — सब एक जगह ऑटोमैटिक।"
-    },
-    {
-      id: 2,
-      name: "Digital Saathi Dashboard",
-      category: "Web Application",
-      price: "Free",
-      image: "",
-      icon: "🗂️",
-      link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link",
-      desc: "कस्टमर रिकॉर्ड और डॉक्यूमेंट मैनेजमेंट के लिए स्मार्ट डैशबोर्ड।"
-    }
+    { id: 1, name: "RTPS Master Assistant", category: "Chrome Extension", price: "Free", icon: "🧩", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Bihar RTPS form auto-fill and document tool." },
+    { id: 2, name: "Digital Saathi Dashboard", category: "Web Application", price: "$23.00", icon: "🗂️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Complete customer record & file management." },
+    { id: 3, name: "Excel Advance Formula Pack", category: "Utility Tool", price: "$15.00", icon: "📊", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "VLOOKUP, Nested IF & automated sheets." },
+    { id: 4, name: "PDF & Image Cropper Pro", category: "Web Application", price: "Free", icon: "✂️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Fast canvas document resizing utility." },
+    { id: 5, name: "Apps Script Record Sync", category: "Automation", price: "$29.00", icon: "⚡", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Google Sheets and Drive automated sync script." },
+    { id: 6, name: "Form CAPTCHA Bypass Bot", category: "Chrome Extension", price: "$45.00", icon: "🤖", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "OCR text extraction and smart solver." },
+    { id: 7, name: "Cyber Cafe Billing System", category: "Desktop Software", price: "$35.00", icon: "🖨️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Print receipts and customer tracking tool." },
+    { id: 8, name: "Firebase Login Popup Module", category: "Web Component", price: "Free", icon: "🔐", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Secure authentication and password recovery." },
+    { id: 9, name: "Land Records Search Utility", category: "Government Portal Tool", price: "Free", icon: "🗺️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Bihar land survey and Khanapuri records helper." },
+    { id: 10, name: "Touch Typing Master Sheet", category: "Productivity", price: "Free", icon: "⌨️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Speed and accuracy training exercise kit." },
+    { id: 11, name: "Aadhaar Seva Auto-Fill Kit", category: "Chrome Extension", price: "Free", icon: "💳", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Instant form data population for utility kiosks." },
+    { id: 12, name: "PAN Card Document Formatter", category: "Utility Tool", price: "$10.00", icon: "📑", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Crop and compress photos to exact portal specs." },
+    { id: 13, name: "Daily Income Expense Sheet", category: "Excel Utility", price: "Free", icon: "📈", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Automated ledger tracking for small shops." },
+    { id: 14, name: "Fast QR Code Generator Pro", category: "Web Component", price: "$5.00", icon: "🔲", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Dynamic payment & text QR creator instantly." },
+    { id: 15, name: "Multi-Language PDF Merger", category: "Web Application", price: "Free", icon: "📚", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Combine scanned certificates into single PDF." },
+    { id: 16, name: "WhatsApp Bulk Messenger Tool", category: "Automation", price: "$49.00", icon: "💬", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Send automated alerts & receipts to clients." },
+    { id: 17, name: "Passport Photo Grid Tool", category: "Desktop Software", price: "$19.00", icon: "🖼️", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Arrange 8 photos on 4x6 sheet automatically." },
+    { id: 18, name: "Internet Speed Monitor Bar", category: "Chrome Extension", price: "Free", icon: "🌐", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Live bandwidth tracker in browser toolbar." },
+    { id: 19, name: "Smart Password Vault Pro", category: "Security", price: "Free", icon: "🔒", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Encrypted credential manager for portals." },
+    { id: 20, name: "Digital Saathi All-in-One Suite", category: "Ultimate Bundle", price: "$99.00", icon: "⭐", link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link", desc: "Lifetime access to all extensions & scripts." }
   ];
 
   function getProducts() {
-    var stored = localStorage.getItem("ds_store_products");
+    var stored = localStorage.getItem("ds_store_products_v5");
     if (stored) {
       try { return JSON.parse(stored); } catch(e) { return defaultProducts; }
     }
@@ -595,7 +531,7 @@
   }
 
   function saveProducts(prods) {
-    localStorage.setItem("ds_store_products", JSON.stringify(prods));
+    localStorage.setItem("ds_store_products_v5", JSON.stringify(prods));
   }
 
   function renderProducts(filterText = "", categoryFilter = "") {
@@ -610,7 +546,7 @@
       if (categoryFilter === "ext") {
         matchesCat = p.category.toLowerCase().includes("extension");
       } else if (categoryFilter === "dash") {
-        matchesCat = p.category.toLowerCase().includes("dashboard") || p.category.toLowerCase().includes("application");
+        matchesCat = p.category.toLowerCase().includes("dashboard") || p.category.toLowerCase().includes("application") || p.category.toLowerCase().includes("utility") || p.category.toLowerCase().includes("automation");
       } else if (categoryFilter === "free") {
         matchesCat = p.price.toLowerCase().includes("free");
       }
@@ -621,32 +557,37 @@
     document.getElementById("cartCount").textContent = products.length;
 
     if (filtered.length === 0) {
-      grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color: var(--muted); padding: 30px;">कोई प्रोडक्ट नहीं मिला। ऊपर दिए गए बटन से नया प्रोडक्ट जोड़ें।</p>';
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color: var(--muted); padding: 30px;">कोई प्रोडक्ट नहीं मिला।</p>';
       return;
     }
 
     filtered.forEach(function(p) {
       var card = document.createElement("div");
-      card.className = "card live";
+      card.className = "card";
       
       var mediaContent = p.image 
         ? '<img src="' + p.image + '" alt="' + p.name + '">' 
         : '<span class="ic">' + (p.icon || '📦') + '</span>';
 
+      // Direct WhatsApp buy link generator per product
+      var waMsg = "Hello Digital Saathi, I want to buy: " + p.name + " (" + p.price + "). Please share details.";
+      var waLink = "https://wa.me/?text=" + encodeURIComponent(waMsg);
+
       card.innerHTML = `
         <div class="card-media">
-          <span class="tag-free">${p.price}</span>
           <button class="delete-prod-btn" title="Delete Product" onclick="deleteProduct(${p.id})">×</button>
           ${mediaContent}
         </div>
         <div class="card-body">
           <div class="card-cat">${p.category}</div>
           <div class="card-name">${p.name}</div>
-          <div class="card-rating"><span style="color:var(--gold);letter-spacing:1px;">★★★★★</span> (128)</div>
           <p class="card-desc hi">${p.desc}</p>
           <div class="card-foot">
-            <span class="price">${p.price}</span>
-            <a class="btn-cart" href="${p.link}" target="_blank" rel="noopener">Download</a>
+            <span class="price">Price: ${p.price}</span>
+            <div class="buy-action-area">
+              <a class="btn-buy-ref" href="${waLink}" target="_blank" rel="noopener">BUY →</a>
+              <span class="wishlist-count">120 <span>♥</span></span>
+            </div>
           </div>
         </div>
       `;
@@ -664,7 +605,6 @@
     }
   };
 
-  // Cart Drawer Logic
   var cartDrawer = document.getElementById("cartDrawer");
   document.getElementById("cartBtn").addEventListener("click", function() {
     var products = getProducts();
@@ -700,132 +640,52 @@
     products.forEach(function(p, i) {
       text += (i+1) + ". " + p.name + " (" + p.price + ")\n";
     });
-    var url = "https://wa.me/?text=" + encodeURIComponent(text);
-    window.open(url, "_blank");
+    window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
   });
 
-  // Search & Filters
   var currentCategory = "";
   document.getElementById("searchInput").addEventListener("input", function(e) {
     renderProducts(e.target.value, currentCategory);
   });
 
-  document.getElementById("searchBtn").addEventListener("click", function() {
-    renderProducts(document.getElementById("searchInput").value, currentCategory);
-  });
-
   document.getElementById("filterAll").addEventListener("click", function() {
     currentCategory = "";
     renderProducts(document.getElementById("searchInput").value, currentCategory);
-    showToast("Showing all items");
   });
-
   document.getElementById("filterExt").addEventListener("click", function() {
     currentCategory = "ext";
     renderProducts(document.getElementById("searchInput").value, currentCategory);
-    showToast("Filtered by Extensions");
   });
-
   document.getElementById("filterDash").addEventListener("click", function() {
     currentCategory = "dash";
     renderProducts(document.getElementById("searchInput").value, currentCategory);
-    showToast("Filtered by Dashboards");
   });
-
   document.getElementById("filterFree").addEventListener("click", function() {
     currentCategory = "free";
     renderProducts(document.getElementById("searchInput").value, currentCategory);
-    showToast("Showing Free Tools");
   });
 
-  // Nav buttons
   document.getElementById("logoBtn").addEventListener("click", function() {
     window.scrollTo({top: 0, behavior: 'smooth'});
   });
-  document.getElementById("navHome").addEventListener("click", function() {
-    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
-  });
-  document.getElementById("navExt").addEventListener("click", function() {
-    currentCategory = "ext";
-    renderProducts("", currentCategory);
-    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
-  });
-  document.getElementById("navFeat").addEventListener("click", function() {
-    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
-  });
-  document.getElementById("navSupport").addEventListener("click", function() {
-    showToast("Support: Use Google Drive folder link for downloads.");
-  });
 
-  document.getElementById("accountBtn").addEventListener("click", function() {
-    showToast("Admin Logged In successfully!");
-  });
-
-  // Modal Handling
-  var modal = document.getElementById("addProductModal");
-  document.getElementById("openAddModalBtn").addEventListener("click", function() {
-    modal.classList.add("open");
-  });
-  document.getElementById("closeModalBtn").addEventListener("click", function() {
-    modal.classList.remove("open");
-  });
-
-  document.getElementById("newProductForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    var name = document.getElementById("pName").value.trim();
-    var cat = document.getElementById("pCat").value.trim();
-    var price = document.getElementById("pPrice").value.trim();
-    var image = document.getElementById("pImage").value.trim();
-    var link = document.getElementById("pLink").value.trim();
-    var desc = document.getElementById("pDesc").value.trim();
-
-    var products = getProducts();
-    var newObj = {
-      id: Date.now(),
-      name: name,
-      category: cat,
-      price: price,
-      image: image,
-      link: link,
-      desc: desc
-    };
-
-    products.push(newObj);
-    saveProducts(products);
-    renderProducts();
-
-    this.reset();
-    modal.classList.remove("open");
-    showToast("🎉 New Product added successfully!");
-  });
-
-  // Slider Logic
   var currentSlide = 0;
   var slidesContainer = document.getElementById("slidesContainer");
   var dots = document.querySelectorAll(".dot");
   var totalSlides = 5;
-
   function showSlide(index) {
     currentSlide = (index + totalSlides) % totalSlides;
     slidesContainer.style.transform = "translateX(-" + (currentSlide * 100) + "%)";
     dots.forEach(function(d, i) {
-      if (i === currentSlide) {
-        d.classList.add("active");
-      } else {
-        d.classList.remove("active");
-      }
+      if(i === currentSlide) d.classList.add("active"); else d.classList.remove("active");
     });
   }
-
   dots.forEach(function(dot) {
     dot.addEventListener("click", function() {
       showSlide(parseInt(this.getAttribute("data-index")));
     });
   });
-
-  setInterval(function() {
-    showSlide(currentSlide + 1);
-  }, 4500);
+  setInterval(function() { showSlide(currentSlide + 1); }, 4500);
 
   renderProducts();
 })();
