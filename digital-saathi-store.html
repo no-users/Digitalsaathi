@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Saathi Store</title>
+<title>Digital Saathi Store - Flipkart Pro Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --teal-deep:#0e3b30;
-    --teal:#12503f;
-    --teal-bright:#1a6e54;
+    --teal-deep:#06231c;
+    --teal-base:#0e3b30;
+    --teal-bright:#12503f;
     --cream:#f7f3ea;
-    --ink:#16221d;
-    --muted:#6b7a72;
-    --line:#e7e2d6;
+    --ink:#131c18;
+    --muted:#607269;
+    --line:#e2ded0;
     --card:#ffffff;
     --gold:#e7a944;
+    --gold-light:#f3c675;
+    --accent-red:#d9534f;
+    --flipkart-blue:#2874f0;
   }
   *{box-sizing:border-box;}
   body{
@@ -29,191 +32,254 @@
     -webkit-font-smoothing:antialiased;
   }
   .hi{font-family:'Noto Sans Devanagari','Inter',sans-serif;}
-  a{color:inherit;}
+  a{color:inherit;text-decoration:none;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
-  .stars{color:var(--gold);letter-spacing:1px;font-size:12px;}
 
-  .utility{background:var(--teal-deep);color:#cfe7dc;font-size:12px;}
+  /* Flash Sale Countdown Bar */
+  .flash-bar{background:linear-gradient(90deg, #ff9f00, #ff5722);color:#fff;font-size:12.5px;font-weight:700;text-align:center;padding:8px 15px;}
+  .flash-bar span{background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;margin-left:6px;}
+
+  .utility{background:var(--teal-deep);color:#cfe7dc;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
   .utility .wrap{display:flex;justify-content:space-between;align-items:center;padding:6px 28px;}
-  .utility a{text-decoration:none;color:#cfe7dc;font-weight:600;}
+  .utility a{color:var(--gold);font-weight:600;}
 
-  header.site{background:var(--teal);color:#fff;padding:14px 0;}
+  .admin-bar{background:#041511;color:#fff;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .admin-bar .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .admin-btn{background:var(--gold);color:var(--teal-deep);border:none;padding:7px 16px;font-weight:800;border-radius:6px;cursor:pointer;font-size:12.5px;transition:background 0.2s;}
+  .admin-btn:hover{background:var(--gold-light);}
+
+  header.site{background:var(--teal-base);color:#fff;padding:14px 0;position:sticky;top:0;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
   header.site .wrap{display:flex;align-items:center;gap:26px;}
-  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;white-space:nowrap;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;white-space:nowrap;letter-spacing:-0.3px;cursor:pointer;}
   .logo .mark{
-    width:32px;height:32px;border-radius:9px;background:var(--gold);
+    width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#c98d2e);
     display:flex;align-items:center;justify-content:center;font-size:16px;
-    color:var(--teal-deep);font-weight:800;
+    color:var(--teal-deep);font-weight:800;box-shadow:0 4px 10px rgba(231,169,68,0.3);
   }
   nav.main{display:flex;gap:22px;font-size:13.5px;font-weight:600;white-space:nowrap;}
-  nav.main a{text-decoration:none;color:#eaf3ee;opacity:.92;}
-  nav.main a:hover{opacity:1;text-decoration:underline;}
+  nav.main a{color:#eaf3ee;opacity:0.85;transition:opacity 0.2s;cursor:pointer;}
+  nav.main a:hover{opacity:1;color:var(--gold);}
+  
   .searchbar{
-    flex:1;display:flex;align-items:center;background:#fff;border-radius:9px;overflow:hidden;
-    min-width:160px;
+    flex:1;display:flex;align-items:center;background:#fff;border-radius:10px;overflow:hidden;
+    min-width:160px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.06);
   }
-  .searchbar input{
-    border:none;outline:none;flex:1;padding:10px 14px;font-size:13.5px;font-family:inherit;
-  }
-  .searchbar button{
-    border:none;background:var(--gold);color:var(--teal-deep);padding:0 16px;cursor:pointer;
-    font-weight:800;font-size:14px;
-  }
+  .searchbar input{border:none;outline:none;flex:1;padding:10px 14px;font-size:13.5px;font-family:inherit;color:var(--ink);}
+  .searchbar button{border:none;background:var(--gold);color:var(--teal-deep);padding:0 16px;cursor:pointer;font-weight:800;font-size:13.5px;transition:background 0.2s;}
+  .searchbar button:hover{background:var(--gold-light);}
+
   .header-icons{display:flex;align-items:center;gap:20px;font-size:13px;font-weight:600;white-space:nowrap;}
   .header-icons .item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
   .header-icons .icon{font-size:18px;}
   .badge-count{
     position:absolute;top:-6px;right:-10px;background:var(--gold);color:var(--teal-deep);
-    font-size:10px;font-weight:800;border-radius:50%;width:16px;height:16px;
-    display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:800;border-radius:50%;width:18px;height:18px;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,0.2);
   }
 
-  .hero{background:linear-gradient(120deg,#efe6d3 0%, #f7f3ea 55%);padding:0;}
-  .hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:30px;padding:52px 28px;}
-  .hero .eyebrow{font-size:13px;font-weight:700;color:var(--teal-bright);letter-spacing:.3px;margin-bottom:12px;}
-  .hero h1{
-    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,4vw,44px);
-    line-height:1.14;margin:0 0 18px;letter-spacing:-.4px;
+  /* Hero Slider */
+  .hero-slider{position:relative;background:var(--teal-base);overflow:hidden;}
+  .slides-container{display:flex;transition:transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);}
+  
+  .slide{
+    min-width:100%;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:35px;padding:60px 28px;box-sizing:border-box;
+    color:#fff;position:relative;
   }
-  .hero h1 em{font-style:normal;color:var(--teal-bright);}
-  .hero p{font-size:15.5px;color:var(--muted);max-width:420px;margin:0 0 26px;}
-  .btn-buy{
-    display:inline-flex;align-items:center;gap:9px;background:var(--teal-deep);color:#fff;
-    text-decoration:none;font-weight:700;font-size:14.5px;padding:14px 28px;border-radius:100px;
-    box-shadow:0 10px 22px -10px rgba(14,59,48,.55);
-    transition:transform .12s ease, background .12s ease;
-  }
-  .btn-buy:hover{transform:translateY(-1px);background:var(--teal-bright);}
+  .slide.b1{background:linear-gradient(135deg, #06231c 0%, #12503f 100%);}
+  .slide.b2{background:linear-gradient(135deg, #0c2d3a 0%, #195b75 100%);}
+  .slide.b3{background:linear-gradient(135deg, #32143b 0%, #68267a 100%);}
+  .slide.b4{background:linear-gradient(135deg, #3b1b14 0%, #823a2a 100%);}
+  .slide.b5{background:linear-gradient(135deg, #163613 0%, #2e6b28 100%);}
 
-  .hero-art{
-    background:linear-gradient(160deg,var(--teal) 0%, var(--teal-deep) 100%);
-    border-radius:22px;padding:26px;position:relative;
-    box-shadow:0 24px 50px -22px rgba(14,59,48,.45);
+  .slide-content .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;
+    background:rgba(231,169,68,0.15);color:var(--gold);padding:6px 14px;border-radius:100px;display:inline-block;
+    border:1px solid rgba(231,169,68,0.3);
   }
-  .browser-mock{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px -14px rgba(0,0,0,.4);}
-  .browser-bar{background:#e9ede9;padding:8px 10px;display:flex;gap:6px;align-items:center;}
-  .browser-bar span{width:8px;height:8px;border-radius:50%;background:#c7cec8;}
-  .browser-body{padding:22px 20px 26px;}
-  .ext-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eee;}
-  .ext-row .ic{width:34px;height:34px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-  .ext-row .tt{font-weight:700;font-size:12.5px;color:#1b241f;}
-  .ext-row .ss{font-size:10.5px;color:#8a938d;}
-  .ext-row:last-child{border-bottom:none;}
-  .float-badge{
-    position:absolute;top:-14px;right:18px;background:var(--gold);color:var(--teal-deep);
-    font-weight:800;font-size:12px;padding:8px 16px;border-radius:100px;
-    box-shadow:0 8px 18px -8px rgba(0,0,0,.35);
+  .slide-content h1{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(32px, 4.2vw, 48px);
+    line-height:1.15;margin:0 0 16px;letter-spacing:-.5px;
   }
+  .slide-content h1 em{font-style:normal;color:var(--gold);}
+  .slide-content p{font-size:15.5px;color:rgba(255,255,255,0.85);max-width:440px;margin:0 0 28px;}
+  
+  .btn-slide-action{
+    display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--teal-deep);
+    text-decoration:none;font-weight:800;font-size:14px;padding:14px 28px;border-radius:100px;
+    box-shadow:0 10px 25px rgba(231,169,68,0.3);transition:transform 0.2s, background 0.2s;cursor:pointer;
+  }
+  .btn-slide-action:hover{transform:translateY(-2px);background:var(--gold-light);}
 
-  .filterbar{border-bottom:1px solid var(--line);background:#fff;}
+  .slide-art{
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
+    border-radius:24px;padding:32px;position:relative;
+    box-shadow:0 25px 50px rgba(0,0,0,0.4);text-align:center;backdrop-filter:blur(12px);
+  }
+  .slide-art .badge-tag{
+    position:absolute;top:-14px;right:20px;background:var(--gold);color:var(--teal-deep);
+    font-weight:800;font-size:11.5px;padding:6px 16px;border-radius:100px;box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  }
+  .slide-art h3{font-family:'Fraunces',serif;font-size:22px;margin:0 0 8px;color:#fff;}
+  .slide-art p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0;}
+
+  .slider-nav{
+    position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:8px;z-index:10;
+  }
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.3s;}
+  .dot.active{background:var(--gold);width:26px;border-radius:6px;}
+
+  /* Filter Bar */
+  .filterbar{border-bottom:1px solid var(--line);background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.02);}
   .filterbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;flex-wrap:wrap;gap:10px;}
   .filters{display:flex;gap:10px;flex-wrap:wrap;}
   .chip{
     font-size:12.5px;font-weight:600;color:var(--ink);border:1.5px solid var(--line);
-    padding:8px 14px;border-radius:100px;background:#fff;cursor:default;display:flex;align-items:center;gap:6px;
+    padding:8px 16px;border-radius:100px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;
+    transition:all 0.2s;
   }
-  .sortby{font-size:12.5px;color:var(--muted);font-weight:600;}
+  .chip:hover{border-color:var(--teal-bright);color:var(--teal-bright);background:#f0f7f4;}
+  .sortby{font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;}
 
-  section.products{padding:44px 0 70px;}
-  .products h2{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin:0 0 22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;}
+  /* Products Section */
+  section.products{padding:50px 0 80px;}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+  .products h2{font-family:'Fraunces',serif;font-size:26px;font-weight:700;margin:0;color:var(--ink);}
+  
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;}
 
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-    display:flex;flex-direction:column;
-    transition:box-shadow .15s ease, transform .15s ease;
-    text-decoration:none;color:inherit;position:relative;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    display:flex;flex-direction:column;transition:box-shadow 0.2s ease, transform 0.2s ease;
+    position:relative;box-shadow:0 8px 20px rgba(0,0,0,0.03);
   }
-  .card.live:hover{box-shadow:0 16px 34px -18px rgba(14,59,48,.35);transform:translateY(-3px);}
+  .card.live:hover{box-shadow:0 20px 40px -15px rgba(14,59,48,0.25);transform:translateY(-4px);}
+  
   .card-media{
-    background:#f1efe6;height:150px;display:flex;align-items:center;justify-content:center;
-    position:relative;
+    background:#f1ede4;height:170px;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
   }
-  .card-media .ic{font-size:44px;}
-  .wish{
-    position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;
-    background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:13px;
-  }
+  .card-media img{width:100%;height:100%;object-fit:cover;}
+  .card-media .ic{font-size:46px;}
+  
   .tag-free{
-    position:absolute;top:10px;left:10px;background:var(--teal-deep);color:#fff;
-    font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:100px;
+    position:absolute;top:12px;left:12px;background:var(--teal-deep);color:#fff;
+    font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:100px;z-index:2;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
   }
-  .card-body{padding:14px 15px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
-  .card-cat{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
-  .card-name{font-weight:700;font-size:14.5px;line-height:1.3;}
+  .delete-prod-btn{
+    position:absolute;top:12px;right:12px;background:var(--accent-red);color:#fff;border:none;
+    width:28px;height:28px;border-radius:50%;font-weight:bold;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;z-index:3;box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    transition:transform 0.2s;
+  }
+  .delete-prod-btn:hover{transform:scale(1.1);}
+
+  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-cat{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+  .card-name{font-weight:700;font-size:15px;color:var(--ink);}
   .card-rating{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);}
-  .card-desc{font-size:12px;color:var(--muted);line-height:1.5;flex:1;}
-  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:6px;}
-  .price{font-weight:800;font-size:15px;color:var(--teal-deep);}
+  .card-desc{font-size:12.5px;color:var(--muted);line-height:1.5;flex:1;}
+  
+  .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line);margin-top:6px;}
+  .price{font-weight:800;font-size:16px;color:var(--teal-deep);}
   .btn-cart{
     border:1.5px solid var(--teal-deep);color:var(--teal-deep);background:#fff;
-    font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:100px;
-    transition:background .15s, color .15s;
+    font-weight:700;font-size:12px;padding:8px 16px;border-radius:100px;
+    transition:all 0.2s;text-decoration:none;cursor:pointer;
   }
   .card.live:hover .btn-cart{background:var(--teal-deep);color:#fff;}
 
-  .card.soon{opacity:.65;}
-  .card.soon .card-media{background:repeating-linear-gradient(135deg,#f1efe6,#f1efe6 10px,#eae7db 10px,#eae7db 20px);}
-  .card.soon .btn-cart{border-color:var(--line);color:var(--muted);cursor:default;}
+  /* Slide-over Cart Drawer */
+  .cart-drawer{
+    position:fixed;top:0;right:-400px;width:380px;height:100%;background:#fff;z-index:99999;
+    box-shadow:-10px 0 30px rgba(0,0,0,0.2);transition:right 0.3s ease;display:flex;flex-direction:column;
+  }
+  .cart-drawer.open{right:0;}
+  .cart-header{background:var(--teal-deep);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;}
+  .cart-body{padding:20px;flex:1;overflow-y:auto;}
+  .cart-footer{padding:20px;border-top:1px solid var(--line);background:#faf7f0;}
+  .btn-checkout{display:block;width:100%;background:#ff9f00;color:#fff;border:none;padding:12px;font-weight:800;border-radius:8px;cursor:pointer;text-align:center;font-size:15px;}
+  .btn-checkout:hover{background:#fb8c00;}
 
-  footer.site{background:var(--teal-deep);color:#cfe7dc;padding:30px 0;margin-top:20px;}
-  footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;}
-  footer.site a{text-decoration:none;color:#cfe7dc;font-weight:600;}
+  /* Toast Notification */
+  #toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);
+    background:var(--teal-deep);color:#fff;padding:12px 24px;border-radius:100px;font-weight:700;font-size:13.5px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);transition:transform 0.3s ease;z-index:9999999;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0);}
 
-  @media (max-width:920px){
+  /* Footer */
+  footer.site{background:var(--teal-deep);color:#cfe7dc;padding:35px 0;margin-top:30px;font-size:13px;}
+  footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;}
+  footer.site a{color:var(--gold);text-decoration:none;font-weight:600;}
+
+  /* Modal Form */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    opacity:0;pointer-events:none;transition:opacity 0.2s ease;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal-box{
+    background:#fff;border-radius:18px;padding:30px;max-width:440px;width:100%;
+    box-shadow:0 30px 60px rgba(0,0,0,0.3);color:var(--ink);
+  }
+  .modal-box h3{margin-top:0;font-family:'Fraunces',serif;color:var(--teal-deep);font-size:22px;}
+  .form-group{margin-bottom:14px;}
+  .form-group label{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;color:var(--ink);}
+  .form-group input, .form-group textarea{
+    width:100%;padding:10px 14px;border:1.5px solid var(--line);border-radius:8px;
+    font-family:inherit;font-size:13.5px;outline:none;background:#faf7f0;
+  }
+  .form-group input:focus, .form-group textarea:focus{border-color:var(--teal-bright);background:#fff;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+  .btn-cancel{background:#e7e2d6;border:none;padding:10px 18px;font-weight:700;border-radius:8px;cursor:pointer;}
+  .btn-submit{background:var(--teal-deep);color:#fff;border:none;padding:10px 18px;font-weight:700;border-radius:8px;cursor:pointer;}
+
+  @media(max-width:920px){
     header.site .wrap{flex-wrap:wrap;}
     nav.main{order:3;width:100%;overflow-x:auto;}
-    .hero .wrap{grid-template-columns:1fr;}
-    .hero-art{order:-1;}
+    .slide{grid-template-columns:1fr;padding:40px 20px;}
   }
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 
-  /* ---------- Password gate ---------- */
+  /* Password Gate */
   #saathiGate{
-    position:fixed;inset:0;z-index:99999;
-    background:
-      radial-gradient(900px 500px at 15% 0%, rgba(231,169,68,.10), transparent 60%),
-      var(--teal-deep);
+    position:fixed;inset:0;z-index:999999;
+    background:radial-gradient(900px 500px at 15% 0%, rgba(231,169,68,0.15), transparent 60%), var(--teal-deep);
     display:flex;align-items:center;justify-content:center;padding:20px;
   }
   #saathiGate.hidden{display:none;}
   body.locked > *:not(#saathiGate){display:none !important;}
   .gate-card{
-    background:#fff;border-radius:18px;padding:36px 32px;max-width:360px;width:100%;
-    box-shadow:0 30px 60px -20px rgba(0,0,0,.5);text-align:center;
+    background:#fff;border-radius:20px;padding:36px;max-width:360px;width:100%;
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);text-align:center;color:var(--ink);
   }
   .gate-mark{
-    width:52px;height:52px;border-radius:14px;margin:0 auto 18px;
-    background:linear-gradient(145deg,var(--gold) 0%, #c98d2e 100%);
-    display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;
+    width:54px;height:54px;border-radius:14px;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--gold),#c98d2e);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;
+    box-shadow:0 6px 15px rgba(231,169,68,0.3);
   }
-  .gate-card h2{font-family:'Fraunces',serif;font-size:20px;margin:0 0 8px;}
-  .gate-card p{font-size:13px;color:var(--muted);margin:0 0 22px;}
+  .gate-card h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 6px;}
+  .gate-card p{font-size:13px;color:var(--muted);margin:0 0 20px;}
   #saathiGateInput{
-    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;
-    font-size:15px;text-align:center;letter-spacing:2px;margin-bottom:12px;font-family:inherit;
-    outline:none;
+    width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:15px;text-align:center;letter-spacing:2px;margin-bottom:12px;outline:none;background:#faf7f0;
   }
   #saathiGateInput:focus{border-color:var(--teal-bright);}
   #saathiGateBtn{
     width:100%;padding:12px;border:none;border-radius:10px;background:var(--teal-deep);
-    color:#fff;font-weight:700;font-size:14.5px;cursor:pointer;transition:background .15s;
+    color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s;
   }
   #saathiGateBtn:hover{background:var(--teal-bright);}
-  #saathiGateError{color:#c0394a;font-size:12.5px;font-weight:600;margin-top:12px;min-height:16px;}
-  .gate-shake{animation:saathiShake .35s;}
-  @keyframes saathiShake{
-    25%{transform:translateX(-6px);} 75%{transform:translateX(6px);}
-  }
+  #saathiGateError{color:var(--accent-red);font-size:12px;font-weight:600;margin-top:10px;min-height:16px;}
+  .gate-shake{animation:shake 0.35s;}
+  @keyframes shake{ 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
 </style>
 </head>
 <body class="locked">
 
-  <!-- Password gate — blocks the page until the right password is
-       entered. This is a simple client-side lock (good for keeping
-       casual visitors out); it is NOT real security, since anyone can
-       view this page's source and see the password. Don't put
-       anything here you'd need to protect from a determined person. -->
+  <!-- Password Gate -->
   <div id="saathiGate">
     <div class="gate-card">
       <div class="gate-mark">🔒</div>
@@ -225,159 +291,231 @@
     </div>
   </div>
 
+  <!-- Flash Sale Timer Top Bar -->
+  <div class="flash-bar">
+    🔥 MEGA FLASH SALE LIVE! Extra 50% Off on All Digital Tools. Ends in: <span id="timer">04h : 35m : 12s</span>
+  </div>
+
   <div class="utility">
     <div class="wrap">
-      <span class="hi">100% मुफ़्त डाउनलोड — कोई पैसा नहीं</span>
+      <span class="hi">100% मुफ़्त डिजिटल टूल्स & सेवाएं — Flipkart Pro Experience</span>
       <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder खोलें</a>
+    </div>
+  </div>
+
+  <!-- Admin Bar -->
+  <div class="admin-bar">
+    <div class="wrap">
+      <span style="font-size: 12.5px; font-weight: 600;">👑 Admin Control Panel</span>
+      <button class="admin-btn" id="openAddModalBtn">+ नया प्रोडक्ट जोड़ें (Add Product)</button>
     </div>
   </div>
 
   <header class="site">
     <div class="wrap">
-      <div class="logo"><span class="mark">DS</span> Digital Saathi</div>
+      <div class="logo" id="logoBtn"><span class="mark">DS</span> Digital Saathi</div>
       <nav class="main">
-        <a href="#products">Categories</a>
-        <a href="#products">Extensions</a>
-        <a href="#products">New</a>
-        <a href="#">Support</a>
+        <a id="navHome">Categories</a>
+        <a id="navExt">Extensions</a>
+        <a id="navFeat">Featured</a>
+        <a id="navSupport">Support</a>
       </nav>
       <div class="searchbar">
-        <input type="text" placeholder="Tools खोजें...">
-        <button>Search</button>
+        <input type="text" id="searchInput" placeholder="Search tools...">
+        <button id="searchBtn">Search</button>
       </div>
       <div class="header-icons">
-        <div class="item"><span class="icon">👤</span>Account</div>
-        <div class="item">
-          <span class="icon">⬇️</span>Downloads
-          <span class="badge-count">1</span>
+        <div class="item" id="accountBtn"><span class="icon">👤</span>Account</div>
+        <div class="item" id="cartBtn">
+          <span class="icon">🛒</span>Cart
+          <span class="badge-count" id="cartCount">0</span>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <div class="eyebrow hi">आपके सेवा केंद्र के लिए</div>
-        <h1 class="hi">रोज़ के फॉर्म-भरने के काम को <em>तेज़</em> बनाएं</h1>
-        <p class="hi">दस्तावेज़ अपलोड, CAPTCHA, और सारी फॉर्म-फिलिंग — Digital Saathi extension से मिनटों में। पूरी तरह मुफ़्त।</p>
-        <a class="btn-buy" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">अभी Download करें</a>
-      </div>
-      <div class="hero-art">
-        <span class="float-badge">100% Free</span>
-        <div class="browser-mock">
-          <div class="browser-bar"><span></span><span></span><span></span></div>
-          <div class="browser-body">
-            <div class="ext-row">
-              <div class="ic">🧩</div>
-              <div><div class="tt">Digital Saathi</div><div class="ss">Active on this page</div></div>
-            </div>
-            <div class="ext-row">
-              <div class="ic">📎</div>
-              <div><div class="tt">Documents</div><div class="ss">4 uploaded</div></div>
-            </div>
-            <div class="ext-row">
-              <div class="ic">✅</div>
-              <div><div class="tt">Form auto-filled</div><div class="ss">Ready to submit</div></div>
-            </div>
-          </div>
+  <!-- Ultra Premium 5-Banner Auto-Scrolling Slider -->
+  <section class="hero-slider">
+    <div class="slides-container" id="slidesContainer">
+      
+      <!-- Banner 1 -->
+      <div class="slide b1">
+        <div class="slide-content">
+          <div class="eyebrow hi">🌟 आपके सेवा केंद्र के लिए स्पेशल</div>
+          <h1 class="hi">रोज़ के फॉर्म-भरने के काम को <em>तेज़</em> बनाएं</h1>
+          <p class="hi">दस्तावेज़ अपलोड, CAPTCHA, और सारी फॉर्म-फिलिंग — Digital Saathi extension से मिनटों में।</p>
+          <a class="btn-slide-action" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">अभी Download करें 🚀</a>
+        </div>
+        <div class="slide-art">
+          <span class="badge-tag">100% Free</span>
+          <h3>RTPS Master Assistant</h3>
+          <p class="hi">सुपरफास्ट ऑटोमेशन और स्मार्ट फॉर्म फिलिंग टूल।</p>
         </div>
       </div>
+
+      <!-- Banner 2 -->
+      <div class="slide b2">
+        <div class="slide-content">
+          <div class="eyebrow hi">💻 प्रीमियम डिजिटल कलेक्शन</div>
+          <h1 class="hi">आधुनिक तकनीक और <em>स्मार्ट डैशबोर्ड्स</em></h1>
+          <p class="hi">अपने बिजनेस और जन सेवा केंद्र को दें एक हाई-परफॉरमेंस डिजिटल अपग्रेड।</p>
+          <a class="btn-slide-action" href="#products">कलेक्शन देखें 🛒</a>
+        </div>
+        <div class="slide-art">
+          <span class="badge-tag">Trending</span>
+          <h3>Digital Saathi Dashboard</h3>
+          <p class="hi">कस्टमर रिकॉर्ड और फाइल मैनेजमेंट अब हुआ आसान।</p>
+        </div>
+      </div>
+
+      <!-- Banner 3 -->
+      <div class="slide b3">
+        <div class="slide-content">
+          <div class="eyebrow hi">⚡ सुपरफास्ट परफॉरमेंस</div>
+          <h1 class="hi">समय बचाएं, काम को <em>दोगुना</em> करें</h1>
+          <p class="hi">बिना किसी रुकावट के अपने सभी पोर्टल के काम चुटकियों में पूरे करें।</p>
+          <a class="btn-slide-action" href="#products">टूल्स एक्सप्लोर करें ✨</a>
+        </div>
+        <div class="slide-art">
+          <span class="badge-tag">High Speed</span>
+          <h3>Instant Automation</h3>
+          <p class="hi">एक क्लिक में सभी जरूरी डिटेल्स ऑटो-फिल करें।</p>
+        </div>
+      </div>
+
+      <!-- Banner 4 -->
+      <div class="slide b4">
+        <div class="slide-content">
+          <div class="eyebrow hi">🛡️ 100% सुरक्षित और भरोसेमंद</div>
+          <h1 class="hi">आपका डेटा, पूरी तरह <em>सुरक्षित</em></h1>
+          <p class="hi">एडवांस्ड सिक्योरिटी और आसान इंटरफ़ेस के साथ बेहतरीन अनुभव।</p>
+          <a class="btn-slide-action" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">ड्राइव फोल्डर खोलें 📂</a>
+        </div>
+        <div class="slide-art">
+          <span class="badge-tag">Secure</span>
+          <h3>Verified & Safe</h3>
+          <p class="hi">डायरेक्ट गूगल ड्राइव से सुरक्षित और वेरीफाइड डाउनलोड।</p>
+        </div>
+      </div>
+
+      <!-- Banner 5 -->
+      <div class="slide b5">
+        <div class="slide-content">
+          <div class="eyebrow hi">🚀 नए अपडेट्स और फीचर्स</div>
+          <h1 class="hi">हर हफ्ते नए टूल्स और <em>फ्री अपडेट्स</em></h1>
+          <p class="hi">जुड़े रहें Digital Saathi के साथ और पाएं लेटेस्ट फीचर्स सबसे पहले।</p>
+          <a class="btn-slide-action" href="#products">अभी आज़माएं 🌟</a>
+        </div>
+        <div class="slide-art">
+          <span class="badge-tag">New</span>
+          <h3>Future Ready Tools</h3>
+          <p class="hi">आने वाले सभी नए टूल्स का लाइफटाइम एक्सेस पाएं।</p>
+        </div>
+      </div>
+
+    </div>
+    
+    <!-- Slider Dots -->
+    <div class="slider-nav" id="sliderDots">
+      <span class="dot active" data-index="0"></span>
+      <span class="dot" data-index="1"></span>
+      <span class="dot" data-index="2"></span>
+      <span class="dot" data-index="3"></span>
+      <span class="dot" data-index="4"></span>
     </div>
   </section>
 
+  <!-- Filter & Interactive Chips Bar -->
   <div class="filterbar">
     <div class="wrap">
       <div class="filters">
-        <span class="chip">Tool Type ⌄</span>
-        <span class="chip">Platform ⌄</span>
-        <span class="chip">Rating ⌄</span>
-        <span class="chip">Category ⌄</span>
+        <span class="chip" id="filterAll">📦 All Products</span>
+        <span class="chip" id="filterExt">🧩 Extensions</span>
+        <span class="chip" id="filterDash">🗂️ Dashboards</span>
+        <span class="chip" id="filterFree">⚡ Free Tools</span>
       </div>
-      <div class="sortby">Sort by: Popular ⌄</div>
+      <div class="sortby" id="sortBtn">Sort by: Featured ⌄</div>
     </div>
   </div>
 
   <section class="products wrap" id="products">
-    <h2>Tools For You!</h2>
-    <div class="grid">
-
-      <a class="card live" href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">
-        <div class="card-media">
-          <span class="tag-free">FREE</span>
-          <span class="wish">♡</span>
-          <span class="ic">🧩</span>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">Chrome Extension</div>
-          <div class="card-name">Digital Saathi</div>
-          <div class="card-rating"><span class="stars">★★★★★</span> (128)</div>
-          <p class="card-desc hi">RTPS/e-District फॉर्म, दस्तावेज़ अपलोड और CAPTCHA — सब एक जगह।</p>
-          <div class="card-foot">
-            <span class="price">Free</span>
-            <span class="btn-cart">Download</span>
-          </div>
-        </div>
-      </a>
-
-      <div class="card soon">
-        <div class="card-media"><span class="ic">🗂️</span></div>
-        <div class="card-body">
-          <div class="card-cat hi">जल्द आ रहा है</div>
-          <div class="card-name hi">अगला Tool</div>
-          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
-          <p class="card-desc hi">यहाँ आपका अगला बनाया हुआ tool दिखेगा।</p>
-          <div class="card-foot">
-            <span class="price">—</span>
-            <span class="btn-cart">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card soon">
-        <div class="card-media"><span class="ic">🖨️</span></div>
-        <div class="card-body">
-          <div class="card-cat hi">जल्द आ रहा है</div>
-          <div class="card-name hi">अगला Tool</div>
-          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
-          <p class="card-desc hi">एक और खाली जगह — नए tool के लिए तैयार।</p>
-          <div class="card-foot">
-            <span class="price">—</span>
-            <span class="btn-cart">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card soon">
-        <div class="card-media"><span class="ic">📊</span></div>
-        <div class="card-body">
-          <div class="card-cat hi">जल्द आ रहा है</div>
-          <div class="card-name hi">अगला Tool</div>
-          <div class="card-rating hi">तैयार होने पर जुड़ेगा</div>
-          <p class="card-desc hi">एक और खाली जगह — नए tool के लिए तैयार।</p>
-          <div class="card-foot">
-            <span class="price">—</span>
-            <span class="btn-cart">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-
+    <div class="section-header">
+      <h2>Featured Products & Tools</h2>
+      <span style="font-size: 13px; color: var(--muted);" id="productCountText">Showing items</span>
     </div>
+    
+    <!-- Dynamic Product Grid -->
+    <div class="grid" id="productGrid"></div>
   </section>
+
+  <!-- Slide-over Cart Drawer -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3 style="margin:0; font-family:'Fraunces',serif;">🛒 Your Shopping Cart</h3>
+      <button id="closeCartBtn" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;">×</button>
+    </div>
+    <div class="cart-body" id="cartItemsList">
+      <!-- Cart items will appear here -->
+    </div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:12px; font-size:15px;">
+        <span>Total Items:</span>
+        <span id="cartTotalCount">0</span>
+      </div>
+      <button class="btn-checkout" id="whatsappCheckoutBtn">📲 Instant WhatsApp Checkout</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast">Notification Message</div>
 
   <footer class="site">
     <div class="wrap">
-      <span>© 2026 Digital Saathi Store</span>
+      <span>© 2026 Digital Saathi Store. All rights reserved.</span>
       <a href="https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link" target="_blank" rel="noopener">Drive Folder</a>
     </div>
   </footer>
 
+  <!-- Modal: Add New Product -->
+  <div class="modal-overlay" id="addProductModal">
+    <div class="modal-box">
+      <h3>नया प्रोडक्ट या टूल जोड़ें</h3>
+      <form id="newProductForm">
+        <div class="form-group">
+          <label>प्रोडक्ट का नाम (Product Name)</label>
+          <input type="text" id="pName" placeholder="जैसे: AutoFill Pro" required>
+        </div>
+        <div class="form-group">
+          <label>श्रेणी (Category)</label>
+          <input type="text" id="pCat" placeholder="जैसे: Extension / Dashboard" required>
+        </div>
+        <div class="form-group">
+          <label>कीमत (Price)</label>
+          <input type="text" id="pPrice" placeholder="जैसे: Free या ₹499" required>
+        </div>
+        <div class="form-group">
+          <label>छवि यूआरएल (Image URL - Optional)</label>
+          <input type="url" id="pImage" placeholder="https://example.com/image.jpg">
+        </div>
+        <div class="form-group">
+          <label>डाउनलोड लिंक (Link URL)</label>
+          <input type="url" id="pLink" placeholder="https://drive.google.com/..." required>
+        </div>
+        <div class="form-group">
+          <label>विवरण (Short Description)</label>
+          <textarea id="pDesc" rows="3" placeholder="प्रोडक्ट के बारे में विवरण..." required></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="closeModalBtn">रद्द करें</button>
+          <button type="submit" class="btn-submit">जोड़ें (Add)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 <script>
 (function () {
-  // ---- Change the password here ----
   var SAATHI_PASSWORD = "saathi123";
-  // -----------------------------------
-
   var gate = document.getElementById("saathiGate");
   var input = document.getElementById("saathiGateInput");
   var btn = document.getElementById("saathiGateBtn");
@@ -396,17 +534,13 @@
     } else {
       errorBox.textContent = "Galat password, dobara try karein.";
       card.classList.remove("gate-shake");
-      void card.offsetWidth; // restart animation
+      void card.offsetWidth;
       card.classList.add("gate-shake");
       input.value = "";
       input.focus();
     }
   }
 
-  // Already unlocked earlier in this browser tab/session? Skip the
-  // gate — re-typing the password every single reload would be
-  // annoying. Closing the browser/tab clears this (sessionStorage),
-  // so it's asked for again next visit.
   if (sessionStorage.getItem("saathiUnlocked") === "1") {
     unlock();
   } else {
@@ -417,6 +551,283 @@
   input.addEventListener("keydown", function (e) {
     if (e.key === "Enter") tryUnlock();
   });
+
+  // Toast Function
+  function showToast(msg) {
+    var toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(function() {
+      toast.classList.remove("show");
+    }, 3000);
+  }
+
+  // Default Products
+  var defaultProducts = [
+    {
+      id: 1,
+      name: "Digital Saathi Assistant",
+      category: "Chrome Extension",
+      price: "Free",
+      image: "",
+      icon: "🧩",
+      link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link",
+      desc: "RTPS/e-District फॉर्म, दस्तावेज़ अपलोड और CAPTCHA — सब एक जगह ऑटोमैटिक।"
+    },
+    {
+      id: 2,
+      name: "Digital Saathi Dashboard",
+      category: "Web Application",
+      price: "Free",
+      image: "",
+      icon: "🗂️",
+      link: "https://drive.google.com/drive/folders/1EpMTPTWpXT7bWX6ZCHUI1BQ3Lk2M_N7I?usp=drive_link",
+      desc: "कस्टमर रिकॉर्ड और डॉक्यूमेंट मैनेजमेंट के लिए स्मार्ट डैशबोर्ड।"
+    }
+  ];
+
+  function getProducts() {
+    var stored = localStorage.getItem("ds_store_products");
+    if (stored) {
+      try { return JSON.parse(stored); } catch(e) { return defaultProducts; }
+    }
+    return defaultProducts;
+  }
+
+  function saveProducts(prods) {
+    localStorage.setItem("ds_store_products", JSON.stringify(prods));
+  }
+
+  function renderProducts(filterText = "", categoryFilter = "") {
+    var products = getProducts();
+    var grid = document.getElementById("productGrid");
+    grid.innerHTML = "";
+
+    var filtered = products.filter(function(p) {
+      var matchesSearch = p.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                          p.category.toLowerCase().includes(filterText.toLowerCase());
+      var matchesCat = true;
+      if (categoryFilter === "ext") {
+        matchesCat = p.category.toLowerCase().includes("extension");
+      } else if (categoryFilter === "dash") {
+        matchesCat = p.category.toLowerCase().includes("dashboard") || p.category.toLowerCase().includes("application");
+      } else if (categoryFilter === "free") {
+        matchesCat = p.price.toLowerCase().includes("free");
+      }
+      return matchesSearch && matchesCat;
+    });
+
+    document.getElementById("productCountText").textContent = "Showing " + filtered.length + " items";
+    document.getElementById("cartCount").textContent = products.length;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color: var(--muted); padding: 30px;">कोई प्रोडक्ट नहीं मिला। ऊपर दिए गए बटन से नया प्रोडक्ट जोड़ें।</p>';
+      return;
+    }
+
+    filtered.forEach(function(p) {
+      var card = document.createElement("div");
+      card.className = "card live";
+      
+      var mediaContent = p.image 
+        ? '<img src="' + p.image + '" alt="' + p.name + '">' 
+        : '<span class="ic">' + (p.icon || '📦') + '</span>';
+
+      card.innerHTML = `
+        <div class="card-media">
+          <span class="tag-free">${p.price}</span>
+          <button class="delete-prod-btn" title="Delete Product" onclick="deleteProduct(${p.id})">×</button>
+          ${mediaContent}
+        </div>
+        <div class="card-body">
+          <div class="card-cat">${p.category}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-rating"><span style="color:var(--gold);letter-spacing:1px;">★★★★★</span> (128)</div>
+          <p class="card-desc hi">${p.desc}</p>
+          <div class="card-foot">
+            <span class="price">${p.price}</span>
+            <a class="btn-cart" href="${p.link}" target="_blank" rel="noopener">Download</a>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  window.deleteProduct = function(id) {
+    if (confirm("क्या आप वाकई इस प्रोडक्ट को हटाना चाहते हैं?")) {
+      var products = getProducts();
+      var updated = products.filter(function(p) { return p.id !== id; });
+      saveProducts(updated);
+      renderProducts(document.getElementById("searchInput").value);
+      showToast("🗑️ Product deleted successfully!");
+    }
+  };
+
+  // Cart Drawer Logic
+  var cartDrawer = document.getElementById("cartDrawer");
+  document.getElementById("cartBtn").addEventListener("click", function() {
+    var products = getProducts();
+    var list = document.getElementById("cartItemsList");
+    list.innerHTML = "";
+    document.getElementById("cartTotalCount").textContent = products.length;
+
+    if(products.length === 0) {
+      list.innerHTML = '<p style="text-align:center;color:var(--muted);margin-top:40px;">Your cart is empty.</p>';
+    } else {
+      products.forEach(function(p) {
+        list.innerHTML += `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line);">
+            <div>
+              <div style="font-weight:700;font-size:14px;">${p.name}</div>
+              <div style="font-size:12px;color:var(--muted);">${p.price}</div>
+            </div>
+            <a href="${p.link}" target="_blank" style="background:var(--teal-deep);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;">Open</a>
+          </div>
+        `;
+      });
+    }
+    cartDrawer.classList.add("open");
+  });
+
+  document.getElementById("closeCartBtn").addEventListener("click", function() {
+    cartDrawer.classList.remove("open");
+  });
+
+  document.getElementById("whatsappCheckoutBtn").addEventListener("click", function() {
+    var products = getProducts();
+    var text = "Hello Digital Saathi, I want to checkout these tools from my cart:\n";
+    products.forEach(function(p, i) {
+      text += (i+1) + ". " + p.name + " (" + p.price + ")\n";
+    });
+    var url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
+  });
+
+  // Search & Filters
+  var currentCategory = "";
+  document.getElementById("searchInput").addEventListener("input", function(e) {
+    renderProducts(e.target.value, currentCategory);
+  });
+
+  document.getElementById("searchBtn").addEventListener("click", function() {
+    renderProducts(document.getElementById("searchInput").value, currentCategory);
+  });
+
+  document.getElementById("filterAll").addEventListener("click", function() {
+    currentCategory = "";
+    renderProducts(document.getElementById("searchInput").value, currentCategory);
+    showToast("Showing all items");
+  });
+
+  document.getElementById("filterExt").addEventListener("click", function() {
+    currentCategory = "ext";
+    renderProducts(document.getElementById("searchInput").value, currentCategory);
+    showToast("Filtered by Extensions");
+  });
+
+  document.getElementById("filterDash").addEventListener("click", function() {
+    currentCategory = "dash";
+    renderProducts(document.getElementById("searchInput").value, currentCategory);
+    showToast("Filtered by Dashboards");
+  });
+
+  document.getElementById("filterFree").addEventListener("click", function() {
+    currentCategory = "free";
+    renderProducts(document.getElementById("searchInput").value, currentCategory);
+    showToast("Showing Free Tools");
+  });
+
+  // Nav buttons
+  document.getElementById("logoBtn").addEventListener("click", function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+  document.getElementById("navHome").addEventListener("click", function() {
+    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
+  });
+  document.getElementById("navExt").addEventListener("click", function() {
+    currentCategory = "ext";
+    renderProducts("", currentCategory);
+    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
+  });
+  document.getElementById("navFeat").addEventListener("click", function() {
+    document.getElementById("products").scrollIntoView({behavior: 'smooth'});
+  });
+  document.getElementById("navSupport").addEventListener("click", function() {
+    showToast("Support: Use Google Drive folder link for downloads.");
+  });
+
+  document.getElementById("accountBtn").addEventListener("click", function() {
+    showToast("Admin Logged In successfully!");
+  });
+
+  // Modal Handling
+  var modal = document.getElementById("addProductModal");
+  document.getElementById("openAddModalBtn").addEventListener("click", function() {
+    modal.classList.add("open");
+  });
+  document.getElementById("closeModalBtn").addEventListener("click", function() {
+    modal.classList.remove("open");
+  });
+
+  document.getElementById("newProductForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    var name = document.getElementById("pName").value.trim();
+    var cat = document.getElementById("pCat").value.trim();
+    var price = document.getElementById("pPrice").value.trim();
+    var image = document.getElementById("pImage").value.trim();
+    var link = document.getElementById("pLink").value.trim();
+    var desc = document.getElementById("pDesc").value.trim();
+
+    var products = getProducts();
+    var newObj = {
+      id: Date.now(),
+      name: name,
+      category: cat,
+      price: price,
+      image: image,
+      link: link,
+      desc: desc
+    };
+
+    products.push(newObj);
+    saveProducts(products);
+    renderProducts();
+
+    this.reset();
+    modal.classList.remove("open");
+    showToast("🎉 New Product added successfully!");
+  });
+
+  // Slider Logic
+  var currentSlide = 0;
+  var slidesContainer = document.getElementById("slidesContainer");
+  var dots = document.querySelectorAll(".dot");
+  var totalSlides = 5;
+
+  function showSlide(index) {
+    currentSlide = (index + totalSlides) % totalSlides;
+    slidesContainer.style.transform = "translateX(-" + (currentSlide * 100) + "%)";
+    dots.forEach(function(d, i) {
+      if (i === currentSlide) {
+        d.classList.add("active");
+      } else {
+        d.classList.remove("active");
+      }
+    });
+  }
+
+  dots.forEach(function(dot) {
+    dot.addEventListener("click", function() {
+      showSlide(parseInt(this.getAttribute("data-index")));
+    });
+  });
+
+  setInterval(function() {
+    showSlide(currentSlide + 1);
+  }, 4500);
+
+  renderProducts();
 })();
 </script>
 </body>
