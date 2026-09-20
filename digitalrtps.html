@@ -477,7 +477,7 @@ input[type="file"]::file-selector-button:hover {
 .section-num { position: relative; }
 .section.completed { border-color: #a7f3d0; }
 .section.completed .section-sub::after {
-  content: " • ✓ पूर्ण";
+  content: " • ✓ Completed";
   color: var(--accent-green);
   font-weight: 700;
 }
@@ -639,7 +639,7 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">1</span>
       <span>
         <div class="section-title">Personal Details</div>
-        <div class="section-sub">Personal Information</div>
+        <div class="section-sub">Basic Information & Contact</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -647,10 +647,10 @@ input[type="file"]::file-selector-button:hover {
       <div class="section-inner">
         <div class="section-body">
           <div class="grid">
-            <div class="field"><label for="name" class="required-label">Name</label><input id="name" required placeholder="पूरा नाम" autocapitalize="words"></div>
-            <div class="field"><label for="fathername" class="required-label">Father Name</label><input id="fathername" required placeholder="पिता का नाम" autocapitalize="words"></div>
-            <div class="field"><label for="mothername" class="required-label">Mother Name</label><input id="mothername" required placeholder="माता का नाम" autocapitalize="words"></div>
-            <div class="field"><label for="husbandname">पति</label><input id="husbandname" placeholder="यदि हो" autocapitalize="words"></div>
+            <div class="field"><label for="name" class="required-label">Full Name</label><input id="name" required placeholder="Enter full name" autocapitalize="words"></div>
+            <div class="field"><label for="fathername" class="required-label">Father's Name</label><input id="fathername" required placeholder="Enter father's name" autocapitalize="words"></div>
+            <div class="field"><label for="mothername" class="required-label">Mother's Name</label><input id="mothername" required placeholder="Enter mother's name" autocapitalize="words"></div>
+            <div class="field"><label for="husbandname">Husband's Name</label><input id="husbandname" placeholder="If applicable" autocapitalize="words"></div>
             <div class="field">
               <label class="required-label">Gender</label>
               <div class="radio-row">
@@ -659,14 +659,14 @@ input[type="file"]::file-selector-button:hover {
               </div>
             </div>
             <div class="field">
-              <label class="required-label">Address </label>
+              <label class="required-label">Address Type</label>
               <div class="radio-row">
-                <label><input type="radio" name="addressType" value="1" required> स्थायी</label>
-                <label><input type="radio" name="addressType" value="2"> वर्तमान</label>
+                <label><input type="radio" name="addressType" value="1" required> Permanent</label>
+                <label><input type="radio" name="addressType" value="2"> Present</label>
               </div>
             </div>
-            <div class="field"><label for="mobile" class="required-label">Mobile Number</label><input id="mobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 अंक"></div>
-            <div class="field"><label for="email">Gmail</label><input id="email" type="email" placeholder="abc@gmail.com" autocapitalize="none"></div>
+            <div class="field"><label for="mobile" class="required-label">Mobile Number</label><input id="mobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 Digit Number"></div>
+            <div class="field"><label for="email">Email Address</label><input id="email" type="email" placeholder="example@gmail.com" autocapitalize="none"></div>
           </div>
         </div>
       </div>
@@ -678,8 +678,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">2</span>
       <span>
-        <div class="section-title">Address Detail</div>
-        <div class="section-sub">address, photo</div>
+        <div class="section-title">Address Details</div>
+        <div class="section-sub">Location & Photo</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -687,38 +687,37 @@ input[type="file"]::file-selector-button:hover {
       <div class="section-inner">
         <div class="section-body">
           <div class="grid">
-            <div class="field"><label for="state" class="required-label">राज्य</label>
+            <div class="field"><label for="state" class="required-label">State</label>
               <select id="state" required><option value="">Select</option><option value="10">BIHAR</option></select>
             </div>
-            <div class="field"><label for="district">जिला</label><input id="district" placeholder="जिला" autocapitalize="words"></div>
-            <div class="field"><label for="anumandal">Sub Division</label><input id="anumandal" placeholder="अनुमंडल" autocapitalize="words"></div>
-            <div class="field"><label for="prakhand">Block</label><input id="prakhand" placeholder="प्रखंड" autocapitalize="words"></div>
+            <div class="field"><label for="district">District</label><input id="district" placeholder="Enter District" autocapitalize="words"></div>
+            <div class="field"><label for="anumandal">Sub Division</label><input id="anumandal" placeholder="Enter Sub Division" autocapitalize="words"></div>
+            <div class="field"><label for="prakhand">Block</label><input id="prakhand" placeholder="Enter Block" autocapitalize="words"></div>
             <div class="field wide">
-              <label class="required-label">निकाय प्रकार</label>
+              <label class="required-label">Local Body Type</label>
               <div class="radio-row">
-                <label><input type="radio" name="residenceType" value="1" required> ग्राम पंचायत</label>
-                <label><input type="radio" name="residenceType" value="2"> नगर निगम</label>
-                <label><input type="radio" name="residenceType" value="3"> नगर परिषद</label>
-                <label><input type="radio" name="residenceType" value="4"> नगर पंचायत</label>
+                <label><input type="radio" name="residenceType" value="1" required> Gram Panchayat</label>
+                <label><input type="radio" name="residenceType" value="2"> Nagar Nigam</label>
+                <label><input type="radio" name="residenceType" value="3"> Nagar Parishad</label>
+                <label><input type="radio" name="residenceType" value="4"> Nagar Panchayat</label>
               </div>
             </div>
-            <div class="field"><label for="gram">पंचायत</label><input id="gram" placeholder="पंचायत नाम" autocapitalize="words"></div>
-            <div class="field"><label for="wardNo" class="required-label">वार्ड सं.</label><input id="wardNo" type="number" inputmode="numeric" required placeholder="वार्ड"></div>
-            <div class="field"><label for="village" class="required-label">गांव</label><input id="village" required placeholder="गांव / मोहल्ला" autocapitalize="words"></div>
-            <div class="field"><label for="pin" class="required-label">पिन कोड</label><input id="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 अंक"></div>
-            <div class="field"><label for="postoffice" class="required-label">डाकघर</label><input id="postoffice" required placeholder="डाकघर" autocapitalize="words"></div>
-            <div class="field"><label for="policeStation">थाना</label><input id="policeStation" placeholder="थाना" autocapitalize="words"></div>
-            <div class="field wide"><label for="purpose" class="required-label">Purpose</label><input id="purpose" required value="Education" autocapitalize="words"></div>
+            <div class="field"><label for="gram">Panchayat Name</label><input id="gram" placeholder="Enter Panchayat" autocapitalize="words"></div>
+            <div class="field"><label for="wardNo" class="required-label">Ward No.</label><input id="wardNo" type="number" inputmode="numeric" required placeholder="Ward No."></div>
+            <div class="field"><label for="village" class="required-label">Village / Locality</label><input id="village" required placeholder="Enter Village / Mohalla" autocapitalize="words"></div>
+            <div class="field"><label for="pin" class="required-label">Pin Code</label><input id="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 Digits"></div>
+            <div class="field"><label for="postoffice" class="required-label">Post Office</label><input id="postoffice" required placeholder="Enter Post Office" autocapitalize="words"></div>
+            <div class="field"><label for="policeStation">Police Station</label><input id="policeStation" placeholder="Enter Police Station" autocapitalize="words"></div>
+            <div class="field wide"><label for="purpose" class="required-label">Purpose of Application</label><input id="purpose" required value="Education" autocapitalize="words"></div>
             <div class="field wide">
-              <label for="image">फोटो (20KB - 300KB )</label>
+              <label for="image">Photo (20KB - 300KB Auto Set)</label>
               <input id="image" type="file" accept="image/*">
               <img id="imgprev" class="imgprev" alt="Preview">
             </div>
-            <div class="field wide"><label for="documentType">Document of Resident</label>
+            <div class="field wide"><label for="documentType">Document for Residence</label>
               <select id="documentType">
                 <option value="">Select</option>
                 <option value="94358_1">राजस्व अभिलेख - खतियान</option>
-               
                 <option value="94358_3">राजस्व अभिलेख - भूमि संबंधी दस्तावेज</option>
                 <option value="94358_4">राजस्व अभिलेख - भूमिहीनों को आवंटित जमीन अभिलेख</option>
                 <option value="94358_5">अन्य राजस्व अभिलेख</option>
@@ -741,7 +740,7 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">3</span>
       <span>
         <div class="section-title">Income Details</div>
-        <div class="section-sub"></div>
+        <div class="section-sub">Optional — Fill only if required</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -749,19 +748,19 @@ input[type="file"]::file-selector-button:hover {
       <div class="section-inner">
         <div class="section-body">
           <div class="grid">
-            <div class="field"><label for="profession">पेशा</label>
+            <div class="field"><label for="profession">Profession</label>
               <select id="profession">
-                <option value="">चुनें</option>
-                <option value="1">छात्र</option>
-                <option value="2">सरकारी सेवा</option>
-                <option value="3">निजी सेवा</option>
-                <option value="4">व्यापार</option>
-                <option value="5">किसान</option>
-                <option value="6">गृहिणी</option>
-                <option value="7">अन्य</option>
+                <option value="">Select</option>
+                <option value="1">छात्र / Student</option>
+                <option value="2">सरकारी सेवा / Govt. Service</option>
+                <option value="3">निजी सेवा / Private Service</option>
+                <option value="4">व्यापार / Business</option>
+                <option value="5">किसान / Farmer</option>
+                <option value="6">गृहिणी / Housewife</option>
+                <option value="7">अन्य / Other</option>
               </select>
             </div>
-            <div class="field"><label for="incomeDocumentType">Document of Income</label>
+            <div class="field"><label for="incomeDocumentType">Document for Income</label>
               <select id="incomeDocumentType">
                 <option value="">Select</option>
                 <option value="94045_1">वेतन / पेंशन पर्ची</option>
@@ -769,13 +768,13 @@ input[type="file"]::file-selector-button:hover {
                 <option value="94045_3">अन्यान्य अभिलेख</option>
               </select>
             </div>
-            <div class="field"><label for="incomefromgovt">सरकारी आय</label><input id="incomefromgovt" placeholder="₹"></div>
-            <div class="field"><label for="incomefrombusiness">व्यापार आय</label><input id="incomefrombusiness" placeholder="₹"></div>
-            <div class="field"><label for="incomefromagriculture">कृषि आय</label><input id="incomefromagriculture" placeholder="₹"></div>
-            <div class="field"><label for="incomefromothers">अन्य आय</label><input id="incomefromothers" placeholder="₹"></div>
-            <div class="field"><label for="totalincome">कुल वार्षिक आय</label><input id="totalincome" placeholder="₹"></div>
+            <div class="field"><label for="incomefromgovt">Govt. Income</label><input id="incomefromgovt" placeholder="₹"></div>
+            <div class="field"><label for="incomefrombusiness">Business Income</label><input id="incomefrombusiness" placeholder="₹"></div>
+            <div class="field"><label for="incomefromagriculture">Agriculture Income</label><input id="incomefromagriculture" placeholder="₹"></div>
+            <div class="field"><label for="incomefromothers">Other Income</label><input id="incomefromothers" placeholder="₹"></div>
+            <div class="field"><label for="totalincome">Total Annual Income</label><input id="totalincome" placeholder="₹"></div>
           </div>
-          <button type="button" class="btn-next" data-next="caste">Next
+          <button type="button" class="btn-next" data-next="caste">Next: Caste Details
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
@@ -788,8 +787,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">4</span>
       <span>
-        <div class="section-title">Cast Details</div>
-        <div class="section-sub">reqired</div>
+        <div class="section-title">Caste Details</div>
+        <div class="section-sub">Optional — Fill only if required</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -797,19 +796,19 @@ input[type="file"]::file-selector-button:hover {
       <div class="section-inner">
         <div class="section-body">
           <div class="grid">
-            <div class="field"><label for="casteprofession">पेशा</label>
+            <div class="field"><label for="casteprofession">Profession</label>
               <select id="casteprofession">
-                <option value="">चुनें</option>
-                <option value="1">छात्र</option>
-                <option value="2">सरकारी सेवा</option>
-                <option value="3">निजी सेवा</option>
-                <option value="4">व्यापार</option>
-                <option value="5">किसान</option>
-                <option value="6">गृहिणी</option>
-                <option value="7">अन्य</option>
+                <option value="">Select</option>
+                <option value="1">छात्र / Student</option>
+                <option value="2">सरकारी सेवा / Govt. Service</option>
+                <option value="3">निजी सेवा / Private Service</option>
+                <option value="4">व्यापार / Business</option>
+                <option value="5">किसान / Farmer</option>
+                <option value="6">गृहिणी / Housewife</option>
+                <option value="7">अन्य / Other</option>
               </select>
             </div>
-            <div class="field"><label for="castecategory">वर्ग</label>
+            <div class="field"><label for="castecategory">Category</label>
               <select id="castecategory">
                 <option value="">Select</option>
                 <option value="1">अत्यंत पिछड़ा वर्ग (अनुसूची-1)</option>
@@ -819,10 +818,10 @@ input[type="file"]::file-selector-button:hover {
                 <option value="5">गैर आरक्षित</option>
               </select>
             </div>
-            <div class="field"><label for="caste">जाति</label><input id="caste" placeholder="जाति" autocapitalize="words"></div>
-            <div class="field"><label for="subcaste">उपजाति</label><input id="subcaste" placeholder="उपजाति" autocapitalize="words"></div>
-            <div class="field"><label for="generalcaste">General Cast </label><input id="generalcaste" placeholder="Brahaman" autocapitalize="words"></div>
-            <div class="field wide"><label for="casteDocumentType">Document of Cast</label>
+            <div class="field"><label for="caste">Caste</label><input id="caste" placeholder="Enter Caste" autocapitalize="words"></div>
+            <div class="field"><label for="subcaste">Sub Caste</label><input id="subcaste" placeholder="Enter Sub Caste" autocapitalize="words"></div>
+            <div class="field"><label for="generalcaste">General Caste</label><input id="generalcaste" placeholder="Only for General" autocapitalize="words"></div>
+            <div class="field wide"><label for="casteDocumentType">Document for Caste</label>
               <select id="casteDocumentType">
                 <option value="">Select</option>
                 <option value="93963_1">राजस्व अभिलेख - खतियान</option>
@@ -834,7 +833,7 @@ input[type="file"]::file-selector-button:hover {
               </select>
             </div>
           </div>
-          <button type="button" class="btn-next" data-next="documents">Next
+          <button type="button" class="btn-next" data-next="documents">Next: Documents
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
@@ -848,27 +847,27 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">5</span>
       <span>
         <div class="section-title">Document Section</div>
-        <div class="section-sub">Pdf only</div>
+        <div class="section-sub">PDF Upload (Max 2MB each)</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
     <div class="section-collapse">
       <div class="section-inner">
         <div class="section-body">
-          <div class="hint" style="margin-bottom:12px;">Only Pdf *Max 2MB*</div>
+          <div class="hint" style="margin-bottom:12px;">Only PDF files allowed (Maximum 2MB each). Upload available documents.</div>
           <div class="grid">
             <div class="field wide">
-              <label for="doc_aadhaar">Adhar Card</label>
+              <label for="doc_aadhaar">ID Proof / Card (PDF)</label>
               <input id="doc_aadhaar" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_aadhaar_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_caste">Rasid Copy</label>
+              <label for="doc_caste">Caste Document / Rasid Copy (PDF)</label>
               <input id="doc_caste" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_caste_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_residence">Ration Card</label>
+              <label for="doc_residence">Residence Document / Ration Card (PDF)</label>
               <input id="doc_residence" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_residence_status"></div>
             </div>
@@ -884,7 +883,7 @@ input[type="file"]::file-selector-button:hover {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
       Digital Saathi Sync
     </div>
-    <div id="driveStatusLine" class="hint" style="margin-top:2px;"></div>
+    <div id="driveStatusLine" class="hint" style="margin-top:2px;">Connected with Google Drive</div>
   </div>
 
   <div style="margin-top:16px;">
@@ -895,18 +894,18 @@ input[type="file"]::file-selector-button:hover {
   </div>
 
   <div id="resultBox">
-    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">Successfully Save</h3>
+    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">Successfully Saved</h3>
     <p id="driveResultLine" style="font-size:13px; line-height:1.5; font-weight:600; display:none;"></p>
     <p style="font-size:13px; line-height:1.6; color: var(--text-main); margin: 0 0 14px;">
-      <span class="stepnum">1</span><br>
-      <span class="stepnum">2</span> <br>
-      <span class="stepnum">3</span>
+      <span class="stepnum">1</span> Download the generated PDF slip<br>
+      <span class="stepnum">2</span> Click the download button inside the PDF to obtain the JSON backup<br>
+      <span class="stepnum">3</span> Open the extension and use "Import Backup"
     </p>
     <div class="actions">
-      <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">UPDATE </button>
-      <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">Download Slip</button>
-      
-     
+      <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">UPDATE</button>
+      <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">Download Recipt</button>
+      <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Open in Google Drive</a>
+      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">Download JSON Backup</button>
     </div>
   </div>
 
@@ -917,22 +916,22 @@ input[type="file"]::file-selector-button:hover {
   <div class="ov-card">
     <div id="ovLoading">
       <div class="ov-spinner"></div>
-      <h3 id="ovLoadTitle">Data Saving....</h3>
+      <h3 id="ovLoadTitle">Saving Data…</h3>
       <ul class="ov-steps" id="ovSteps">
-        <li data-s="1">File Record Completed....</li>
-        <li data-s="2">Pdf Ready....</li>
-        <li data-s="3">Finilizing....</li>
+        <li data-s="1">Saving Profile Record…</li>
+        <li data-s="2">Preparing PDF Slip…</li>
+        <li data-s="3">Syncing with Digital Saathi…</li>
       </ul>
     </div>
     <div id="ovSuccess" style="display:none;">
       <div class="ov-check">
         <svg viewBox="0 0 120 120"><circle class="ov-fill" cx="60" cy="60" r="52"></circle><circle class="ov-ring" cx="60" cy="60" r="52"></circle><polyline class="ov-tick" points="38,62 54,78 84,44"></polyline></svg>
       </div>
-      <h2 id="ovTitle">Congratulation</h2>
-      <p id="ovMsg">Your Data Successfully Recorded</p>
+      <h2 id="ovTitle">Congratulations!</h2>
+      <p id="ovMsg">Your data has been successfully recorded.</p>
       <div class="ov-person" id="ovPerson"></div>
       <div class="ov-warn" id="ovWarn"></div>
-      <button type="button" id="ovPdf" class="btn-primary" style="height:44px; font-size:14px;">Download Slip</button>
+      <button type="button" id="ovPdf" class="btn-primary" style="height:44px; font-size:14px;">Download Recipt</button>
       <button type="button" id="ovClose" class="btn-next">Close</button>
     </div>
   </div>
@@ -943,7 +942,7 @@ input[type="file"]::file-selector-button:hover {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-/* ---------- Smart Title-Case Formatter (First Letter Capital, Baaki Small) ---------- */
+/* ---------- Smart Title-Case Formatter ---------- */
 function toTitleCase(str) {
   if (!str) return '';
   return str.replace(/\b([a-zA-Z])([a-zA-Z]*)/g, (_, first, rest) => {
@@ -951,7 +950,6 @@ function toTitleCase(str) {
   });
 }
 
-// Automatically format on blur / change for all text fields (excluding numbers and email)
 const autoCapInputs = document.querySelectorAll(
   'input:not([type="email"]):not([type="file"]):not([inputmode="numeric"]):not([type="number"])'
 );
@@ -962,6 +960,7 @@ autoCapInputs.forEach((input) => {
 });
 
 function toast(msg) {
+  if (!msg) return;
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -1018,12 +1017,12 @@ function radioSelected(name) {
 
 const SECTION_TITLES = {
   personal: 'Personal Details',
-  address: 'Address',
+  address: 'Address Details',
   income: 'Income Details',
-  caste: 'Cast Details',
-  documents: 'Socument Section'
+  caste: 'Caste Details',
+  documents: 'Document Section'
 };
-/* Optional sections */
+
 const OPTIONAL_MAP = {
   income: ['profession', 'incomeDocumentType', 'incomefromgovt', 'incomefrombusiness', 'incomefromagriculture', 'incomefromothers', 'totalincome'],
   caste: ['casteprofession', 'castecategory', 'caste', 'subcaste', 'generalcaste', 'casteDocumentType'],
@@ -1094,10 +1093,10 @@ function refreshSection(id) {
     const next = ORDER[ORDER.indexOf(id) + 1];
     if (isRequiredSection && next && !advancedOnce.has(id)) {
       advancedOnce.add(id);
-      toast('✓ ' + SECTION_TITLES[id] + ' Success - Next Section ');
+      toast('✓ ' + SECTION_TITLES[id] + ' Completed — Moving to Next');
       setTimeout(() => openOnly(next), 1000);
     } else {
-      toast('✓ ' + SECTION_TITLES[id] + ' Success Form Filling');
+      toast('✓ ' + SECTION_TITLES[id] + ' Completed');
     }
   } else if (!done && was) {
     completedSections.delete(id);
@@ -1151,7 +1150,7 @@ document.getElementById('image').addEventListener('change', (e) => {
 
       prev.src = dataUrl;
       prev.style.display = 'block';
-      toast('Photo Ready 300kb');
+      toast('Photo adjusted under 300KB');
     };
     img.src = event.target.result;
   };
@@ -1186,20 +1185,20 @@ DOC_FIELDS.forEach(({ id }) => {
     const statusEl = document.getElementById(id + '_status');
     if (!f) { statusEl.textContent = ''; refreshSection('documents'); return; }
     if (!isPdfFile(f)) {
-      statusEl.textContent = 'Only Pdf';
+      statusEl.textContent = 'Only PDF format is allowed';
       statusEl.style.color = '#dc2626';
       e.target.value = '';
       refreshSection('documents');
       return;
     }
     if (f.size > DOC_MAX_BYTES) {
-      statusEl.textContent = `फाइल 2MB से बड़ी है (${(f.size / 1024 / 1024).toFixed(1)}MB)`;
+      statusEl.textContent = `File size exceeds 2MB limit (${(f.size / 1024 / 1024).toFixed(1)}MB)`;
       statusEl.style.color = '#dc2626';
       e.target.value = '';
       refreshSection('documents');
       return;
     }
-    statusEl.textContent = `${f.name} (${(f.size / 1024).toFixed(0)}KB) — रेडी`;
+    statusEl.textContent = `${f.name} (${(f.size / 1024).toFixed(0)}KB) — Ready`;
     statusEl.style.color = '#10b981';
     refreshSection('documents');
   });
@@ -1228,7 +1227,6 @@ function val(id) {
   const el = document.getElementById(id); 
   if (!el) return '';
   const trimmed = el.value.trim();
-  // Auto Title Case save text values
   if (el.type !== 'email' && el.type !== 'file' && el.type !== 'number' && el.getAttribute('inputmode') !== 'numeric') {
     return toTitleCase(trimmed);
   }
@@ -1243,9 +1241,9 @@ function radioVal(name) {
 /* Readable view for PDF */
 const PDF_SCHEMA = [
   { title: 'Personal Details', fields: [['t','name'],['t','fathername'],['t','mothername'],['t','husbandname'],['r','gender'],['r','addressType'],['t','mobile'],['t','email']] },
-  { title: 'Address', fields: [['s','state'],['t','district'],['t','anumandal'],['t','prakhand'],['r','residenceType'],['t','gram'],['t','wardNo'],['t','village'],['t','pin'],['t','postoffice'],['t','policeStation'],['t','purpose'],['s','documentType']] },
+  { title: 'Address Details', fields: [['s','state'],['t','district'],['t','anumandal'],['t','prakhand'],['r','residenceType'],['t','gram'],['t','wardNo'],['t','village'],['t','pin'],['t','postoffice'],['t','policeStation'],['t','purpose'],['s','documentType']] },
   { title: 'Income Details', hide: true, fields: [['s','profession'],['s','incomeDocumentType'],['t','incomefromgovt'],['t','incomefrombusiness'],['t','incomefromagriculture'],['t','incomefromothers'],['t','totalincome']] },
-  { title: 'Cast Details', hide: true, fields: [['s','casteprofession'],['s','castecategory'],['t','caste'],['t','subcaste'],['t','generalcaste'],['s','casteDocumentType']] },
+  { title: 'Caste Details', hide: true, fields: [['s','casteprofession'],['s','castecategory'],['t','caste'],['t','subcaste'],['t','generalcaste'],['s','casteDocumentType']] },
   { title: 'Document Section', hide: true, fields: [['f','doc_aadhaar'],['f','doc_caste'],['f','doc_residence']] }
 ];
 
@@ -1258,6 +1256,7 @@ function fieldLabel(type, id) {
   const l = document.querySelector(`label[for="${id}"]`);
   return l ? l.textContent.trim() : id;
 }
+
 function fieldDisplay(type, id) {
   if (type === 't') return val(id);
   if (type === 'r') {
@@ -1274,6 +1273,7 @@ function fieldDisplay(type, id) {
   }
   return '';
 }
+
 function buildPdfView(entry) {
   const place = [val('village'), val('district')].filter(Boolean).join(', ');
   return {
@@ -1298,7 +1298,7 @@ function pdfSectionCard(i, sec) {
   const rows = sec.hide ? sec.rows.filter((r) => r[1]) : sec.rows;
   let inner;
   if (!rows.length) {
-    inner = '<div class="pdf-empty">इस में कोई जानकारी नहीं दी गई</div>';
+    inner = '<div class="pdf-empty">No information provided in this section</div>';
   } else {
     inner = '<div class="pdf-grid">' + rows.map((r) => {
       const wide = (r[1] || '').length > 30 || r[0].length > 24;
@@ -1315,7 +1315,7 @@ function buildPdfPages(view, jsonUrl) {
   const root = document.createElement('div');
   root.className = 'pdf-root';
   document.body.appendChild(root);
-  const when = new Date().toLocaleString('hi-IN', { dateStyle: 'medium', timeStyle: 'short' });
+  const when = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
   const pages = [];
 
   function newPage(first) {
@@ -1357,7 +1357,7 @@ function buildPdfPages(view, jsonUrl) {
   jsonCard.className = 'pdf-json';
   jsonCard.innerHTML = `<h4>Digital Document Section</h4>
     <p></p>
-    <div class="pdf-btn" id="pdfJsonBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg>Verify...</div>
+    <div class="pdf-btn" id="pdfJsonBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg>Verify..</div>
     <div class="pdf-url" id="pdfJsonUrl">${pesc(jsonUrl)}</div>`;
   place(jsonCard);
 
@@ -1368,7 +1368,7 @@ function buildPdfPages(view, jsonUrl) {
 }
 
 async function generatePdf(view, jsonUrl) {
-  if (!window.html2canvas || !(window.jspdf && window.jspdf.jsPDF)) throw new Error('Pdf Load Error');
+  if (!window.html2canvas || !(window.jspdf && window.jspdf.jsPDF)) throw new Error('PDF Generation Library Error');
   if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
   const savedY = window.scrollY;
   window.scrollTo(0, 0);
@@ -1426,18 +1426,18 @@ async function submitProfile(forceMode) {
   const required = ['name','fathername','mothername','mobile','state','wardNo','village','pin','postoffice','purpose'];
   for (const id of required) {
     if (!val(id)) {
-      toast('ज़रूरी (*) जानकारी भरें');
+      toast('Please fill all required (*) fields');
       const sec = ['name','fathername','mothername','mobile'].includes(id) ? 'personal' : 'address';
       openOnly(sec);
       document.getElementById(id).focus();
       return;
     }
   }
-  if (!radioVal('gender')) { toast('लिंग चुनें'); openOnly('personal'); return; }
-  if (!radioVal('addressType')) { toast('पता प्रकार चुनें'); openOnly('personal'); return; }
-  if (!radioVal('residenceType')) { toast('निकाय प्रकार चुनें'); openOnly('address'); return; }
-  if (!/^[0-9]{10}$/.test(val('mobile'))) { toast('मोबाइल नंबर 10 अंक का हो'); openOnly('personal'); return; }
-  if (!/^[0-9]{6}$/.test(val('pin'))) { toast('पिन कोड 6 अंक का हो'); openOnly('address'); return; }
+  if (!radioVal('gender')) { toast('Please select Gender'); openOnly('personal'); return; }
+  if (!radioVal('addressType')) { toast('Please select Address Type'); openOnly('personal'); return; }
+  if (!radioVal('residenceType')) { toast('Please select Local Body Type'); openOnly('address'); return; }
+  if (!/^[0-9]{10}$/.test(val('mobile'))) { toast('Mobile Number must be 10 digits'); openOnly('personal'); return; }
+  if (!/^[0-9]{6}$/.test(val('pin'))) { toast('Pin Code must be 6 digits'); openOnly('address'); return; }
 
   const imageData = await fileToDataURL(document.getElementById('image'));
 
@@ -1503,14 +1503,14 @@ async function submitProfile(forceMode) {
   document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
 
   if (!driveConfigured()) {
-    showDriveResult(false, '');
+    showDriveResult(false, 'Drive setup is missing — Please download the local JSON file.');
     document.getElementById('downloadBtn').style.display = 'inline-flex';
     return;
   }
 
   if (key === lastSavedKey) {
-    toast('Date not updated');
-    showDriveResult(true, 'Data Alredy Saved');
+    toast('No changes detected — Already saved');
+    showDriveResult(true, 'Data is already saved and synchronized.');
     return;
   }
 
@@ -1578,15 +1578,18 @@ function ovSetStep(n) {
     li.classList.toggle('active', s === n);
   });
 }
+
 function ovLoading(mode) {
-  document.getElementById('ovLoadTitle').textContent = mode === 'update' ? 'Record Updating…' : 'File Updating…';
+  document.getElementById('ovLoadTitle').textContent = mode === 'update' ? 'Updating Record…' : 'Saving Profile…';
   document.getElementById('ovLoading').style.display = 'block';
   document.getElementById('ovSuccess').style.display = 'none';
   document.getElementById('ovConfetti').innerHTML = '';
   ovSetStep(1);
   ovEl().classList.add('show');
 }
+
 function ovClose() { ovEl().classList.remove('show'); }
+
 function ovConfetti() {
   const box = document.getElementById('ovConfetti');
   box.innerHTML = '';
@@ -1606,11 +1609,12 @@ function ovConfetti() {
     box.appendChild(c);
   }
 }
+
 function ovSuccess({ mode, name, mobile, warn }) {
-  document.getElementById('ovTitle').textContent = mode === 'update' ? 'Data Updated ' : 'Congratulation';
+  document.getElementById('ovTitle').textContent = mode === 'update' ? 'Data Updated!' : 'Congratulations!';
   document.getElementById('ovMsg').textContent = mode === 'update'
-    ? 'Your Data Updated '
-    : 'Yourd Data Successfully Synce';
+    ? 'Your data has been successfully updated.'
+    : 'Your Information has been successfully saved';
   document.getElementById('ovPerson').textContent = `${name} • ${mobile}`;
   const w = document.getElementById('ovWarn');
   w.style.display = warn ? 'block' : 'none';
@@ -1644,7 +1648,7 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
   btn.disabled = true;
   updBtn.disabled = true;
   label.textContent = mode === 'update' ? 'Updating…' : 'Saving…';
-  showDriveResult(true, 'Please Wait…');
+  showDriveResult(true, 'Please wait while syncing…');
   ovLoading(mode);
   try {
     const data = await postJson(payload);
@@ -1656,8 +1660,8 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
       updBtn.style.display = 'flex';
       document.getElementById('pdfBtn').style.display = 'none';
       if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
-      showDriveResult(true, 'यह प्रोफाइल पहले से सेव है , Please  — "UPDATE DATA" ', true);
-      toast('Already Saved Please Update');
+      showDriveResult(true, 'This record already exists in Drive. Click "UPDATE" to overwrite.', true);
+      toast('Profile exists — Click UPDATE to apply changes');
       return;
     }
     if (data.status === 'unchanged') {
@@ -1666,8 +1670,8 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
       setMode('update');
       updBtn.style.display = 'none';
       if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
-      showDriveResult(true, '');
-      toast('');
+      showDriveResult(true, 'Data is already up to date in Drive.');
+      toast('No changes detected');
       return;
     }
 
@@ -1677,7 +1681,7 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
       pdfB64 = await generatePdf(pdfView, data.jsonDownloadUrl);
     } catch (err) {
       console.error('PDF error', err);
-      warn = '';
+      warn = 'Data saved, but PDF slip generation failed.';
     }
 
     let pdfUrl = '';
@@ -1688,7 +1692,7 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
         if (up.ok) { pdfUrl = up.pdfUrl; } else { throw new Error(up.error || 'pdf upload'); }
       } catch (err) {
         console.error('PDF upload error', err);
-        warn = '';
+        warn = 'Profile saved, but uploading PDF to Drive failed. You can download the PDF directly here.';
       }
     }
     lastPdf = pdfB64 ? { name: 'digital-saathi-profile.pdf', base64: pdfB64, url: pdfUrl } : null;
@@ -1697,8 +1701,8 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
     updBtn.style.display = 'none';
 
     showDriveResult(!warn, warn || (data.status === 'updated'
-      ? 'आपकी पुरानी फाइल अपडेट हो गई '
-      : ''));
+      ? 'Record updated in Google Drive successfully.'
+      : 'Record saved to Google Drive successfully.'));
     document.getElementById('pdfBtn').style.display = pdfB64 ? 'flex' : 'none';
     if (pdfUrl) { dl.href = pdfUrl; dl.style.display = 'block'; }
     document.getElementById('downloadBtn').style.display = pdfB64 ? 'none' : 'inline-flex';
@@ -1707,9 +1711,9 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
   } catch (err) {
     console.error(err);
     ovClose();
-    showDriveResult(false, '');
+    showDriveResult(false, 'Failed to save to Drive. Please download the JSON backup below.');
     document.getElementById('downloadBtn').style.display = 'inline-flex';
-    toast('Error Try Again');
+    toast('Error saving data — Try again');
   } finally {
     isSaving = false;
     btn.disabled = false;
@@ -1719,9 +1723,9 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
 }
 
 if (driveConfigured()) {
-  setDriveStatus('Drive: Digital Saathi Backups › नाम_मोबाइल फोल्डर। बदलाव पर "डेटा अपडेट करें" से वही फाइल अपडेट होगी');
+  setDriveStatus('Google Drive connected: Profiles will automatically sync into Name_Mobile folders.');
 } else {
-  setDriveStatus('Setup अभी बाकी है — लोकल डाउनलोड काम करेगा');
+  setDriveStatus('Setup pending — Local download only.');
 }
 </script>
 
