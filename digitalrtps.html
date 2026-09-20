@@ -6,7 +6,7 @@
 <title>Digital Saathi — Profile Form</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg-app: #f8fafc;
@@ -25,8 +25,8 @@
   --required-red: #ef4444;
   --radius-card: 16px;
   --radius-input: 10px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-md: 0 10px 25px -4px rgba(15, 23, 42, 0.05), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
   --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
@@ -41,7 +41,7 @@ html {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
   margin: 0; 
   padding: 0;
   background-color: var(--bg-app);
@@ -57,20 +57,20 @@ body {
 
 /* Clean Minimal Navbar */
 header {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 18px 20px;
   text-align: center;
   position: sticky; 
   top: 0; 
   z-index: 40;
   border-bottom: 1px solid var(--border-light);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 header h1 { 
   margin: 0; 
-  font-size: 18px; 
+  font-size: 19px; 
   font-weight: 800; 
   color: var(--text-main);
   letter-spacing: -0.02em;
@@ -81,15 +81,15 @@ header h1 {
 }
 header p { 
   margin: 4px 0 0; 
-  font-size: 12px; 
+  font-size: 12.5px; 
   font-weight: 500; 
   color: var(--text-muted); 
 }
 
 .wrap { 
-  max-width: 620px; 
+  max-width: 640px; 
   margin: 0 auto; 
-  padding: 24px 16px 100px; 
+  padding: 24px 16px 110px; 
 }
 
 /* Minimal Cards */
@@ -100,7 +100,7 @@ header p {
   box-shadow: var(--shadow-sm);
   margin-bottom: 12px;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .section:hover {
   border-color: var(--border-hover);
@@ -122,9 +122,10 @@ header p {
   text-align: left;
   font-family: inherit;
   user-select: none;
+  transition: background 0.15s ease;
 }
 .section-header:hover {
-  background: #fafbfc;
+  background: #f8fafc;
 }
 
 .section-num {
@@ -222,9 +223,9 @@ header p {
 }
 
 label { 
-  font-size: 12px; 
+  font-size: 12.5px; 
   font-weight: 600; 
-  color: #475569; 
+  color: #334155; 
   margin-bottom: 5px; 
 }
 label.required-label::after {
@@ -232,6 +233,7 @@ label.required-label::after {
   color: var(--required-red);
 }
 
+/* Inputs & Auto-Capitalize */
 input, select {
   background: #ffffff;
   border: 1px solid var(--border-light);
@@ -243,10 +245,17 @@ input, select {
   color: var(--text-main);
   width: 100%;
   height: 42px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
+
+/* Type karte waqt First letter capital baaki small */
+input:not([type="email"]):not([type="file"]):not([inputmode="numeric"]):not([type="number"]) {
+  text-transform: capitalize;
+}
+
 input::placeholder, select::placeholder {
   color: var(--text-subtle);
+  text-transform: none;
 }
 input:hover, select:hover {
   border-color: var(--border-hover);
@@ -464,7 +473,7 @@ input[type="file"]::file-selector-button:hover {
   transform: translateX(-50%) translateY(0); 
 }
 
-/* ---------- Section success animation ---------- */
+/* Section success animation */
 .section-num { position: relative; }
 .section.completed { border-color: #a7f3d0; }
 .section.completed .section-sub::after {
@@ -518,7 +527,7 @@ input[type="file"]::file-selector-button:hover {
   to   { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
 }
 
-/* ---------- Save button / result ---------- */
+/* Action buttons */
 .btn-primary:disabled { opacity: 0.65; cursor: wait; transform: none; }
 .actions { display: flex; flex-direction: column; gap: 8px; }
 .link-btn {
@@ -530,6 +539,87 @@ input[type="file"]::file-selector-button:hover {
   text-decoration: none;
   padding: 6px;
 }
+
+/* Submit overlay + success animation */
+.ov { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center;
+  background: rgba(15, 23, 42, 0.93); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 20px; }
+.ov.show { display: flex; animation: ovIn 0.25s ease; }
+@keyframes ovIn { from { opacity: 0; } to { opacity: 1; } }
+.ov-card { position: relative; z-index: 2; width: 100%; max-width: 380px; background: #fff; border-radius: 24px;
+  padding: 30px 24px 22px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes cardPop { from { transform: scale(.85) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+.ov-card h2 { margin: 6px 0 6px; font-size: 22px; font-weight: 800; color: #0f172a; }
+.ov-card h3 { margin: 14px 0 10px; font-size: 16px; font-weight: 800; color: #0f172a; }
+.ov-card p { margin: 0 0 10px; font-size: 13.5px; color: #475569; line-height: 1.55; }
+.ov-spinner { width: 54px; height: 54px; margin: 0 auto; border-radius: 50%; border: 5px solid #dbeafe;
+  border-top-color: var(--accent-blue); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ov-steps { list-style: none; margin: 0 0 6px; padding: 0; text-align: left; display: inline-block; }
+.ov-steps li { font-size: 13.5px; font-weight: 600; color: #94a3b8; padding: 5px 0 5px 28px; position: relative; transition: color .3s; }
+.ov-steps li::before { content: ""; position: absolute; left: 3px; top: 8px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #cbd5e1; }
+.ov-steps li.active { color: var(--accent-blue); }
+.ov-steps li.active::before { border-color: var(--accent-blue); border-top-color: transparent; animation: spin .7s linear infinite; }
+.ov-steps li.done { color: #059669; }
+.ov-steps li.done::before { border-color: #10b981; background: #10b981 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/10px no-repeat; animation: none; }
+
+.ov-check { position: relative; width: 120px; height: 120px; margin: 0 auto 6px; }
+.ov-check svg { width: 120px; height: 120px; overflow: visible; position: relative; z-index: 2; }
+.ov-ring { fill: none; stroke: #10b981; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 327; stroke-dashoffset: 327;
+  transform: rotate(-90deg); transform-origin: 60px 60px; animation: ringDraw 0.6s ease-out .1s forwards; }
+@keyframes ringDraw { to { stroke-dashoffset: 0; } }
+.ov-fill { fill: #10b981; transform-origin: 60px 60px; transform: scale(0); animation: fillPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) .6s forwards; }
+@keyframes fillPop { to { transform: scale(0.88); } }
+.ov-tick { fill: none; stroke: #fff; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 80; stroke-dashoffset: 80; animation: tickDraw 0.4s ease-out 1s forwards; }
+@keyframes tickDraw { to { stroke-dashoffset: 0; } }
+.ov-check::before, .ov-check::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 3px solid #34d399; opacity: 0; z-index: 1; }
+.ov-check::before { animation: pulseRing 1.4s ease-out 1s 2; }
+.ov-check::after { animation: pulseRing 1.4s ease-out 1.35s 2; }
+@keyframes pulseRing { 0% { transform: scale(.9); opacity: .7; } 100% { transform: scale(1.9); opacity: 0; } }
+.ov-person { display: inline-block; margin: 2px 0 14px; padding: 7px 16px; border-radius: 99px; background: #ecfdf5; color: #047857; font-weight: 700; font-size: 13px; }
+.ov-warn { background: #fffbeb; color: #b45309; border-radius: 10px; padding: 8px 12px; font-size: 12.5px; font-weight: 600; margin-bottom: 10px; display: none; }
+.ov-card .btn-primary, .ov-card .btn-next { width: 100%; justify-content: center; margin-top: 8px; }
+.ov-card .btn-next { margin-top: 8px; }
+#ovConfetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+#ovConfetti i { position: absolute; top: -20px; display: block; opacity: 0; animation: confFall var(--d) cubic-bezier(.2,.6,.4,1) var(--dl) forwards; }
+@keyframes confFall { 0% { transform: translate3d(0,0,0) rotate(0); opacity: 1; } 100% { transform: translate3d(var(--x), 110vh, 0) rotate(var(--r)); opacity: .9; } }
+
+/* PDF page styling */
+.pdf-root { position: absolute; left: 0; top: 0; width: 794px; z-index: -1; pointer-events: none; }
+.pdf-page { width: 794px; height: 1123px; background: #fff; position: relative; overflow: hidden; display: flex; flex-direction: column;
+  font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', system-ui, sans-serif; color: #0f172a; margin: 0; }
+.pdf-head { position: relative; overflow: hidden; background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%); color: #fff;
+  padding: 34px 40px 30px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.pdf-head::before { content: ""; position: absolute; right: -60px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,.08); }
+.pdf-head::after { content: ""; position: absolute; left: -40px; bottom: -90px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,.06); }
+.pdf-head > div { position: relative; z-index: 1; }
+.pdf-brand { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; opacity: .85; font-weight: 700; }
+.pdf-title { font-size: 27px; font-weight: 800; margin: 8px 0 4px; line-height: 1.25; }
+.pdf-name { font-size: 18px; font-weight: 600; opacity: .96; }
+.pdf-meta { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pdf-chip { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); padding: 5px 13px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+.pdf-photo { width: 108px; height: 132px; border-radius: 14px; border: 4px solid #fff; background-color: #dbeafe; background-size: cover; background-position: center;
+  box-shadow: 0 8px 22px rgba(0,0,0,.28); flex: none; display: flex; align-items: center; justify-content: center; font-size: 46px; font-weight: 800; color: #2563eb; }
+.pdf-mini { background: #1e3a8a; color: #fff; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 14px; }
+.pdf-mini span { font-weight: 500; opacity: .85; font-size: 12px; }
+.pdf-body { flex: 1; min-height: 0; overflow: hidden; padding: 24px 40px 0; display: flex; flex-direction: column; gap: 16px; }
+.pdf-body > * { flex: none; }
+.pdf-card { border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; background: #fff; }
+.pdf-card-h { display: flex; align-items: center; gap: 10px; padding: 11px 16px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-weight: 800; font-size: 15px; }
+.pdf-num { width: 26px; height: 26px; border-radius: 8px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex: none; }
+.pdf-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.pdf-cell { padding: 10px 16px; border-bottom: 1px solid #f1f5f9; }
+.pdf-cell.wide { grid-column: 1 / -1; }
+.pdf-k { font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 2px; }
+.pdf-v { font-size: 14px; font-weight: 700; color: #0f172a; word-break: break-word; line-height: 1.4; }
+.pdf-empty { padding: 14px 16px; color: #94a3b8; font-size: 13px; }
+.pdf-json { border: 1px solid #bfdbfe; background: linear-gradient(180deg, #eff6ff, #ffffff); border-radius: 14px; padding: 20px 22px; text-align: center; }
+.pdf-json h4 { margin: 0 0 6px; font-size: 15px; font-weight: 800; }
+.pdf-json p { margin: 0 0 14px; font-size: 12.5px; color: #475569; line-height: 1.55; }
+.pdf-btn { display: inline-flex; align-items: center; gap: 10px; background: #2563eb; color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 12px; box-shadow: 0 6px 16px rgba(37,99,235,.35); }
+.pdf-url { margin-top: 12px; font-size: 9.5px; color: #64748b; word-break: break-all; line-height: 1.4; }
+.pdf-foot { display: flex; justify-content: space-between; padding: 14px 40px; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; margin-top: 14px; flex: none; }
 </style>
 </head>
 <body>
@@ -548,8 +638,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="true">
       <span class="section-num">1</span>
       <span>
-        <div class="section-title">व्यक्तिगत विवरण</div>
-        <div class="section-sub">मूल जानकारी व संपर्क</div>
+        <div class="section-title">Personal Details</div>
+        <div class="section-sub">Personal Information</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -557,26 +647,26 @@ input[type="file"]::file-selector-button:hover {
       <div class="section-inner">
         <div class="section-body">
           <div class="grid">
-            <div class="field"><label for="name" class="required-label">नाम</label><input id="name" required placeholder="पूरा नाम"></div>
-            <div class="field"><label for="fathername" class="required-label">पिता</label><input id="fathername" required placeholder="पिता का नाम"></div>
-            <div class="field"><label for="mothername" class="required-label">माता</label><input id="mothername" required placeholder="माता का नाम"></div>
-            <div class="field"><label for="husbandname">पति</label><input id="husbandname" placeholder="यदि लागू हो"></div>
+            <div class="field"><label for="name" class="required-label">Name</label><input id="name" required placeholder="पूरा नाम" autocapitalize="words"></div>
+            <div class="field"><label for="fathername" class="required-label">Father Name</label><input id="fathername" required placeholder="पिता का नाम" autocapitalize="words"></div>
+            <div class="field"><label for="mothername" class="required-label">Mother Name</label><input id="mothername" required placeholder="माता का नाम" autocapitalize="words"></div>
+            <div class="field"><label for="husbandname">पति</label><input id="husbandname" placeholder="यदि हो" autocapitalize="words"></div>
             <div class="field">
-              <label class="required-label">लिंग</label>
+              <label class="required-label">Gender</label>
               <div class="radio-row">
-                <label><input type="radio" name="gender" value="1" required> पुरुष</label>
-                <label><input type="radio" name="gender" value="2"> महिला</label>
+                <label><input type="radio" name="gender" value="1" required> Male</label>
+                <label><input type="radio" name="gender" value="2"> Female</label>
               </div>
             </div>
             <div class="field">
-              <label class="required-label">पता प्रकार</label>
+              <label class="required-label">Address </label>
               <div class="radio-row">
                 <label><input type="radio" name="addressType" value="1" required> स्थायी</label>
                 <label><input type="radio" name="addressType" value="2"> वर्तमान</label>
               </div>
             </div>
-            <div class="field"><label for="mobile" class="required-label">मोबाइल</label><input id="mobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 अंक"></div>
-            <div class="field"><label for="email">ईमेल</label><input id="email" type="email" placeholder="वैकल्पिक"></div>
+            <div class="field"><label for="mobile" class="required-label">Mobile Number</label><input id="mobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 अंक"></div>
+            <div class="field"><label for="email">Gmail</label><input id="email" type="email" placeholder="abc@gmail.com" autocapitalize="none"></div>
           </div>
         </div>
       </div>
@@ -588,8 +678,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">2</span>
       <span>
-        <div class="section-title">पता विवरण</div>
-        <div class="section-sub">स्थान, निकाय व फोटो</div>
+        <div class="section-title">Address Detail</div>
+        <div class="section-sub">address, photo</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -598,11 +688,11 @@ input[type="file"]::file-selector-button:hover {
         <div class="section-body">
           <div class="grid">
             <div class="field"><label for="state" class="required-label">राज्य</label>
-              <select id="state" required><option value="">चुनें</option><option value="10">BIHAR</option></select>
+              <select id="state" required><option value="">Select</option><option value="10">BIHAR</option></select>
             </div>
-            <div class="field"><label for="district">जिला</label><input id="district" placeholder="जिला"></div>
-            <div class="field"><label for="anumandal">अनुमंडल</label><input id="anumandal" placeholder="अनुमंडल"></div>
-            <div class="field"><label for="prakhand">प्रखंड</label><input id="prakhand" placeholder="प्रखंड"></div>
+            <div class="field"><label for="district">जिला</label><input id="district" placeholder="जिला" autocapitalize="words"></div>
+            <div class="field"><label for="anumandal">Sub Division</label><input id="anumandal" placeholder="अनुमंडल" autocapitalize="words"></div>
+            <div class="field"><label for="prakhand">Block</label><input id="prakhand" placeholder="प्रखंड" autocapitalize="words"></div>
             <div class="field wide">
               <label class="required-label">निकाय प्रकार</label>
               <div class="radio-row">
@@ -612,23 +702,23 @@ input[type="file"]::file-selector-button:hover {
                 <label><input type="radio" name="residenceType" value="4"> नगर पंचायत</label>
               </div>
             </div>
-            <div class="field"><label for="gram">पंचायत</label><input id="gram" placeholder="पंचायत नाम"></div>
+            <div class="field"><label for="gram">पंचायत</label><input id="gram" placeholder="पंचायत नाम" autocapitalize="words"></div>
             <div class="field"><label for="wardNo" class="required-label">वार्ड सं.</label><input id="wardNo" type="number" inputmode="numeric" required placeholder="वार्ड"></div>
-            <div class="field"><label for="village" class="required-label">गांव / मोहल्ला</label><input id="village" required placeholder="गांव / मोहल्ला"></div>
+            <div class="field"><label for="village" class="required-label">गांव</label><input id="village" required placeholder="गांव / मोहल्ला" autocapitalize="words"></div>
             <div class="field"><label for="pin" class="required-label">पिन कोड</label><input id="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 अंक"></div>
-            <div class="field"><label for="postoffice" class="required-label">डाकघर</label><input id="postoffice" required placeholder="डाकघर"></div>
-            <div class="field"><label for="policeStation">थाना</label><input id="policeStation" placeholder="थाना"></div>
-            <div class="field wide"><label for="purpose" class="required-label">उद्देश्य</label><input id="purpose" required placeholder="जैसे: छात्रवृत्ति, नामांकन आदि"></div>
+            <div class="field"><label for="postoffice" class="required-label">डाकघर</label><input id="postoffice" required placeholder="डाकघर" autocapitalize="words"></div>
+            <div class="field"><label for="policeStation">थाना</label><input id="policeStation" placeholder="थाना" autocapitalize="words"></div>
+            <div class="field wide"><label for="purpose" class="required-label">Purpose</label><input id="purpose" required value="Education" autocapitalize="words"></div>
             <div class="field wide">
-              <label for="image">फोटो (20KB - 300KB Auto)</label>
+              <label for="image">फोटो (20KB - 300KB )</label>
               <input id="image" type="file" accept="image/*">
               <img id="imgprev" class="imgprev" alt="Preview">
             </div>
-            <div class="field wide"><label for="documentType">दस्तावेज (निवास हेतु)</label>
+            <div class="field wide"><label for="documentType">Document of Resident</label>
               <select id="documentType">
-                <option value="">चुनें</option>
+                <option value="">Select</option>
                 <option value="94358_1">राजस्व अभिलेख - खतियान</option>
-                <option value="94358_2">राजस्व अभिलेख - द्वानपत्र</option>
+               
                 <option value="94358_3">राजस्व अभिलेख - भूमि संबंधी दस्तावेज</option>
                 <option value="94358_4">राजस्व अभिलेख - भूमिहीनों को आवंटित जमीन अभिलेख</option>
                 <option value="94358_5">अन्य राजस्व अभिलेख</option>
@@ -639,7 +729,7 @@ input[type="file"]::file-selector-button:hover {
               </select>
             </div>
           </div>
-          <div class="hint">जिला/अनुमंडल/प्रखंड Import के बाद extension से auto-match होंगे।</div>
+          <div class="hint"></div>
         </div>
       </div>
     </div>
@@ -650,8 +740,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">3</span>
       <span>
-        <div class="section-title">आय विवरण</div>
-        <div class="section-sub">वैकल्पिक</div>
+        <div class="section-title">Income Details</div>
+        <div class="section-sub"></div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -671,9 +761,9 @@ input[type="file"]::file-selector-button:hover {
                 <option value="7">अन्य</option>
               </select>
             </div>
-            <div class="field"><label for="incomeDocumentType">आय दस्तावेज</label>
+            <div class="field"><label for="incomeDocumentType">Document of Income</label>
               <select id="incomeDocumentType">
-                <option value="">चुनें</option>
+                <option value="">Select</option>
                 <option value="94045_1">वेतन / पेंशन पर्ची</option>
                 <option value="94045_2">आयकर रिटर्न</option>
                 <option value="94045_3">अन्यान्य अभिलेख</option>
@@ -685,7 +775,7 @@ input[type="file"]::file-selector-button:hover {
             <div class="field"><label for="incomefromothers">अन्य आय</label><input id="incomefromothers" placeholder="₹"></div>
             <div class="field"><label for="totalincome">कुल वार्षिक आय</label><input id="totalincome" placeholder="₹"></div>
           </div>
-          <button type="button" class="btn-next" data-next="caste">अगला: जाति
+          <button type="button" class="btn-next" data-next="caste">Next
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
@@ -698,8 +788,8 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">4</span>
       <span>
-        <div class="section-title">जाति विवरण</div>
-        <div class="section-sub">वैकल्पिक</div>
+        <div class="section-title">Cast Details</div>
+        <div class="section-sub">reqired</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -721,7 +811,7 @@ input[type="file"]::file-selector-button:hover {
             </div>
             <div class="field"><label for="castecategory">वर्ग</label>
               <select id="castecategory">
-                <option value="">चुनें</option>
+                <option value="">Select</option>
                 <option value="1">अत्यंत पिछड़ा वर्ग (अनुसूची-1)</option>
                 <option value="2">पिछड़ा वर्ग (अनुसूची-2)</option>
                 <option value="3">अनुसूचित जाति</option>
@@ -729,12 +819,12 @@ input[type="file"]::file-selector-button:hover {
                 <option value="5">गैर आरक्षित</option>
               </select>
             </div>
-            <div class="field"><label for="caste">जाति</label><input id="caste" placeholder="जाति"></div>
-            <div class="field"><label for="subcaste">उपजाति</label><input id="subcaste" placeholder="उपजाति"></div>
-            <div class="field"><label for="generalcaste">सामान्य जाति</label><input id="generalcaste" placeholder="General हेतु"></div>
-            <div class="field wide"><label for="casteDocumentType">दस्तावेज (जाति हेतु)</label>
+            <div class="field"><label for="caste">जाति</label><input id="caste" placeholder="जाति" autocapitalize="words"></div>
+            <div class="field"><label for="subcaste">उपजाति</label><input id="subcaste" placeholder="उपजाति" autocapitalize="words"></div>
+            <div class="field"><label for="generalcaste">General Cast </label><input id="generalcaste" placeholder="Brahaman" autocapitalize="words"></div>
+            <div class="field wide"><label for="casteDocumentType">Document of Cast</label>
               <select id="casteDocumentType">
-                <option value="">चुनें</option>
+                <option value="">Select</option>
                 <option value="93963_1">राजस्व अभिलेख - खतियान</option>
                 <option value="93963_2">राजस्व अभिलेख - द्वानपत्र</option>
                 <option value="93963_3">राजस्व अभिलेख - भूमि दस्तावेज</option>
@@ -744,7 +834,7 @@ input[type="file"]::file-selector-button:hover {
               </select>
             </div>
           </div>
-          <button type="button" class="btn-next" data-next="documents">अगला: दस्तावेज
+          <button type="button" class="btn-next" data-next="documents">Next
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
@@ -757,28 +847,28 @@ input[type="file"]::file-selector-button:hover {
     <button type="button" class="section-header" aria-expanded="false">
       <span class="section-num">5</span>
       <span>
-        <div class="section-title">दस्तावेज़</div>
-        <div class="section-sub">PDF अपलोड (वैकल्पिक)</div>
+        <div class="section-title">Document Section</div>
+        <div class="section-sub">Pdf only</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
     <div class="section-collapse">
       <div class="section-inner">
         <div class="section-body">
-          <div class="hint" style="margin-bottom:12px;">केवल PDF फाइल (अधिकतम 2MB)। जो उपलब्ध हो वही अपलोड करें।</div>
+          <div class="hint" style="margin-bottom:12px;">Only Pdf *Max 2MB*</div>
           <div class="grid">
             <div class="field wide">
-              <label for="doc_aadhaar">पहचान पत्र (PDF)</label>
+              <label for="doc_aadhaar">Adhar Card</label>
               <input id="doc_aadhaar" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_aadhaar_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_caste">जाति दस्तावेज (PDF)</label>
+              <label for="doc_caste">Rasid Copy</label>
               <input id="doc_caste" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_caste_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_residence">निवास दस्तावेज (PDF)</label>
+              <label for="doc_residence">Ration Card</label>
               <input id="doc_residence" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_residence_status"></div>
             </div>
@@ -792,39 +882,85 @@ input[type="file"]::file-selector-button:hover {
   <div class="card" style="margin-top:0; margin-bottom:14px; padding:14px 16px;">
     <div style="font-size:13.5px; font-weight:700; color:var(--text-main); display:flex; align-items:center; gap:8px;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-      Google Drive Sync
+      Digital Saathi Sync
     </div>
-    <div id="driveStatusLine" class="hint" style="margin-top:2px;">Setup अभी बाकी है — local download उपलब्ध है</div>
+    <div id="driveStatusLine" class="hint" style="margin-top:2px;"></div>
   </div>
 
   <div style="margin-top:16px;">
     <button type="button" id="submitBtn" class="btn-primary">
-      <span>प्रोफाइल तैयार करें</span>
+      <span>SAVE</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
   </div>
 
   <div id="resultBox">
-    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">प्रोफाइल तैयार है</h3>
+    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">Successfully Save</h3>
     <p id="driveResultLine" style="font-size:13px; line-height:1.5; font-weight:600; display:none;"></p>
     <p style="font-size:13px; line-height:1.6; color: var(--text-main); margin: 0 0 14px;">
-      <span class="stepnum">1</span> PDF डाउनलोड करें (सारा भरा हुआ डेटा इसी में है)<br>
-      <span class="stepnum">2</span> PDF के आख़िर में "JSON फाइल डाउनलोड करें" बटन दबाएँ<br>
-      <span class="stepnum">3</span> Extension में "Import Backup" खोलकर वही JSON चुनें
+      <span class="stepnum">1</span><br>
+      <span class="stepnum">2</span> <br>
+      <span class="stepnum">3</span>
     </p>
     <div class="actions">
-      <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">डेटा अपडेट करें</button>
-      <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">PDF डाउनलोड करें</button>
-      <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Drive में PDF खोलें</a>
-      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">JSON बैकअप डाउनलोड करें (Drive न चले तो)</button>
+      <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">UPDATE </button>
+      <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">Download Slip</button>
+      
+     
     </div>
   </div>
 
 </div>
 
+<div class="ov" id="saveOverlay" aria-live="polite">
+  <div id="ovConfetti"></div>
+  <div class="ov-card">
+    <div id="ovLoading">
+      <div class="ov-spinner"></div>
+      <h3 id="ovLoadTitle">Data Saving....</h3>
+      <ul class="ov-steps" id="ovSteps">
+        <li data-s="1">File Record Completed....</li>
+        <li data-s="2">Pdf Ready....</li>
+        <li data-s="3">Finilizing....</li>
+      </ul>
+    </div>
+    <div id="ovSuccess" style="display:none;">
+      <div class="ov-check">
+        <svg viewBox="0 0 120 120"><circle class="ov-fill" cx="60" cy="60" r="52"></circle><circle class="ov-ring" cx="60" cy="60" r="52"></circle><polyline class="ov-tick" points="38,62 54,78 84,44"></polyline></svg>
+      </div>
+      <h2 id="ovTitle">Congratulation</h2>
+      <p id="ovMsg">Your Data Successfully Recorded</p>
+      <div class="ov-person" id="ovPerson"></div>
+      <div class="ov-warn" id="ovWarn"></div>
+      <button type="button" id="ovPdf" class="btn-primary" style="height:44px; font-size:14px;">Download Slip</button>
+      <button type="button" id="ovClose" class="btn-next">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+/* ---------- Smart Title-Case Formatter (First Letter Capital, Baaki Small) ---------- */
+function toTitleCase(str) {
+  if (!str) return '';
+  return str.replace(/\b([a-zA-Z])([a-zA-Z]*)/g, (_, first, rest) => {
+    return first.toUpperCase() + rest.toLowerCase();
+  });
+}
+
+// Automatically format on blur / change for all text fields (excluding numbers and email)
+const autoCapInputs = document.querySelectorAll(
+  'input:not([type="email"]):not([type="file"]):not([inputmode="numeric"]):not([type="number"])'
+);
+autoCapInputs.forEach((input) => {
+  input.addEventListener('blur', () => {
+    input.value = toTitleCase(input.value);
+  });
+});
+
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -881,13 +1017,13 @@ function radioSelected(name) {
 }
 
 const SECTION_TITLES = {
-  personal: 'व्यक्तिगत विवरण',
-  address: 'पता विवरण',
-  income: 'आय विवरण',
-  caste: 'जाति विवरण',
-  documents: 'दस्तावेज़'
+  personal: 'Personal Details',
+  address: 'Address',
+  income: 'Income Details',
+  caste: 'Cast Details',
+  documents: 'Socument Section'
 };
-/* Optional sections: "complete" jab inme se kuchh bhi bhara/upload ho jaye */
+/* Optional sections */
 const OPTIONAL_MAP = {
   income: ['profession', 'incomeDocumentType', 'incomefromgovt', 'incomefrombusiness', 'incomefromagriculture', 'incomefromothers', 'totalincome'],
   caste: ['casteprofession', 'castecategory', 'caste', 'subcaste', 'generalcaste', 'casteDocumentType'],
@@ -958,10 +1094,10 @@ function refreshSection(id) {
     const next = ORDER[ORDER.indexOf(id) + 1];
     if (isRequiredSection && next && !advancedOnce.has(id)) {
       advancedOnce.add(id);
-      toast('✓ ' + SECTION_TITLES[id] + ' सफल — अगला भाग खुल रहा है');
+      toast('✓ ' + SECTION_TITLES[id] + ' Success - Next Section ');
       setTimeout(() => openOnly(next), 1000);
     } else {
-      toast('✓ ' + SECTION_TITLES[id] + ' सफलतापूर्वक भरा गया');
+      toast('✓ ' + SECTION_TITLES[id] + ' Success Form Filling');
     }
   } else if (!done && was) {
     completedSections.delete(id);
@@ -969,7 +1105,6 @@ function refreshSection(id) {
   }
 }
 
-/* Documents section ko file-handler khud refresh karta hai (neeche) */
 ORDER.forEach((id) => {
   if (id === 'documents') return;
   getSectionEl(id).querySelectorAll('input, select').forEach((el) => {
@@ -1016,7 +1151,7 @@ document.getElementById('image').addEventListener('change', (e) => {
 
       prev.src = dataUrl;
       prev.style.display = 'block';
-      toast('फोटो 300KB के अंदर सेट हो गई');
+      toast('Photo Ready 300kb');
     };
     img.src = event.target.result;
   };
@@ -1051,7 +1186,7 @@ DOC_FIELDS.forEach(({ id }) => {
     const statusEl = document.getElementById(id + '_status');
     if (!f) { statusEl.textContent = ''; refreshSection('documents'); return; }
     if (!isPdfFile(f)) {
-      statusEl.textContent = 'सिर्फ PDF फाइल स्वीकार्य है';
+      statusEl.textContent = 'Only Pdf';
       statusEl.style.color = '#dc2626';
       e.target.value = '';
       refreshSection('documents');
@@ -1089,19 +1224,29 @@ async function collectDocs() {
   return docs;
 }
 
-function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function val(id) { 
+  const el = document.getElementById(id); 
+  if (!el) return '';
+  const trimmed = el.value.trim();
+  // Auto Title Case save text values
+  if (el.type !== 'email' && el.type !== 'file' && el.type !== 'number' && el.getAttribute('inputmode') !== 'numeric') {
+    return toTitleCase(trimmed);
+  }
+  return trimmed;
+}
+
 function radioVal(name) {
   const el = document.querySelector(`input[name="${name}"]:checked`);
   return el ? el.value : '';
 }
 
-/* ---------- PDF ke liye readable view (labels + selected text) ---------- */
+/* Readable view for PDF */
 const PDF_SCHEMA = [
-  { title: 'व्यक्तिगत विवरण', fields: [['t','name'],['t','fathername'],['t','mothername'],['t','husbandname'],['r','gender'],['r','addressType'],['t','mobile'],['t','email']] },
-  { title: 'पता विवरण', fields: [['s','state'],['t','district'],['t','anumandal'],['t','prakhand'],['r','residenceType'],['t','gram'],['t','wardNo'],['t','village'],['t','pin'],['t','postoffice'],['t','policeStation'],['t','purpose'],['s','documentType']] },
-  { title: 'आय विवरण', fields: [['s','profession'],['s','incomeDocumentType'],['t','incomefromgovt'],['t','incomefrombusiness'],['t','incomefromagriculture'],['t','incomefromothers'],['t','totalincome']] },
-  { title: 'जाति विवरण', fields: [['s','casteprofession'],['s','castecategory'],['t','caste'],['t','subcaste'],['t','generalcaste'],['s','casteDocumentType']] },
-  { title: 'दस्तावेज़', fields: [['f','doc_aadhaar'],['f','doc_caste'],['f','doc_residence']] }
+  { title: 'Personal Details', fields: [['t','name'],['t','fathername'],['t','mothername'],['t','husbandname'],['r','gender'],['r','addressType'],['t','mobile'],['t','email']] },
+  { title: 'Address', fields: [['s','state'],['t','district'],['t','anumandal'],['t','prakhand'],['r','residenceType'],['t','gram'],['t','wardNo'],['t','village'],['t','pin'],['t','postoffice'],['t','policeStation'],['t','purpose'],['s','documentType']] },
+  { title: 'Income Details', hide: true, fields: [['s','profession'],['s','incomeDocumentType'],['t','incomefromgovt'],['t','incomefrombusiness'],['t','incomefromagriculture'],['t','incomefromothers'],['t','totalincome']] },
+  { title: 'Cast Details', hide: true, fields: [['s','casteprofession'],['s','castecategory'],['t','caste'],['t','subcaste'],['t','generalcaste'],['s','casteDocumentType']] },
+  { title: 'Document Section', hide: true, fields: [['f','doc_aadhaar'],['f','doc_caste'],['f','doc_residence']] }
 ];
 
 function fieldLabel(type, id) {
@@ -1125,24 +1270,135 @@ function fieldDisplay(type, id) {
   }
   if (type === 'f') {
     const f = document.getElementById(id).files[0];
-    return f ? `${f.name} (${(f.size / 1024).toFixed(0)}KB) — Drive folder में सेव` : '';
+    return f ? `${f.name} (${(f.size / 1024).toFixed(0)}KB)` : '';
   }
   return '';
 }
 function buildPdfView(entry) {
+  const place = [val('village'), val('district')].filter(Boolean).join(', ');
   return {
-    title: 'Digital Saathi — प्रोफाइल विवरण',
+    title: 'Personal Details',
+    name: entry.name,
+    mobile: entry.mobile,
+    place: place,
     photo: entry.image || '',
     sections: PDF_SCHEMA.map((s) => ({
       title: s.title,
+      hide: !!s.hide,
       rows: s.fields.map(([t, id]) => [fieldLabel(t, id), fieldDisplay(t, id)])
     }))
   };
 }
 
-/* ---------- Duplicate-save guard ---------- */
+/* HTML to PDF via html2canvas & jsPDF */
+const PAGE_W = 794, PAGE_H = 1123;
+function pesc(x) { return String(x == null ? '' : x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function pdfSectionCard(i, sec) {
+  const rows = sec.hide ? sec.rows.filter((r) => r[1]) : sec.rows;
+  let inner;
+  if (!rows.length) {
+    inner = '<div class="pdf-empty">इस में कोई जानकारी नहीं दी गई</div>';
+  } else {
+    inner = '<div class="pdf-grid">' + rows.map((r) => {
+      const wide = (r[1] || '').length > 30 || r[0].length > 24;
+      return `<div class="pdf-cell${wide ? ' wide' : ''}"><div class="pdf-k">${pesc(r[0])}</div><div class="pdf-v">${r[1] ? pesc(r[1]) : '<span style="color:#cbd5e1;font-weight:500">—</span>'}</div></div>`;
+    }).join('') + '</div>';
+  }
+  const el = document.createElement('div');
+  el.className = 'pdf-card';
+  el.innerHTML = `<div class="pdf-card-h"><span class="pdf-num">${i + 1}</span>${pesc(sec.title)}</div>${inner}`;
+  return el;
+}
+
+function buildPdfPages(view, jsonUrl) {
+  const root = document.createElement('div');
+  root.className = 'pdf-root';
+  document.body.appendChild(root);
+  const when = new Date().toLocaleString('hi-IN', { dateStyle: 'medium', timeStyle: 'short' });
+  const pages = [];
+
+  function newPage(first) {
+    const pg = document.createElement('div');
+    pg.className = 'pdf-page';
+    if (first) {
+      const initial = pesc((view.name || '?').trim().charAt(0).toUpperCase());
+      const photo = view.photo
+        ? `<div class="pdf-photo" style="background-image:url('${view.photo}')"></div>`
+        : `<div class="pdf-photo">${initial}</div>`;
+      pg.innerHTML = `<div class="pdf-head"><div>
+          <div class="pdf-brand">Digital Saathi</div>
+          <div class="pdf-title">${pesc(view.title)}</div>
+          <div class="pdf-name">${pesc(view.name)}</div>
+          <div class="pdf-meta"><span class="pdf-chip">📱 ${pesc(view.mobile)}</span>${view.place ? `<span class="pdf-chip">${pesc(view.place)}</span>` : ''}<span class="pdf-chip">${pesc(when)}</span></div>
+        </div>${photo}</div>`;
+    } else {
+      pg.innerHTML = `<div class="pdf-mini">Digital Saathi — ${pesc(view.name)}<span>${pesc(view.mobile)}</span></div>`;
+    }
+    const body = document.createElement('div'); body.className = 'pdf-body'; pg.appendChild(body);
+    const foot = document.createElement('div'); foot.className = 'pdf-foot'; pg.appendChild(foot);
+    root.appendChild(pg);
+    const o = { pg, body, foot };
+    pages.push(o);
+    return o;
+  }
+
+  let cur = newPage(true);
+  function place(el) {
+    cur.body.appendChild(el);
+    if (cur.body.scrollHeight > cur.body.clientHeight + 1 && cur.body.children.length > 1) {
+      cur = newPage(false);
+      cur.body.appendChild(el);
+    }
+  }
+  view.sections.forEach((sec, i) => place(pdfSectionCard(i, sec)));
+
+  const jsonCard = document.createElement('div');
+  jsonCard.className = 'pdf-json';
+  jsonCard.innerHTML = `<h4>Digital Document Section</h4>
+    <p></p>
+    <div class="pdf-btn" id="pdfJsonBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg>Verify...</div>
+    <div class="pdf-url" id="pdfJsonUrl">${pesc(jsonUrl)}</div>`;
+  place(jsonCard);
+
+  pages.forEach((o, i) => {
+    o.foot.innerHTML = `<span>Digital Saathi • ${pesc(view.name)}</span><span>Page ${i + 1} / ${pages.length}</span>`;
+  });
+  return { root, pages };
+}
+
+async function generatePdf(view, jsonUrl) {
+  if (!window.html2canvas || !(window.jspdf && window.jspdf.jsPDF)) throw new Error('Pdf Load Error');
+  if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+  const savedY = window.scrollY;
+  window.scrollTo(0, 0);
+  const { root, pages } = buildPdfPages(view, jsonUrl);
+  try {
+    const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+    const k = 210 / PAGE_W;
+    for (let i = 0; i < pages.length; i++) {
+      const pg = pages[i].pg;
+      const canvas = await window.html2canvas(pg, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, width: PAGE_W, height: PAGE_H, windowWidth: PAGE_W, scrollX: 0, scrollY: 0 });
+      if (i > 0) doc.addPage();
+      doc.addImage(canvas.toDataURL('image/jpeg', 0.9), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+      const pr = pg.getBoundingClientRect();
+      ['pdfJsonBtn', 'pdfJsonUrl'].forEach((id) => {
+        const el = pg.querySelector('#' + id);
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        doc.link((r.left - pr.left) * k, (r.top - pr.top) * k, r.width * k, r.height * k, { url: jsonUrl });
+      });
+    }
+    return doc.output('datauristring').split(',')[1];
+  } finally {
+    root.remove();
+    window.scrollTo(0, savedY);
+  }
+}
+
+/* Duplicate guard */
 let lastPayload = null;
-let lastSavedKey = null;   // jis data ka fingerprint Drive me ja chuka hai
+let lastSavedKey = null;
 let isSaving = false;
 let lastPdf = null;
 
@@ -1156,8 +1412,8 @@ function fingerprint(str) {
   return (h1 >>> 0).toString(16) + '-' + h2.toString(16) + '-' + str.length;
 }
 
-let saveMode = 'save'; // 'save' = naya profile, 'update' = pehle se saved profile
-function modeLabel() { return saveMode === 'update' ? 'डेटा अपडेट करें' : 'प्रोफाइल तैयार करें'; }
+let saveMode = 'save';
+function modeLabel() { return saveMode === 'update' ? 'UPDATE' : 'SAVE'; }
 function setMode(m) {
   saveMode = m;
   document.querySelector('#submitBtn span').textContent = modeLabel();
@@ -1165,7 +1421,7 @@ function setMode(m) {
 
 async function submitProfile(forceMode) {
   if (isSaving) return;
-  const mode = forceMode || saveMode; // double-click / repeat click par dubara save nahi
+  const mode = forceMode || saveMode;
 
   const required = ['name','fathername','mothername','mobile','state','wardNo','village','pin','postoffice','purpose'];
   for (const id of required) {
@@ -1239,7 +1495,6 @@ async function submitProfile(forceMode) {
     lastPayload.data.saathiDocStoreByProfile = { [profileKey]: docs };
   }
 
-  // fingerprint: time-stamps hata kar (wo har baar badalte hain)
   const { savedAt, ...entryStable } = entry;
   const docsStable = Object.fromEntries(Object.entries(docs).map(([k, d]) => [k, { name: d.name, size: d.size, dataUrl: d.dataUrl }]));
   const key = fingerprint(JSON.stringify({ folderName, entryStable, docsStable }));
@@ -1248,18 +1503,18 @@ async function submitProfile(forceMode) {
   document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
 
   if (!driveConfigured()) {
-    showDriveResult(false, 'Drive setup बाकी है — नीचे से JSON बैकअप डाउनलोड करें।');
+    showDriveResult(false, '');
     document.getElementById('downloadBtn').style.display = 'inline-flex';
     return;
   }
 
   if (key === lastSavedKey) {
-    toast('कोई बदलाव नहीं — दोबारा सेव नहीं किया');
-    showDriveResult(true, 'यही डेटा पहले से Drive में सुरक्षित है — कोई बदलाव नहीं, इसलिए सेव/अपडेट नहीं हुआ।');
+    toast('Date not updated');
+    showDriveResult(true, 'Data Alredy Saved');
     return;
   }
 
-  await sendToDrive({ ...lastPayload, _mode: mode, _pdfView: buildPdfView(entry) }, key, mode);
+  await sendToDrive({ ...lastPayload, _mode: mode }, key, mode, buildPdfView(entry), entry);
 }
 document.getElementById('submitBtn').addEventListener('click', () => submitProfile());
 document.getElementById('updateBtn').addEventListener('click', () => submitProfile('update'));
@@ -1297,7 +1552,7 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
 setOpen('personal', true);
 
 /* ---------- Google Drive backup via Apps Script ---------- */
-const DRIVE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyVlVse2iTfr-QWP-qcx8UcuSWJleXzpcizDI-q1Ff4KOlzwH8NLumV_iB7BKbJlui7Jw/exec";
+const DRIVE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOMqPYV31AGFCe7WzAWN5bl17Rst8ZuHhhsTIHiNBkmVAFVFeym8ImYEJCO6zHoCtfmg/exec";
 
 function driveConfigured() {
   return DRIVE_WEBHOOK_URL && !DRIVE_WEBHOOK_URL.startsWith("PASTE_");
@@ -1314,53 +1569,147 @@ function showDriveResult(ok, text, warn) {
   el.style.color = warn ? '#b45309' : (ok ? '#10b981' : '#dc2626');
 }
 
-async function sendToDrive(payload, key, mode) {
+/* ---------- Overlay helpers ---------- */
+const ovEl = () => document.getElementById('saveOverlay');
+function ovSetStep(n) {
+  document.querySelectorAll('#ovSteps li').forEach((li) => {
+    const s = Number(li.dataset.s);
+    li.classList.toggle('done', s < n);
+    li.classList.toggle('active', s === n);
+  });
+}
+function ovLoading(mode) {
+  document.getElementById('ovLoadTitle').textContent = mode === 'update' ? 'Record Updating…' : 'File Updating…';
+  document.getElementById('ovLoading').style.display = 'block';
+  document.getElementById('ovSuccess').style.display = 'none';
+  document.getElementById('ovConfetti').innerHTML = '';
+  ovSetStep(1);
+  ovEl().classList.add('show');
+}
+function ovClose() { ovEl().classList.remove('show'); }
+function ovConfetti() {
+  const box = document.getElementById('ovConfetti');
+  box.innerHTML = '';
+  const colors = ['#10b981', '#34d399', '#2563eb', '#60a5fa', '#f59e0b', '#fbbf24', '#f472b6', '#a78bfa'];
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement('i');
+    const w = 6 + Math.random() * 7;
+    c.style.left = Math.random() * 100 + '%';
+    c.style.width = w + 'px';
+    c.style.height = (w * (Math.random() > .5 ? 1 : 1.9)) + 'px';
+    c.style.borderRadius = Math.random() > .6 ? '50%' : '2px';
+    c.style.background = colors[i % colors.length];
+    c.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
+    c.style.setProperty('--r', (Math.random() * 900 - 450) + 'deg');
+    c.style.setProperty('--d', (2.2 + Math.random() * 1.8) + 's');
+    c.style.setProperty('--dl', (0.9 + Math.random() * 0.9) + 's');
+    box.appendChild(c);
+  }
+}
+function ovSuccess({ mode, name, mobile, warn }) {
+  document.getElementById('ovTitle').textContent = mode === 'update' ? 'Data Updated ' : 'Congratulation';
+  document.getElementById('ovMsg').textContent = mode === 'update'
+    ? 'Your Data Updated '
+    : 'Yourd Data Successfully Synce';
+  document.getElementById('ovPerson').textContent = `${name} • ${mobile}`;
+  const w = document.getElementById('ovWarn');
+  w.style.display = warn ? 'block' : 'none';
+  w.textContent = warn || '';
+  document.getElementById('ovPdf').style.display = lastPdf && lastPdf.base64 ? 'flex' : 'none';
+  const chk = document.querySelector('#ovSuccess .ov-check');
+  chk.replaceWith(chk.cloneNode(true));
+  document.getElementById('ovLoading').style.display = 'none';
+  document.getElementById('ovSuccess').style.display = 'block';
+  ovConfetti();
+  if (navigator.vibrate) { try { navigator.vibrate([60, 40, 90]); } catch (e) {} }
+}
+document.getElementById('ovClose').addEventListener('click', ovClose);
+document.getElementById('ovPdf').addEventListener('click', () => document.getElementById('pdfBtn').click());
+
+async function postJson(obj) {
+  const res = await fetch(DRIVE_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(obj),
+  });
+  return res.json();
+}
+
+async function sendToDrive(payload, key, mode, pdfView, entry) {
   const btn = document.getElementById('submitBtn');
   const label = btn.querySelector('span');
   const updBtn = document.getElementById('updateBtn');
+  const dl = document.getElementById('driveLink');
   isSaving = true;
   btn.disabled = true;
   updBtn.disabled = true;
-  label.textContent = mode === 'update' ? 'अपडेट हो रहा है…' : 'PDF बन रही है और Drive में सेव हो रहा है…';
-  showDriveResult(true, 'कृपया रुकें…');
+  label.textContent = mode === 'update' ? 'Updating…' : 'Saving…';
+  showDriveResult(true, 'Please Wait…');
+  ovLoading(mode);
   try {
-    const res = await fetch(DRIVE_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    const dl = document.getElementById('driveLink');
-    if (data.ok && data.status === 'exists') {
-      // Pehle se saved hai aur data alag hai — server ne kuchh nahi badla
+    const data = await postJson(payload);
+    if (!data.ok) throw new Error(data.error || 'save failed');
+
+    if (data.status === 'exists') {
+      ovClose();
       setMode('update');
       updBtn.style.display = 'flex';
       document.getElementById('pdfBtn').style.display = 'none';
       if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
-      showDriveResult(true, 'यह प्रोफाइल पहले से Drive में सेव है और आपके डेटा में बदलाव हैं। नया नहीं बना — "डेटा अपडेट करें" दबाकर पुरानी फाइल अपडेट करें।', true);
-      toast('पहले से सेव है — अपडेट बटन दबाएँ');
-    } else if (data.ok) {
-      lastSavedKey = key; // ab yahi data dobara save nahi hoga
-      lastPdf = { name: data.pdfName, base64: data.pdfBase64, url: data.pdfUrl };
+      showDriveResult(true, 'यह प्रोफाइल पहले से सेव है , Please  — "UPDATE DATA" ', true);
+      toast('Already Saved Please Update');
+      return;
+    }
+    if (data.status === 'unchanged') {
+      ovClose();
+      lastSavedKey = key;
       setMode('update');
       updBtn.style.display = 'none';
-      const msg = data.status === 'unchanged'
-        ? 'यही डेटा Drive में पहले से था — नई फाइल नहीं बनी।'
-        : data.status === 'updated'
-          ? 'Drive में आपकी पुरानी फाइल अपडेट हो गई (डुप्लीकेट नहीं बना)।'
-          : 'Drive में सुरक्षित हो गया।';
-      showDriveResult(true, `${msg} (${data.pdfName})`);
-      toast(data.status === 'updated' ? 'अपडेट हो गया' : 'Drive में सेव हो गया');
-      document.getElementById('pdfBtn').style.display = data.pdfBase64 ? 'flex' : 'none';
       if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
-      document.getElementById('downloadBtn').style.display = 'none';
-    } else {
-      showDriveResult(false, 'Drive save असफल — नीचे से JSON बैकअप डाउनलोड करें।');
-      document.getElementById('downloadBtn').style.display = 'inline-flex';
+      showDriveResult(true, '');
+      toast('');
+      return;
     }
+
+    ovSetStep(2);
+    let pdfB64 = null, warn = '';
+    try {
+      pdfB64 = await generatePdf(pdfView, data.jsonDownloadUrl);
+    } catch (err) {
+      console.error('PDF error', err);
+      warn = '';
+    }
+
+    let pdfUrl = '';
+    if (pdfB64) {
+      ovSetStep(3);
+      try {
+        const up = await postJson({ _action: 'pdf', name: entry.name, mobile: entry.mobile, pdfBase64: pdfB64 });
+        if (up.ok) { pdfUrl = up.pdfUrl; } else { throw new Error(up.error || 'pdf upload'); }
+      } catch (err) {
+        console.error('PDF upload error', err);
+        warn = '';
+      }
+    }
+    lastPdf = pdfB64 ? { name: 'digital-saathi-profile.pdf', base64: pdfB64, url: pdfUrl } : null;
+    if (pdfB64 && pdfUrl) lastSavedKey = key;
+    setMode('update');
+    updBtn.style.display = 'none';
+
+    showDriveResult(!warn, warn || (data.status === 'updated'
+      ? 'आपकी पुरानी फाइल अपडेट हो गई '
+      : ''));
+    document.getElementById('pdfBtn').style.display = pdfB64 ? 'flex' : 'none';
+    if (pdfUrl) { dl.href = pdfUrl; dl.style.display = 'block'; }
+    document.getElementById('downloadBtn').style.display = pdfB64 ? 'none' : 'inline-flex';
+
+    ovSuccess({ mode: data.status === 'updated' ? 'update' : 'save', name: entry.name, mobile: entry.mobile, warn });
   } catch (err) {
-    showDriveResult(false, 'Drive कनेक्ट नहीं हुआ — नीचे से JSON बैकअप डाउनलोड करें।');
+    console.error(err);
+    ovClose();
+    showDriveResult(false, '');
     document.getElementById('downloadBtn').style.display = 'inline-flex';
+    toast('Error Try Again');
   } finally {
     isSaving = false;
     btn.disabled = false;
@@ -1370,7 +1719,7 @@ async function sendToDrive(payload, key, mode) {
 }
 
 if (driveConfigured()) {
-  setDriveStatus('एक प्रोफाइल = एक PDF + एक JSON। बदलाव होने पर "डेटा अपडेट करें" से वही फाइल अपडेट होगी');
+  setDriveStatus('Drive: Digital Saathi Backups › नाम_मोबाइल फोल्डर। बदलाव पर "डेटा अपडेट करें" से वही फाइल अपडेट होगी');
 } else {
   setDriveStatus('Setup अभी बाकी है — लोकल डाउनलोड काम करेगा');
 }
