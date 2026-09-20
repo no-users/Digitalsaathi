@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Digital Saathi — Profile Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-app: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --border-light: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --border-focus: #2563eb;
+  --accent-blue: #2563eb;
+  --accent-blue-soft: #eff6ff;
+  --accent-amber: #d97706;
+  --accent-amber-bg: #fffbeb;
+  --accent-green: #10b981;
+  --required-red: #ef4444;
+  --radius-card: 16px;
+  --radius-input: 10px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+* { 
+  box-sizing: border-box; 
+  -webkit-tap-highlight-color: transparent; 
+}
+
+html { 
+  -webkit-text-size-adjust: 100%; 
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0; 
+  padding: 0;
+  background-color: var(--bg-app);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.02) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.bg-sparkles { display: none; }
+
+/* Clean Minimal Navbar */
+header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 18px 20px;
+  text-align: center;
+  position: sticky; 
+  top: 0; 
+  z-index: 40;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+header h1 { 
+  margin: 0; 
+  font-size: 18px; 
+  font-weight: 800; 
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+header p { 
+  margin: 4px 0 0; 
+  font-size: 12px; 
+  font-weight: 500; 
+  color: var(--text-muted); 
+}
+
+.wrap { 
+  max-width: 620px; 
+  margin: 0 auto; 
+  padding: 24px 16px 100px; 
+}
+
+/* Minimal Cards */
+.section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.section:hover {
+  border-color: var(--border-hover);
+}
+.section.open-active {
+  border-color: var(--accent-blue);
+  box-shadow: var(--shadow-md);
+}
+
+.section-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: none;
+  padding: 16px 18px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  user-select: none;
+}
+.section-header:hover {
+  background: #fafbfc;
+}
+
+.section-num {
+  flex: none;
+  width: 28px; 
+  height: 28px; 
+  border-radius: 8px;
+  background: #f1f5f9; 
+  color: var(--text-muted);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 12.5px; 
+  font-weight: 700;
+  border: 1px solid var(--border-light);
+  transition: all 0.25s ease;
+}
+.section.open-active .section-num {
+  background: var(--accent-blue-soft);
+  color: var(--accent-blue);
+  border-color: #bfdbfe;
+}
+.section.completed .section-num {
+  background: var(--accent-green);
+  color: #fff;
+  border-color: var(--accent-green);
+}
+.section-num.pulse { 
+  animation: pulseGreen 0.6s ease; 
+}
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.section-title {
+  flex: 1;
+  font-size: 15px; 
+  font-weight: 700; 
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+.section-sub { 
+  font-size: 12px; 
+  font-weight: 500; 
+  color: var(--text-subtle); 
+  margin-top: 1px; 
+}
+
+.chevron {
+  flex: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-subtle);
+}
+.section-header[aria-expanded="true"] .chevron { 
+  transform: rotate(180deg); 
+  color: var(--accent-blue); 
+}
+
+.section-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-collapse.open { 
+  grid-template-rows: 1fr; 
+}
+.section-inner { 
+  overflow: hidden; 
+}
+.section-body { 
+  padding: 4px 18px 20px; 
+  border-top: 1px solid #f1f5f9;
+}
+
+/* Grid & Inputs */
+.grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 12px; 
+}
+@media (max-width: 500px) { 
+  .grid { grid-template-columns: 1fr; gap: 11px; } 
+  .section-body { padding: 4px 14px 18px; }
+  .section-header { padding: 14px 14px; }
+}
+
+.field { 
+  display: flex; 
+  flex-direction: column; 
+}
+.field.wide { 
+  grid-column: 1 / -1; 
+}
+
+label { 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: #475569; 
+  margin-bottom: 5px; 
+}
+label.required-label::after {
+  content: " *";
+  color: var(--required-red);
+}
+
+input, select {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-input);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-main);
+  width: 100%;
+  height: 42px;
+  transition: all 0.2s ease;
+}
+input::placeholder, select::placeholder {
+  color: var(--text-subtle);
+}
+input:hover, select:hover {
+  border-color: var(--border-hover);
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Compact Segmented Pills */
+.radio-row { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+}
+.radio-row label {
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px;
+  font-size: 12.5px; 
+  font-weight: 600; 
+  color: var(--text-muted); 
+  margin: 0;
+  background: #f8fafc; 
+  border: 1px solid var(--border-light);
+  border-radius: 8px; 
+  padding: 6px 12px; 
+  height: 38px;
+  cursor: pointer; 
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.radio-row label:hover { 
+  border-color: var(--border-hover); 
+  background: #ffffff; 
+  color: var(--text-main);
+}
+.radio-row label:has(input[type="radio"]:checked) {
+  border-color: var(--accent-blue);
+  background: var(--accent-blue-soft);
+  color: var(--accent-blue);
+}
+.radio-row input[type="radio"] { 
+  width: 14px; 
+  height: 14px; 
+  margin: 0;
+  accent-color: var(--accent-blue); 
+  cursor: pointer;
+}
+
+.hint { 
+  font-size: 11.5px; 
+  color: var(--text-subtle); 
+  margin-top: 5px; 
+  line-height: 1.4;
+}
+
+/* Card Unit */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* File Box */
+input[type="file"] {
+  background: #f8fafc;
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--radius-input);
+  padding: 6px 10px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  height: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+input[type="file"]:hover {
+  border-color: var(--accent-blue);
+  background: #ffffff;
+}
+input[type="file"]::file-selector-button {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+input[type="file"]::file-selector-button:hover {
+  background: #f1f5f9;
+}
+
+.imgprev { 
+  max-width: 76px; 
+  max-height: 76px; 
+  border-radius: 8px; 
+  margin-top: 8px; 
+  border: 1px solid var(--border-light); 
+  display: none; 
+  object-fit: cover; 
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-input);
+  padding: 0 20px;
+  font-size: 14.5px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  height: 46px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  background: #1d4ed8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
+}
+.btn-primary:active { 
+  transform: translateY(0); 
+}
+
+.btn-next {
+  background: #f8fafc;
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.btn-next:hover { 
+  background: #ffffff; 
+  color: var(--text-main);
+  border-color: var(--border-hover);
+  transform: translateX(2px); 
+}
+
+/* Result Box */
+#resultBox { 
+  display: none; 
+  border: 1px solid #fde68a; 
+  background: var(--accent-amber-bg); 
+  border-radius: var(--radius-card); 
+  padding: 18px 16px; 
+  margin-bottom: 16px; 
+}
+#resultBox.show { 
+  display: block; 
+  animation: slideFade 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+}
+@keyframes slideFade { 
+  from { opacity: 0; transform: translateY(8px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+.stepnum {
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  width: 18px; 
+  height: 18px; 
+  border-radius: 5px; 
+  background: var(--accent-blue);
+  color: #fff; 
+  font-size: 11px; 
+  font-weight: 700; 
+  margin-right: 6px;
+}
+
+/* Floating Toast */
+.toast {
+  position: fixed; 
+  bottom: 24px; 
+  left: 50%; 
+  transform: translateX(-50%) translateY(20px);
+  background: #0f172a; 
+  color: #fff; 
+  padding: 10px 20px;
+  border-radius: 50px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  opacity: 0; 
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none; 
+  max-width: 90%; 
+  text-align: center; 
+  z-index: 50;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+.toast.show { 
+  opacity: 1; 
+  transform: translateX(-50%) translateY(0); 
+}
+
+/* ---------- Section success animation ---------- */
+.section-num { position: relative; }
+.section.completed { border-color: #a7f3d0; }
+.section.completed .section-sub::after {
+  content: " • ✓ पूर्ण";
+  color: var(--accent-green);
+  font-weight: 700;
+}
+.section-num .tick {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: drawTick 0.45s 0.12s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes drawTick { to { stroke-dashoffset: 0; } }
+
+.section-num.burst::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 10px;
+  border: 2px solid var(--accent-green);
+  animation: ringOut 0.75s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ringOut {
+  from { transform: scale(1); opacity: 0.9; }
+  to   { transform: scale(2.6); opacity: 0; }
+}
+.section.success-flash { animation: sectionFlash 1s ease; }
+@keyframes sectionFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); background: #ecfdf5; }
+  60%  { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); background: #f0fdf4; }
+  100% { box-shadow: var(--shadow-sm); background: var(--card-bg); }
+}
+.section-num.pop { animation: numPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes numPop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.confetti-dot {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: dotPop 0.7s ease-out forwards;
+}
+@keyframes dotPop {
+  from { transform: translate(0, 0) scale(1); opacity: 1; }
+  to   { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+}
+
+/* ---------- Save button / result ---------- */
+.btn-primary:disabled { opacity: 0.65; cursor: wait; transform: none; }
+.actions { display: flex; flex-direction: column; gap: 8px; }
+.link-btn {
+  display: none;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-blue);
+  text-decoration: none;
+  padding: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-sparkles" id="bgSparkles"></div>
+
+<header>
+  <h1>Digital Saathi</h1>
+  <p>Profile Form &bull; PDF + Drive Backup</p>
+</header>
+
+<div class="wrap">
+
+  <!-- SECTION 1: personal -->
+  <div class="section" data-section="personal">
+    <button type="button" class="section-header" aria-expanded="true">
+      <span class="section-num">1</span>
+      <span>
+        <div class="section-title">व्यक्तिगत विवरण</div>
+        <div class="section-sub">मूल जानकारी व संपर्क</div>
+      </span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="section-collapse open">
+      <div class="section-inner">
+        <div class="section-body">
+          <div class="grid">
+            <div class="field"><label for="name" class="required-label">नाम</label><input id="name" required placeholder="पूरा नाम"></div>
+            <div class="field"><label for="fathername" class="required-label">पिता</label><input id="fathername" required placeholder="पिता का नाम"></div>
+            <div class="field"><label for="mothername" class="required-label">माता</label><input id="mothername" required placeholder="माता का नाम"></div>
+            <div class="field"><label for="husbandname">पति</label><input id="husbandname" placeholder="यदि लागू हो"></div>
+            <div class="field">
+              <label class="required-label">लिंग</label>
+              <div class="radio-row">
+                <label><input type="radio" name="gender" value="1" required> पुरुष</label>
+                <label><input type="radio" name="gender" value="2"> महिला</label>
+              </div>
+            </div>
+            <div class="field">
+              <label class="required-label">पता प्रकार</label>
+              <div class="radio-row">
+                <label><input type="radio" name="addressType" value="1" required> स्थायी</label>
+                <label><input type="radio" name="addressType" value="2"> वर्तमान</label>
+              </div>
+            </div>
+            <div class="field"><label for="mobile" class="required-label">मोबाइल</label><input id="mobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 अंक"></div>
+            <div class="field"><label for="email">ईमेल</label><input id="email" type="email" placeholder="वैकल्पिक"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: address -->
+  <div class="section" data-section="address">
+    <button type="button" class="section-header" aria-expanded="false">
+      <span class="section-num">2</span>
+      <span>
+        <div class="section-title">पता विवरण</div>
+        <div class="section-sub">स्थान, निकाय व फोटो</div>
+      </span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="section-collapse">
+      <div class="section-inner">
+        <div class="section-body">
+          <div class="grid">
+            <div class="field"><label for="state" class="required-label">राज्य</label>
+              <select id="state" required><option value="">चुनें</option><option value="10">BIHAR</option></select>
+            </div>
+            <div class="field"><label for="district">जिला</label><input id="district" placeholder="जिला"></div>
+            <div class="field"><label for="anumandal">अनुमंडल</label><input id="anumandal" placeholder="अनुमंडल"></div>
+            <div class="field"><label for="prakhand">प्रखंड</label><input id="prakhand" placeholder="प्रखंड"></div>
+            <div class="field wide">
+              <label class="required-label">निकाय प्रकार</label>
+              <div class="radio-row">
+                <label><input type="radio" name="residenceType" value="1" required> ग्राम पंचायत</label>
+                <label><input type="radio" name="residenceType" value="2"> नगर निगम</label>
+                <label><input type="radio" name="residenceType" value="3"> नगर परिषद</label>
+                <label><input type="radio" name="residenceType" value="4"> नगर पंचायत</label>
+              </div>
+            </div>
+            <div class="field"><label for="gram">पंचायत</label><input id="gram" placeholder="पंचायत नाम"></div>
+            <div class="field"><label for="wardNo" class="required-label">वार्ड सं.</label><input id="wardNo" type="number" inputmode="numeric" required placeholder="वार्ड"></div>
+            <div class="field"><label for="village" class="required-label">गांव / मोहल्ला</label><input id="village" required placeholder="गांव / मोहल्ला"></div>
+            <div class="field"><label for="pin" class="required-label">पिन कोड</label><input id="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 अंक"></div>
+            <div class="field"><label for="postoffice" class="required-label">डाकघर</label><input id="postoffice" required placeholder="डाकघर"></div>
+            <div class="field"><label for="policeStation">थाना</label><input id="policeStation" placeholder="थाना"></div>
+            <div class="field wide"><label for="purpose" class="required-label">उद्देश्य</label><input id="purpose" required placeholder="जैसे: छात्रवृत्ति, नामांकन आदि"></div>
+            <div class="field wide">
+              <label for="image">फोटो (20KB - 300KB Auto)</label>
+              <input id="image" type="file" accept="image/*">
+              <img id="imgprev" class="imgprev" alt="Preview">
+            </div>
+            <div class="field wide"><label for="documentType">दस्तावेज (निवास हेतु)</label>
+              <select id="documentType">
+                <option value="">चुनें</option>
+                <option value="94358_1">राजस्व अभिलेख - खतियान</option>
+                <option value="94358_2">राजस्व अभिलेख - द्वानपत्र</option>
+                <option value="94358_3">राजस्व अभिलेख - भूमि संबंधी दस्तावेज</option>
+                <option value="94358_4">राजस्व अभिलेख - भूमिहीनों को आवंटित जमीन अभिलेख</option>
+                <option value="94358_5">अन्य राजस्व अभिलेख</option>
+                <option value="94358_6">राशन कार्ड</option>
+                <option value="94358_7">निर्वाचन पहचान पत्र</option>
+                <option value="94358_8">विद्युत विपत्र</option>
+                <option value="94358_9">दूरभाष विपत्र</option>
+              </select>
+            </div>
+          </div>
+          <div class="hint">जिला/अनुमंडल/प्रखंड Import के बाद extension से auto-match होंगे।</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: income -->
+  <div class="section" data-section="income">
+    <button type="button" class="section-header" aria-expanded="false">
+      <span class="section-num">3</span>
+      <span>
+        <div class="section-title">आय विवरण</div>
+        <div class="section-sub">वैकल्पिक</div>
+      </span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="section-collapse">
+      <div class="section-inner">
+        <div class="section-body">
+          <div class="grid">
+            <div class="field"><label for="profession">पेशा</label>
+              <select id="profession">
+                <option value="">चुनें</option>
+                <option value="1">छात्र</option>
+                <option value="2">सरकारी सेवा</option>
+                <option value="3">निजी सेवा</option>
+                <option value="4">व्यापार</option>
+                <option value="5">किसान</option>
+                <option value="6">गृहिणी</option>
+                <option value="7">अन्य</option>
+              </select>
+            </div>
+            <div class="field"><label for="incomeDocumentType">आय दस्तावेज</label>
+              <select id="incomeDocumentType">
+                <option value="">चुनें</option>
+                <option value="94045_1">वेतन / पेंशन पर्ची</option>
+                <option value="94045_2">आयकर रिटर्न</option>
+                <option value="94045_3">अन्यान्य अभिलेख</option>
+              </select>
+            </div>
+            <div class="field"><label for="incomefromgovt">सरकारी आय</label><input id="incomefromgovt" placeholder="₹"></div>
+            <div class="field"><label for="incomefrombusiness">व्यापार आय</label><input id="incomefrombusiness" placeholder="₹"></div>
+            <div class="field"><label for="incomefromagriculture">कृषि आय</label><input id="incomefromagriculture" placeholder="₹"></div>
+            <div class="field"><label for="incomefromothers">अन्य आय</label><input id="incomefromothers" placeholder="₹"></div>
+            <div class="field"><label for="totalincome">कुल वार्षिक आय</label><input id="totalincome" placeholder="₹"></div>
+          </div>
+          <button type="button" class="btn-next" data-next="caste">अगला: जाति
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: caste -->
+  <div class="section" data-section="caste">
+    <button type="button" class="section-header" aria-expanded="false">
+      <span class="section-num">4</span>
+      <span>
+        <div class="section-title">जाति विवरण</div>
+        <div class="section-sub">वैकल्पिक</div>
+      </span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="section-collapse">
+      <div class="section-inner">
+        <div class="section-body">
+          <div class="grid">
+            <div class="field"><label for="casteprofession">पेशा</label>
+              <select id="casteprofession">
+                <option value="">चुनें</option>
+                <option value="1">छात्र</option>
+                <option value="2">सरकारी सेवा</option>
+                <option value="3">निजी सेवा</option>
+                <option value="4">व्यापार</option>
+                <option value="5">किसान</option>
+                <option value="6">गृहिणी</option>
+                <option value="7">अन्य</option>
+              </select>
+            </div>
+            <div class="field"><label for="castecategory">वर्ग</label>
+              <select id="castecategory">
+                <option value="">चुनें</option>
+                <option value="1">अत्यंत पिछड़ा वर्ग (अनुसूची-1)</option>
+                <option value="2">पिछड़ा वर्ग (अनुसूची-2)</option>
+                <option value="3">अनुसूचित जाति</option>
+                <option value="4">अनुसूचित जनजाति</option>
+                <option value="5">गैर आरक्षित</option>
+              </select>
+            </div>
+            <div class="field"><label for="caste">जाति</label><input id="caste" placeholder="जाति"></div>
+            <div class="field"><label for="subcaste">उपजाति</label><input id="subcaste" placeholder="उपजाति"></div>
+            <div class="field"><label for="generalcaste">सामान्य जाति</label><input id="generalcaste" placeholder="General हेतु"></div>
+            <div class="field wide"><label for="casteDocumentType">दस्तावेज (जाति हेतु)</label>
+              <select id="casteDocumentType">
+                <option value="">चुनें</option>
+                <option value="93963_1">राजस्व अभिलेख - खतियान</option>
+                <option value="93963_2">राजस्व अभिलेख - द्वानपत्र</option>
+                <option value="93963_3">राजस्व अभिलेख - भूमि दस्तावेज</option>
+                <option value="93963_4">राजस्व अभिलेख - आवंटित जमीन अभिलेख</option>
+                <option value="93963_5">अन्य राजस्व अभिलेख</option>
+                <option value="93963_6">स्थल निरीक्षण आग्रह</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" class="btn-next" data-next="documents">अगला: दस्तावेज
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: documents -->
+  <div class="section" data-section="documents">
+    <button type="button" class="section-header" aria-expanded="false">
+      <span class="section-num">5</span>
+      <span>
+        <div class="section-title">दस्तावेज़</div>
+        <div class="section-sub">PDF अपलोड (वैकल्पिक)</div>
+      </span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="section-collapse">
+      <div class="section-inner">
+        <div class="section-body">
+          <div class="hint" style="margin-bottom:12px;">केवल PDF फाइल (अधिकतम 2MB)। जो उपलब्ध हो वही अपलोड करें।</div>
+          <div class="grid">
+            <div class="field wide">
+              <label for="doc_aadhaar">पहचान पत्र (PDF)</label>
+              <input id="doc_aadhaar" type="file" accept="application/pdf,.pdf">
+              <div class="hint" id="doc_aadhaar_status"></div>
+            </div>
+            <div class="field wide">
+              <label for="doc_caste">जाति दस्तावेज (PDF)</label>
+              <input id="doc_caste" type="file" accept="application/pdf,.pdf">
+              <div class="hint" id="doc_caste_status"></div>
+            </div>
+            <div class="field wide">
+              <label for="doc_residence">निवास दस्तावेज (PDF)</label>
+              <input id="doc_residence" type="file" accept="application/pdf,.pdf">
+              <div class="hint" id="doc_residence_status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drive Card -->
+  <div class="card" style="margin-top:0; margin-bottom:14px; padding:14px 16px;">
+    <div style="font-size:13.5px; font-weight:700; color:var(--text-main); display:flex; align-items:center; gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+      Google Drive Sync
+    </div>
+    <div id="driveStatusLine" class="hint" style="margin-top:2px;">Setup अभी बाकी है — local download उपलब्ध है</div>
+  </div>
+
+  <div style="margin-top:16px;">
+    <button type="button" id="submitBtn" class="btn-primary">
+      <span>प्रोफाइल तैयार करें</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+
+  <div id="resultBox">
+    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">प्रोफाइल तैयार है</h3>
+    <p id="driveResultLine" style="font-size:13px; line-height:1.5; font-weight:600; display:none;"></p>
+    <p style="font-size:13px; line-height:1.6; color: var(--text-main); margin: 0 0 14px;">
+      <span class="stepnum">1</span> PDF डाउनलोड करें (सारा भरा हुआ डेटा इसी में है)<br>
+      <span class="stepnum">2</span> PDF के आख़िर में "JSON फाइल डाउनलोड करें" बटन दबाएँ<br>
+      <span class="stepnum">3</span> Extension में "Import Backup" खोलकर वही JSON चुनें
+    </p>
+    <div class="actions">
+      <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">डेटा अपडेट करें</button>
+      <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">PDF डाउनलोड करें</button>
+      <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Drive में PDF खोलें</a>
+      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">JSON बैकअप डाउनलोड करें (Drive न चले तो)</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ---------- Accordion sections ---------- */
+const ORDER = ['personal', 'address', 'income', 'caste', 'documents'];
+const REQUIRED_MAP = {
+  personal: { text: ['name', 'fathername', 'mothername', 'mobile'], radio: ['gender', 'addressType'] },
+  address:  { text: ['state', 'wardNo', 'village', 'pin', 'postoffice', 'purpose'], radio: ['residenceType'] },
+  income:   { text: [], radio: [] },
+  caste:    { text: [], radio: [] },
+  documents:{ text: [], radio: [] }
+};
+const completedSections = new Set();
+
+function getSectionEl(id) { return document.querySelector(`.section[data-section="${id}"]`); }
+
+function setOpen(id, open) {
+  const sec = getSectionEl(id);
+  if (!sec) return;
+  const header = sec.querySelector('.section-header');
+  const collapse = sec.querySelector('.section-collapse');
+  header.setAttribute('aria-expanded', open ? 'true' : 'false');
+  collapse.classList.toggle('open', open);
+  sec.classList.toggle('open-active', open);
+}
+
+function openOnly(id) {
+  ORDER.forEach((s) => setOpen(s, s === id));
+  const sec = getSectionEl(id);
+  setTimeout(() => {
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 120);
+}
+
+ORDER.forEach((id) => {
+  const sec = getSectionEl(id);
+  sec.querySelector('.section-header').addEventListener('click', () => {
+    const isOpen = sec.querySelector('.section-collapse').classList.contains('open');
+    openOnly(isOpen ? null : id);
+  });
+});
+
+document.querySelectorAll('.btn-next').forEach((btn) => {
+  btn.addEventListener('click', () => openOnly(btn.dataset.next));
+});
+
+function radioSelected(name) {
+  return !!document.querySelector(`input[name="${name}"]:checked`);
+}
+
+const SECTION_TITLES = {
+  personal: 'व्यक्तिगत विवरण',
+  address: 'पता विवरण',
+  income: 'आय विवरण',
+  caste: 'जाति विवरण',
+  documents: 'दस्तावेज़'
+};
+/* Optional sections: "complete" jab inme se kuchh bhi bhara/upload ho jaye */
+const OPTIONAL_MAP = {
+  income: ['profession', 'incomeDocumentType', 'incomefromgovt', 'incomefrombusiness', 'incomefromagriculture', 'incomefromothers', 'totalincome'],
+  caste: ['casteprofession', 'castecategory', 'caste', 'subcaste', 'generalcaste', 'casteDocumentType'],
+  documents: ['doc_aadhaar', 'doc_caste', 'doc_residence']
+};
+const advancedOnce = new Set();
+
+function fieldFilled(fid) {
+  const el = document.getElementById(fid);
+  if (!el) return false;
+  if (el.type === 'file') return el.files && el.files.length > 0;
+  return el.value.trim() !== '';
+}
+
+function isSectionComplete(id) {
+  if (OPTIONAL_MAP[id]) return OPTIONAL_MAP[id].some(fieldFilled);
+  const req = REQUIRED_MAP[id];
+  for (const fid of req.text) { if (!fieldFilled(fid)) return false; }
+  for (const rname of req.radio) { if (!radioSelected(rname)) return false; }
+  if (id === 'personal' && !/^[0-9]{10}$/.test(document.getElementById('mobile').value.trim())) return false;
+  if (id === 'address' && !/^[0-9]{6}$/.test(document.getElementById('pin').value.trim())) return false;
+  return true;
+}
+
+function burstConfetti(numEl) {
+  const colors = ['#10b981', '#34d399', '#2563eb', '#f59e0b', '#a78bfa'];
+  const n = 12;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('i');
+    p.className = 'confetti-dot';
+    const ang = (Math.PI * 2 * i) / n;
+    const dist = 22 + Math.random() * 12;
+    p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+    p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+    p.style.background = colors[i % colors.length];
+    numEl.appendChild(p);
+    setTimeout(() => p.remove(), 800);
+  }
+}
+
+function markCompleted(id, animate) {
+  const sec = getSectionEl(id);
+  sec.classList.add('completed');
+  const numEl = sec.querySelector('.section-num');
+  numEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline class="tick" points="20 6 9 17 4 12"></polyline></svg>';
+  if (!animate) return;
+  ['pop', 'burst'].forEach((c) => { numEl.classList.remove(c); void numEl.offsetWidth; numEl.classList.add(c); });
+  sec.classList.remove('success-flash'); void sec.offsetWidth; sec.classList.add('success-flash');
+  burstConfetti(numEl);
+  setTimeout(() => { numEl.classList.remove('pop', 'burst'); sec.classList.remove('success-flash'); }, 1100);
+}
+
+function unmarkCompleted(id) {
+  const sec = getSectionEl(id);
+  sec.classList.remove('completed', 'success-flash');
+  const numEl = sec.querySelector('.section-num');
+  numEl.classList.remove('pop', 'burst');
+  numEl.textContent = String(ORDER.indexOf(id) + 1);
+}
+
+function refreshSection(id) {
+  const done = isSectionComplete(id);
+  const was = completedSections.has(id);
+  if (done && !was) {
+    completedSections.add(id);
+    markCompleted(id, true);
+    const isRequiredSection = REQUIRED_MAP[id].text.length + REQUIRED_MAP[id].radio.length > 0;
+    const next = ORDER[ORDER.indexOf(id) + 1];
+    if (isRequiredSection && next && !advancedOnce.has(id)) {
+      advancedOnce.add(id);
+      toast('✓ ' + SECTION_TITLES[id] + ' सफल — अगला भाग खुल रहा है');
+      setTimeout(() => openOnly(next), 1000);
+    } else {
+      toast('✓ ' + SECTION_TITLES[id] + ' सफलतापूर्वक भरा गया');
+    }
+  } else if (!done && was) {
+    completedSections.delete(id);
+    unmarkCompleted(id);
+  }
+}
+
+/* Documents section ko file-handler khud refresh karta hai (neeche) */
+ORDER.forEach((id) => {
+  if (id === 'documents') return;
+  getSectionEl(id).querySelectorAll('input, select').forEach((el) => {
+    el.addEventListener('change', () => refreshSection(id));
+    if (el.id === 'mobile' || el.id === 'pin') el.addEventListener('input', () => refreshSection(id));
+  });
+});
+
+/* ---------- Automatic Image Compressor (20KB–300KB) ---------- */
+document.getElementById('image').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  const prev = document.getElementById('imgprev');
+  if (!f) { prev.style.display = 'none'; return; }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      const MAX_DIM = 700;
+      if (width > height && width > MAX_DIM) {
+        height *= MAX_DIM / width;
+        width = MAX_DIM;
+      } else if (height > MAX_DIM) {
+        width *= MAX_DIM / height;
+        height = MAX_DIM;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      let quality = 0.75;
+      let dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+      while (dataUrl.length > 300000 && quality > 0.15) {
+        quality -= 0.1;
+        dataUrl = canvas.toDataURL('image/jpeg', quality);
+      }
+
+      prev.src = dataUrl;
+      prev.style.display = 'block';
+      toast('फोटो 300KB के अंदर सेट हो गई');
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(f);
+});
+
+function fileToDataURL(inputEl) {
+  return new Promise((resolve) => {
+    const prev = document.getElementById('imgprev');
+    if (prev.src && prev.style.display === 'block') {
+      resolve(prev.src);
+    } else {
+      resolve('');
+    }
+  });
+}
+
+const DOC_MAX_BYTES = 2 * 1024 * 1024;
+const DOC_FIELDS = [
+  { id: 'doc_aadhaar', key: 'aadhaar' },
+  { id: 'doc_caste', key: 'caste_land_doc' },
+  { id: 'doc_residence', key: 'revenue_land_doc' },
+];
+
+function isPdfFile(file) {
+  return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+}
+
+DOC_FIELDS.forEach(({ id }) => {
+  document.getElementById(id).addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    const statusEl = document.getElementById(id + '_status');
+    if (!f) { statusEl.textContent = ''; refreshSection('documents'); return; }
+    if (!isPdfFile(f)) {
+      statusEl.textContent = 'सिर्फ PDF फाइल स्वीकार्य है';
+      statusEl.style.color = '#dc2626';
+      e.target.value = '';
+      refreshSection('documents');
+      return;
+    }
+    if (f.size > DOC_MAX_BYTES) {
+      statusEl.textContent = `फाइल 2MB से बड़ी है (${(f.size / 1024 / 1024).toFixed(1)}MB)`;
+      statusEl.style.color = '#dc2626';
+      e.target.value = '';
+      refreshSection('documents');
+      return;
+    }
+    statusEl.textContent = `${f.name} (${(f.size / 1024).toFixed(0)}KB) — रेडी`;
+    statusEl.style.color = '#10b981';
+    refreshSection('documents');
+  });
+});
+
+function fileToDataURLGeneric(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+async function collectDocs() {
+  const docs = {};
+  for (const { id, key } of DOC_FIELDS) {
+    const f = document.getElementById(id).files[0];
+    if (!f) continue;
+    const dataUrl = await fileToDataURLGeneric(f);
+    docs[key] = { name: f.name, type: f.type || 'application/pdf', size: f.size, dataUrl, savedAt: Date.now() };
+  }
+  return docs;
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function radioVal(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+/* ---------- PDF ke liye readable view (labels + selected text) ---------- */
+const PDF_SCHEMA = [
+  { title: 'व्यक्तिगत विवरण', fields: [['t','name'],['t','fathername'],['t','mothername'],['t','husbandname'],['r','gender'],['r','addressType'],['t','mobile'],['t','email']] },
+  { title: 'पता विवरण', fields: [['s','state'],['t','district'],['t','anumandal'],['t','prakhand'],['r','residenceType'],['t','gram'],['t','wardNo'],['t','village'],['t','pin'],['t','postoffice'],['t','policeStation'],['t','purpose'],['s','documentType']] },
+  { title: 'आय विवरण', fields: [['s','profession'],['s','incomeDocumentType'],['t','incomefromgovt'],['t','incomefrombusiness'],['t','incomefromagriculture'],['t','incomefromothers'],['t','totalincome']] },
+  { title: 'जाति विवरण', fields: [['s','casteprofession'],['s','castecategory'],['t','caste'],['t','subcaste'],['t','generalcaste'],['s','casteDocumentType']] },
+  { title: 'दस्तावेज़', fields: [['f','doc_aadhaar'],['f','doc_caste'],['f','doc_residence']] }
+];
+
+function fieldLabel(type, id) {
+  if (type === 'r') {
+    const r = document.querySelector(`input[name="${id}"]`);
+    const l = r && r.closest('.field') && r.closest('.field').querySelector(':scope > label');
+    return l ? l.textContent.trim() : id;
+  }
+  const l = document.querySelector(`label[for="${id}"]`);
+  return l ? l.textContent.trim() : id;
+}
+function fieldDisplay(type, id) {
+  if (type === 't') return val(id);
+  if (type === 'r') {
+    const c = document.querySelector(`input[name="${id}"]:checked`);
+    return c ? c.parentElement.textContent.trim() : '';
+  }
+  if (type === 's') {
+    const s = document.getElementById(id);
+    return s && s.value ? s.options[s.selectedIndex].text : '';
+  }
+  if (type === 'f') {
+    const f = document.getElementById(id).files[0];
+    return f ? `${f.name} (${(f.size / 1024).toFixed(0)}KB) — Drive folder में सेव` : '';
+  }
+  return '';
+}
+function buildPdfView(entry) {
+  return {
+    title: 'Digital Saathi — प्रोफाइल विवरण',
+    photo: entry.image || '',
+    sections: PDF_SCHEMA.map((s) => ({
+      title: s.title,
+      rows: s.fields.map(([t, id]) => [fieldLabel(t, id), fieldDisplay(t, id)])
+    }))
+  };
+}
+
+/* ---------- Duplicate-save guard ---------- */
+let lastPayload = null;
+let lastSavedKey = null;   // jis data ka fingerprint Drive me ja chuka hai
+let isSaving = false;
+let lastPdf = null;
+
+function fingerprint(str) {
+  let h1 = 0x811c9dc5, h2 = 5381;
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    h1 ^= c; h1 = Math.imul(h1, 16777619);
+    h2 = (Math.imul(h2, 33) ^ c) >>> 0;
+  }
+  return (h1 >>> 0).toString(16) + '-' + h2.toString(16) + '-' + str.length;
+}
+
+let saveMode = 'save'; // 'save' = naya profile, 'update' = pehle se saved profile
+function modeLabel() { return saveMode === 'update' ? 'डेटा अपडेट करें' : 'प्रोफाइल तैयार करें'; }
+function setMode(m) {
+  saveMode = m;
+  document.querySelector('#submitBtn span').textContent = modeLabel();
+}
+
+async function submitProfile(forceMode) {
+  if (isSaving) return;
+  const mode = forceMode || saveMode; // double-click / repeat click par dubara save nahi
+
+  const required = ['name','fathername','mothername','mobile','state','wardNo','village','pin','postoffice','purpose'];
+  for (const id of required) {
+    if (!val(id)) {
+      toast('ज़रूरी (*) जानकारी भरें');
+      const sec = ['name','fathername','mothername','mobile'].includes(id) ? 'personal' : 'address';
+      openOnly(sec);
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+  if (!radioVal('gender')) { toast('लिंग चुनें'); openOnly('personal'); return; }
+  if (!radioVal('addressType')) { toast('पता प्रकार चुनें'); openOnly('personal'); return; }
+  if (!radioVal('residenceType')) { toast('निकाय प्रकार चुनें'); openOnly('address'); return; }
+  if (!/^[0-9]{10}$/.test(val('mobile'))) { toast('मोबाइल नंबर 10 अंक का हो'); openOnly('personal'); return; }
+  if (!/^[0-9]{6}$/.test(val('pin'))) { toast('पिन कोड 6 अंक का हो'); openOnly('address'); return; }
+
+  const imageData = await fileToDataURL(document.getElementById('image'));
+
+  const entry = {
+    name: val('name'),
+    fathername: val('fathername'),
+    mothername: val('mothername'),
+    husbandname: val('husbandname'),
+    gender: radioVal('gender'),
+    addressType: radioVal('addressType'),
+    mobile: val('mobile'),
+    email: val('email'),
+    state: val('state'),
+    district: val('district'),
+    anumandal: val('anumandal'),
+    prakhand: val('prakhand'),
+    residenceType: radioVal('residenceType'),
+    gram: val('gram'),
+    wardNo: val('wardNo'),
+    village: val('village'),
+    pin: val('pin'),
+    postoffice: val('postoffice'),
+    policeStation: val('policeStation'),
+    purpose: val('purpose'),
+    image: imageData,
+    documentType: val('documentType'),
+    profession: val('profession'),
+    incomefromgovt: val('incomefromgovt'),
+    incomefrombusiness: val('incomefrombusiness'),
+    incomefromagriculture: val('incomefromagriculture'),
+    incomefromothers: val('incomefromothers'),
+    totalincome: val('totalincome'),
+    incomeDocumentType: val('incomeDocumentType'),
+    casteprofession: val('casteprofession'),
+    castecategory: val('castecategory'),
+    caste: val('caste'),
+    subcaste: val('subcaste'),
+    generalcaste: val('generalcaste'),
+    casteDocumentType: val('casteDocumentType'),
+    savedAt: new Date().toISOString()
+  };
+
+  const docs = await collectDocs();
+  const folderName = `${val('name')}_${val('mobile')}`.replace(/[\\/:*?"<>|]/g, '').trim();
+
+  lastPayload = {
+    app: "Digital Saathi",
+    exportedAt: new Date().toISOString(),
+    folderName: folderName,
+    data: { formEntries: [entry] }
+  };
+
+  if (Object.keys(docs).length) {
+    const profileKey = 'profile_' + val('mobile').replace(/\D/g, '');
+    lastPayload.data.saathiDocStoreByProfile = { [profileKey]: docs };
+  }
+
+  // fingerprint: time-stamps hata kar (wo har baar badalte hain)
+  const { savedAt, ...entryStable } = entry;
+  const docsStable = Object.fromEntries(Object.entries(docs).map(([k, d]) => [k, { name: d.name, size: d.size, dataUrl: d.dataUrl }]));
+  const key = fingerprint(JSON.stringify({ folderName, entryStable, docsStable }));
+
+  document.getElementById('resultBox').classList.add('show');
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
+
+  if (!driveConfigured()) {
+    showDriveResult(false, 'Drive setup बाकी है — नीचे से JSON बैकअप डाउनलोड करें।');
+    document.getElementById('downloadBtn').style.display = 'inline-flex';
+    return;
+  }
+
+  if (key === lastSavedKey) {
+    toast('कोई बदलाव नहीं — दोबारा सेव नहीं किया');
+    showDriveResult(true, 'यही डेटा पहले से Drive में सुरक्षित है — कोई बदलाव नहीं, इसलिए सेव/अपडेट नहीं हुआ।');
+    return;
+  }
+
+  await sendToDrive({ ...lastPayload, _mode: mode, _pdfView: buildPdfView(entry) }, key, mode);
+}
+document.getElementById('submitBtn').addEventListener('click', () => submitProfile());
+document.getElementById('updateBtn').addEventListener('click', () => submitProfile('update'));
+
+function b64ToBlob(b64, type) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type });
+}
+function saveBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+document.getElementById('pdfBtn').addEventListener('click', () => {
+  if (!lastPdf || !lastPdf.base64) return;
+  saveBlob(b64ToBlob(lastPdf.base64, 'application/pdf'), lastPdf.name || 'digital-saathi-profile.pdf');
+});
+
+/* Fallback: Drive fail ho to local JSON */
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  if (!lastPayload) return;
+  const stamp = new Date().toISOString().slice(0,10);
+  saveBlob(new Blob([JSON.stringify(lastPayload, null, 2)], {type: 'application/json'}), `digital-saathi-backup-${stamp}.json`);
+});
+
+// Initial state
+setOpen('personal', true);
+
+/* ---------- Google Drive backup via Apps Script ---------- */
+const DRIVE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyVlVse2iTfr-QWP-qcx8UcuSWJleXzpcizDI-q1Ff4KOlzwH8NLumV_iB7BKbJlui7Jw/exec";
+
+function driveConfigured() {
+  return DRIVE_WEBHOOK_URL && !DRIVE_WEBHOOK_URL.startsWith("PASTE_");
+}
+
+function setDriveStatus(text) {
+  document.getElementById('driveStatusLine').textContent = text;
+}
+
+function showDriveResult(ok, text, warn) {
+  const el = document.getElementById('driveResultLine');
+  el.style.display = 'block';
+  el.textContent = text;
+  el.style.color = warn ? '#b45309' : (ok ? '#10b981' : '#dc2626');
+}
+
+async function sendToDrive(payload, key, mode) {
+  const btn = document.getElementById('submitBtn');
+  const label = btn.querySelector('span');
+  const updBtn = document.getElementById('updateBtn');
+  isSaving = true;
+  btn.disabled = true;
+  updBtn.disabled = true;
+  label.textContent = mode === 'update' ? 'अपडेट हो रहा है…' : 'PDF बन रही है और Drive में सेव हो रहा है…';
+  showDriveResult(true, 'कृपया रुकें…');
+  try {
+    const res = await fetch(DRIVE_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    const dl = document.getElementById('driveLink');
+    if (data.ok && data.status === 'exists') {
+      // Pehle se saved hai aur data alag hai — server ne kuchh nahi badla
+      setMode('update');
+      updBtn.style.display = 'flex';
+      document.getElementById('pdfBtn').style.display = 'none';
+      if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
+      showDriveResult(true, 'यह प्रोफाइल पहले से Drive में सेव है और आपके डेटा में बदलाव हैं। नया नहीं बना — "डेटा अपडेट करें" दबाकर पुरानी फाइल अपडेट करें।', true);
+      toast('पहले से सेव है — अपडेट बटन दबाएँ');
+    } else if (data.ok) {
+      lastSavedKey = key; // ab yahi data dobara save nahi hoga
+      lastPdf = { name: data.pdfName, base64: data.pdfBase64, url: data.pdfUrl };
+      setMode('update');
+      updBtn.style.display = 'none';
+      const msg = data.status === 'unchanged'
+        ? 'यही डेटा Drive में पहले से था — नई फाइल नहीं बनी।'
+        : data.status === 'updated'
+          ? 'Drive में आपकी पुरानी फाइल अपडेट हो गई (डुप्लीकेट नहीं बना)।'
+          : 'Drive में सुरक्षित हो गया।';
+      showDriveResult(true, `${msg} (${data.pdfName})`);
+      toast(data.status === 'updated' ? 'अपडेट हो गया' : 'Drive में सेव हो गया');
+      document.getElementById('pdfBtn').style.display = data.pdfBase64 ? 'flex' : 'none';
+      if (data.pdfUrl) { dl.href = data.pdfUrl; dl.style.display = 'block'; }
+      document.getElementById('downloadBtn').style.display = 'none';
+    } else {
+      showDriveResult(false, 'Drive save असफल — नीचे से JSON बैकअप डाउनलोड करें।');
+      document.getElementById('downloadBtn').style.display = 'inline-flex';
+    }
+  } catch (err) {
+    showDriveResult(false, 'Drive कनेक्ट नहीं हुआ — नीचे से JSON बैकअप डाउनलोड करें।');
+    document.getElementById('downloadBtn').style.display = 'inline-flex';
+  } finally {
+    isSaving = false;
+    btn.disabled = false;
+    updBtn.disabled = false;
+    label.textContent = modeLabel();
+  }
+}
+
+if (driveConfigured()) {
+  setDriveStatus('एक प्रोफाइल = एक PDF + एक JSON। बदलाव होने पर "डेटा अपडेट करें" से वही फाइल अपडेट होगी');
+} else {
+  setDriveStatus('Setup अभी बाकी है — लोकल डाउनलोड काम करेगा');
+}
+</script>
+
+</body>
+</html>
