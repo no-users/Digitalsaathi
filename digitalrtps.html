@@ -1009,7 +1009,7 @@ input[type="file"]::file-selector-button:hover {
       <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
     </button>
   </div>
-  <p style="margin:-4px 0 0;"> </p>
+  <p style="margin:-4px 0 0;"></p>
   <div class="progress-wrap">
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <span class="progress-pct" id="progressPct">0%</span>
@@ -1082,11 +1082,13 @@ input[type="file"]::file-selector-button:hover {
             <div class="field"><label for="state" class="required-label">State</label>
               <select id="state" required><option value="">Select</option><option value="10">BIHAR</option></select>
             </div>
-            <div class="field"><label for="district" class="required-label">District</label><input id="district" required placeholder="Enter District" autocapitalize="words"></div>
+            <div class="field"><label for="district" class="required-label">District</label><input id="district" required placeholder="Enter District" autocapitalize="words">
+            
+            </div>
             <div class="field"><label for="anumandal">Sub Division</label><input id="anumandal" placeholder="Enter Sub Division" autocapitalize="words"></div>
             <div class="field"><label for="prakhand" class="required-label">Block</label><input id="prakhand" required placeholder="Enter Block" autocapitalize="words"></div>
             <div class="field wide">
-              <label class="required-label">Local Body Type</label>
+              <label class="required-label">Address Type</label>
               <div class="radio-row">
                 <label><input type="radio" name="residenceType" value="1" required> Gram Panchayat</label>
                 <label><input type="radio" name="residenceType" value="2"> Nagar Nigam</label>
@@ -1096,30 +1098,30 @@ input[type="file"]::file-selector-button:hover {
             </div>
             <div class="field"><label for="gram">Panchayat Name</label><input id="gram" placeholder="Enter Panchayat" autocapitalize="words"></div>
             <div class="field"><label for="wardNo" class="required-label">Ward No.</label><input id="wardNo" type="number" inputmode="numeric" required placeholder="Ward No."></div>
-            <div class="field"><label for="village" class="required-label">Village / Locality</label><input id="village" required placeholder="Enter Village / Mohalla" autocapitalize="words"></div>
+            <div class="field"><label for="village" class="required-label">Village</label><input id="village" required placeholder="Enter Village / Mohalla" autocapitalize="words"></div>
             <div class="field"><label for="pin" class="required-label">Pin Code</label><input id="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 Digits"></div>
             <div class="field"><label for="postoffice" class="required-label">Post Office</label><input id="postoffice" required placeholder="Enter Post Office" autocapitalize="words"></div>
             <div class="field"><label for="policeStation">Police Station</label><input id="policeStation" placeholder="Enter Police Station" autocapitalize="words"></div>
             <div class="field wide"><label for="purpose" class="required-label">Purpose of Application</label><input id="purpose" required value="Education" autocapitalize="words"></div>
             <div class="field wide">
-              <label for="image">Photo (20KB - 300KB Auto Set)</label>
+              <label for="image">Photo (20KB - 300KB)</label>
               <input id="image" type="file" accept="image/*">
               <div class="imgprev-wrap">
                 <img id="imgprev" class="imgprev" alt="Preview">
                 <div class="imgprev-info" id="imgprevInfo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Photo ready</div>
               </div>
             </div>
-            <div class="field wide"><label for="documentType">Document for Residence</label>
+            <div class="field wide"><label for="documentType">Document Of Address</label>
               <select id="documentType">
                 <option value="">Select</option>
                 <option value="94358_1">राजस्व अभिलेख - खतियान</option>
                 <option value="94358_3">राजस्व अभिलेख - भूमि संबंधी दस्तावेज</option>
-                <option value="94358_4">राजस्व अभिलेख - भूमिहीनों को आवंटित जमीन अभिलेख</option>
-                <option value="94358_5">अन्य राजस्व अभिलेख</option>
+                
+               
                 <option value="94358_6">राशन कार्ड</option>
-                <option value="94358_7">निर्वाचन पहचान पत्र</option>
-                <option value="94358_8">विद्युत विपत्र</option>
-                <option value="94358_9">दूरभाष विपत्र</option>
+                <option value="94358_7">निर्वाचन पहचान कार्ड </option>
+                <option value="94358_8">बिजली बिल </option>
+                
               </select>
             </div>
           </div>
@@ -1144,7 +1146,7 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">3</span>
       <span>
         <div class="section-title">Income Details</div>
-        <div class="section-sub">Optional — Fill only if required</div>
+        <div class="section-sub">if you have</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -1164,7 +1166,7 @@ input[type="file"]::file-selector-button:hover {
                 <option value="7">अन्य / Other</option>
               </select>
             </div>
-            <div class="field"><label for="incomeDocumentType">Document for Income</label>
+            <div class="field"><label for="incomeDocumentType">Document Of Income</label>
               <select id="incomeDocumentType">
                 <option value="">Select</option>
                 <option value="94045_1">वेतन / पेंशन पर्ची</option>
@@ -1176,7 +1178,7 @@ input[type="file"]::file-selector-button:hover {
             <div class="field"><label for="incomefrombusiness">Business Income</label><input id="incomefrombusiness" placeholder="₹"></div>
             <div class="field"><label for="incomefromagriculture">Agriculture Income</label><input id="incomefromagriculture" placeholder="₹"></div>
             <div class="field"><label for="incomefromothers">Other Income</label><input id="incomefromothers" placeholder="₹"></div>
-            <div class="field"><label for="totalincome">Total Annual Income<span class="auto-badge" id="totalAutoBadge">Auto</span></label><input id="totalincome" placeholder="₹ auto-calculated"></div>
+            <div class="field"><label for="totalincome">Total Annual Income<span class="auto-badge" id="totalAutoBadge">Auto</span></label><input id="totalincome" placeholder="₹ "></div>
           </div>
           <div class="step-nav">
             <button type="button" class="btn-back" data-back="address">
@@ -1198,7 +1200,7 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">4</span>
       <span>
         <div class="section-title">Caste Details</div>
-        <div class="section-sub">Category, Caste & Document Required</div>
+        <div class="section-sub">Category,Caste Required</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
@@ -1217,7 +1219,7 @@ input[type="file"]::file-selector-button:hover {
                 <option value="6">गृहिणी / Housewife</option>
                 <option value="7">अन्य / Other</option>
               </select>
-              <div class="hint">Income अनुभाग से अपने-आप भर जाता है — दोबारा भरने की ज़रूरत नहीं</div>
+              
             </div>
             <div class="field"><label for="castecategory" class="required-label">Category</label>
               <select id="castecategory" required>
@@ -1232,13 +1234,13 @@ input[type="file"]::file-selector-button:hover {
             <div class="field"><label for="caste" class="required-label">Caste</label><input id="caste" required placeholder="Enter Caste" autocapitalize="words"></div>
             <div class="field"><label for="subcaste">Sub Caste</label><input id="subcaste" placeholder="Enter Sub Caste" autocapitalize="words"></div>
             <div class="field"><label for="generalcaste">General Caste</label><input id="generalcaste" placeholder="Only for General" autocapitalize="words"></div>
-            <div class="field wide"><label for="casteDocumentType" class="required-label">Document for Caste</label>
+            <div class="field wide"><label for="casteDocumentType" class="required-label">Document Of Cast</label>
               <select id="casteDocumentType" required>
                 <option value="">Select</option>
                 <option value="93963_1">राजस्व अभिलेख - खतियान</option>
-                <option value="93963_2">राजस्व अभिलेख - द्वानपत्र</option>
+                
                 <option value="93963_3">राजस्व अभिलेख - भूमि दस्तावेज</option>
-                <option value="93963_4">राजस्व अभिलेख - आवंटित जमीन अभिलेख</option>
+                
                 <option value="93963_5">अन्य राजस्व अभिलेख</option>
                 <option value="93963_6">स्थल निरीक्षण आग्रह</option>
               </select>
@@ -1264,27 +1266,27 @@ input[type="file"]::file-selector-button:hover {
       <span class="section-num">5</span>
       <span>
         <div class="section-title">Document Section</div>
-        <div class="section-sub">PDF Upload (Max 2MB each)</div>
+        <div class="section-sub">PDF Only *Max 2MB*</div>
       </span>
       <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
     <div class="section-collapse">
       <div class="section-inner">
         <div class="section-body">
-          <div class="hint" style="margin-bottom:12px;">Only PDF files allowed (Maximum 2MB each). Upload available documents.</div>
+          <div class="hint" style="margin-bottom:12px;"></div>
           <div class="grid">
             <div class="field wide">
-              <label for="doc_aadhaar">ID Proof / Card (PDF)</label>
+              <label for="doc_aadhaar">Adhar Card</label>
               <input id="doc_aadhaar" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_aadhaar_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_caste">Caste Document / Rasid Copy (PDF)</label>
+              <label for="doc_caste">Rasid Copy</label>
               <input id="doc_caste" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_caste_status"></div>
             </div>
             <div class="field wide">
-              <label for="doc_residence">Residence Document / Ration Card (PDF)</label>
+              <label for="doc_residence">Ration Card</label>
               <input id="doc_residence" type="file" accept="application/pdf,.pdf">
               <div class="hint" id="doc_residence_status"></div>
             </div>
@@ -1320,18 +1322,18 @@ input[type="file"]::file-selector-button:hover {
   </div>
 
   <div id="resultBox">
-    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">Successfully Saved</h3>
+    <h3 style="margin:0 0 8px; font-size:15px; font-weight:700; color:var(--accent-amber);">Data Successfully Saved</h3>
     <p id="driveResultLine" style="font-size:13px; line-height:1.5; font-weight:600; display:none;"></p>
     <p style="font-size:13px; line-height:1.6; color: var(--text-main); margin: 0 0 14px;">
-      <span class="stepnum">1</span> Download the generated PDF slip<br>
-      <span class="stepnum">2</span> Click the download button inside the PDF to obtain the JSON backup<br>
-      <span class="stepnum">3</span> Open the extension and use "Import Backup"
+      <span class="stepnum">1</span> Successfully Generated PDF Slip<br>
+      <span class="stepnum">2</span> Your Data Recive Our Server<br>
+      <span class="stepnum">3</span> Share PDF To "Digital Saathi Team"
     </p>
     <div class="actions">
       <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">UPDATE</button>
       <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">Download Recipt</button>
-      <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Open in Google Drive</a>
-      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">Download JSON Backup</button>
+      <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Open in Google</a>
+      
     </div>
   </div>
 
@@ -1906,9 +1908,9 @@ function buildPdfPages(view, jsonUrl) {
 
   const jsonCard = document.createElement('div');
   jsonCard.className = 'pdf-json';
-  jsonCard.innerHTML = `<h4>Digital Saathi Team *Only*</h4>
+  jsonCard.innerHTML = `<h4> Only For "Digital Saathi Team"</h4>
     <p></p>
-    <div class="pdf-btn" id="pdfJsonBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg>Verifying...</div>
+    <div class="pdf-btn" id="pdfJsonBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg>Verifying....</div>
     <div class="pdf-url" id="pdfJsonUrl">${pesc(jsonUrl)}</div>`;
   place(jsonCard);
 
@@ -2245,7 +2247,7 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
         if (up.ok) { pdfUrl = up.pdfUrl; } else { throw new Error(up.error || 'pdf upload'); }
       } catch (err) {
         console.error('PDF upload error', err);
-        warn = 'Profile saved, but uploading PDF to Drive failed. You can download the PDF directly here.';
+        warn = ' You can download the PDF directly here.';
       }
     }
     lastPdf = pdfB64 ? { name: 'digital-saathi-profile.pdf', base64: pdfB64, url: pdfUrl } : null;
@@ -2264,7 +2266,7 @@ async function sendToDrive(payload, key, mode, pdfView, entry) {
   } catch (err) {
     console.error(err);
     ovClose();
-    showDriveResult(false, 'Failed to save to Drive. Please download the JSON backup below.');
+    showDriveResult(false, '');
     document.getElementById('downloadBtn').style.display = 'inline-flex';
     toast('Error saving data — Try again');
   } finally {
