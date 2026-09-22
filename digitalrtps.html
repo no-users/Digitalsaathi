@@ -1418,7 +1418,7 @@ input[type="file"]::file-selector-button:hover {
       <button type="button" id="updateBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none; background:#d97706;">UPDATE</button>
       <button type="button" id="pdfBtn" class="btn-primary" style="height:42px; font-size:13.5px; display:none;">Download Slip</button>
       <a id="driveLink" class="link-btn" href="#" target="_blank" rel="noopener">Open in Google</a>
-      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">Download JSON Backup</button>
+      <button type="button" id="downloadBtn" class="btn-next" style="display:none; margin-top:0; justify-content:center;">Download Backup</button>
     </div>
   </div>
 
@@ -2314,7 +2314,7 @@ setOpen('personal', true);
 document.getElementById('currentStepLabel').innerHTML = `Step <strong>1</strong> of ${ORDER.length} — ${SECTION_TITLES['personal']}`;
 document.getElementById('finalActions').classList.remove('show-final');
 
-const DRIVE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOMqPYV31AGFCe7WzAWN5bl17Rst8ZuHhhsTIHiNBkmVAFVFeym8ImYEJCO6zHoCtfmg/exec";
+const DRIVE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzIZzuODKDXFUrwPKCnTkE6zNmIirL9BHJQ_qsBePMEtpWe3TJ2Je48ilKE8T1o-LnH/exec";
 
 function driveConfigured() {
   return DRIVE_WEBHOOK_URL && !DRIVE_WEBHOOK_URL.startsWith("PASTE_");
