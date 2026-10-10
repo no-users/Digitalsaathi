@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Click &amp; Connect</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF" id="ccThemeColor">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Click&Connect">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="apple-touch-icon" href="Web_Icon.png">
+    <script>
+        if (sessionStorage.getItem('cc_splash')) document.documentElement.classList.add('no-splash');
+    </script>
+    <script>
+        /* Applied before paint so there's no light-mode flash on load */
+        (function () {
+            if (localStorage.getItem('cc_theme') === 'dark') {
+                document.documentElement.setAttribute('data-cc-theme', 'dark');
+            }
+        })();
+    </script>
+
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="auth-firebase.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="profile-avtor.js"></script>
+
+    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="dash-style.css">
+
+</head>
+<body>
+    <div id="ccSplash" class="cc-splash">
+        <div class="cc-splash-blob b1"></div><div class="cc-splash-blob b2"></div>
+        <div class="cc-splash-inner">
+            <div class="cc-splash-mark"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M47.56 16.44A22 22 0 1 0 47.56 47.56" stroke="#fff" stroke-width="6.5" stroke-linecap="round"/><line class="cc-m-link" x1="47.56" y1="23" x2="47.56" y2="41" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 6"/><circle cx="47.56" cy="16.44" r="5.2" fill="#fff"/><circle cx="47.56" cy="47.56" r="5.2" fill="#fff"/><path class="cc-m-cursor" d="M22 18v25.5l6.8-6.2 4.6 10.2 4.6-2.1-4.6-9.8H42.5z" fill="#fff"/></svg></div>
+            <div class="cc-splash-name">Click <span class="cc-logo-amp">&amp; Connect</span></div>
+            <div class="cc-splash-tag">Click karo. Connect karo.</div>
+            <div class="cc-splash-bar"><span></span></div>
+        </div>
+    </div>
+    <!-- Pull-to-Refresh Indicator -->
+    <div id="ptr-indicator" class="cc-ptr"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></div>
+
+    <div class="cc-sidebar-backdrop" id="ccSidebarBackdrop" onclick="ccCloseMobileMenu()"></div>
+    <aside class="sidebar" id="ccSidebar">
+        <div class="sidebar-logo">
+            <span class="cc-brand-mark"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M47.56 16.44A22 22 0 1 0 47.56 47.56" stroke="#fff" stroke-width="6.5" stroke-linecap="round"/><line class="cc-m-link" x1="47.56" y1="23" x2="47.56" y2="41" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 6"/><circle cx="47.56" cy="16.44" r="5.2" fill="#fff"/><circle cx="47.56" cy="47.56" r="5.2" fill="#fff"/><path class="cc-m-cursor" d="M22 18v25.5l6.8-6.2 4.6 10.2 4.6-2.1-4.6-9.8H42.5z" fill="#fff"/></svg></span>
+            <div class="sidebar-logo-text">
+                <span class="sidebar-logo-name">Click <span class="cc-logo-amp">&amp; Connect</span></span>
+                <span class="sidebar-logo-tag"><i class="fas fa-circle cc-live-dot"></i> All systems online</span>
+            </div>
+            <button type="button" class="cc-sidebar-close" onclick="ccCloseMobileMenu()" aria-label="Close menu"><i class="fas fa-xmark"></i></button>
+            <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="ccToggleSidebar()" title="Sidebar collapse/expand">
+                <i class="fas fa-angles-left"></i>
+            </button>
+        </div>
+        <div class="sidebar-search-wrap">
+            <i class="fas fa-filter"></i>
+            <input type="text" id="sidebarFilterInput" placeholder="Filter categories...">
+        </div>
+        <div class="cc-quick-pills">
+            <button type="button" class="cc-quick-pill active" data-view="all" onclick="ccQuickView('all')"><i class="fas fa-border-all"></i> All</button>
+            <button type="button" class="cc-quick-pill" data-view="fav" onclick="ccQuickView('fav')"><i class="fas fa-star"></i> Favorites</button>
+        </div>
+        <ul class="menu-list" id="masterLiveSidebarMenu"></ul>
+
+        <div class="sidebar-profile">
+            <div class="cc-profile-row">
+                <img src="Web_Icon.png" alt="" class="cc-profile-avatar" data-cc-user-avatar>
+                <div class="cc-profile-meta">
+                    <b data-cc-user-name>Operator</b>
+                    <span><i class="fas fa-circle"></i> Online</span>
+                </div>
+                <button type="button" class="cc-profile-btn" title="Screen lock" onclick="ccShowLockScreen()"><i class="fas fa-lock"></i></button>
+                <button type="button" class="cc-profile-btn danger" title="Logout" onclick="ccSidebarLogout()"><i class="fas fa-right-from-bracket"></i></button>
+            </div>
+            <div class="cc-drawer-tools">
+                <button type="button" onclick="ccToggleTheme()"><i class="fas fa-circle-half-stroke"></i> Theme</button>
+                <button type="button" onclick="ccToggleSound()"><i class="fas fa-volume-high"></i> Sound</button>
+                <a href="admin.html" target="_blank"><i class="fas fa-user-shield"></i> Admin</a>
+            </div>
+            <button type="button" id="ccInstallBtn" class="cc-install-btn" onclick="ccInstallApp()"><i class="fas fa-download"></i> App install karein</button>
+            <div class="cc-brand-foot"><b>Click &amp; Connect</b> · Click karo. Connect karo.</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <nav class="top-navbar">
+            <button type="button" class="cc-compact-search" aria-label="Search" onclick="ccJumpToSearch()"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+            <div class="cc-mobile-brand"><span class="cc-brand-mark"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M47.56 16.44A22 22 0 1 0 47.56 47.56" stroke="#fff" stroke-width="6.5" stroke-linecap="round"/><line class="cc-m-link" x1="47.56" y1="23" x2="47.56" y2="41" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 6"/><circle cx="47.56" cy="16.44" r="5.2" fill="#fff"/><circle cx="47.56" cy="47.56" r="5.2" fill="#fff"/><path class="cc-m-cursor" d="M22 18v25.5l6.8-6.2 4.6 10.2 4.6-2.1-4.6-9.8H42.5z" fill="#fff"/></svg></span><span class="cc-mobile-brand-name">Click <span class="cc-logo-amp">&amp; Connect</span></span></div>
+            <div class="bread-crumb">Click &amp; Connect &gt; <span id="breadCrumbStatus">Dashboard</span></div>
+            <button type="button" id="clearFilterBtn" class="cc-clear-filter-btn" style="display:none;" onclick="ccClearFilter()">
+                <i class="fas fa-xmark"></i> Clear filter
+            </button>
+            
+            <div class="tab-container">
+                <div class="tab-item" onclick="window.open('Saathi.html', '_blank')">Profiles</div>
+                
+                <div class="tab-wrapper">
+                    <div class="tab-item dropdown-trigger" onclick="togglePremiumDropdown('my-dropdown', event)">
+                        Links <span class="arrow">▾</span>
+                    </div>
+                    <div id="my-dropdown" class="dropdown-content">
+                        <a href="digital-saathi-store.html" class="icon-btn">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Store Eco
+                        </a>
+                        <a href="ort.html" class="icon-btn">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Otr Create
+                        </a>
+                        <a href="mobile.html" class="icon-btn">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> App Demo
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="header-actions">
+               <div class="search-box-wrap" id="ccSearchWrap">
+                    <svg class="cc-search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                    <input type="text" id="toolSearchField" placeholder="Search portals..." aria-label="Search portals" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="search">
+                    <button type="button" class="cc-search-clear" id="ccSearchClear" aria-label="Search clear karein" onclick="resetSearch(); document.getElementById('toolSearchField').focus();"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+                    <kbd class="cc-search-kbd" aria-hidden="true">/</kbd>
+                    <button type="button" id="micSearchBtn" class="cc-mic" title="Voice search" aria-label="Voice search" onclick="startVoiceSearch()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></button>
+                </div>
+    <button type="button" id="themeToggleBtn" class="mic-icon-btn" title="Dark / Light Theme" onclick="ccToggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+    <button type="button" id="soundToggleBtn" class="mic-icon-btn" title="Sound on/off" onclick="ccToggleSound()">
+        <i class="fas fa-volume-high"></i>
+    </button>
+    <button type="button" id="fullscreenBtn" class="mic-icon-btn" title="Fullscreen" onclick="ccToggleFullscreen()">
+        <i class="fas fa-expand"></i>
+    </button>
+                <!-- Fixed Admin Button (Removed broken i tag) -->
+                <a href="admin.html" class="btn-admin-route" target="_blank"> Admin</a>
+            </div>
+
+   
+            <!-- ye hai profile ka html -->
+          <user-profile-chip></user-profile-chip>
+        </nav>
+
+        <div class="app-canvas">
+            <section class="cc-hero" id="ccHero">
+                <div class="cc-hero-bg"><span class="hb1"></span><span class="hb2"></span></div>
+                <div class="cc-hero-main">
+                    <div class="cc-hero-kicker"><i class="cc-kdot"></i><span id="ccGreetWord">Namaste</span><span class="cc-ksep">•</span><span id="ccHeroDate"></span></div>
+                    <div class="cc-hero-hello">Namaste,</div>
+                    <h2 class="cc-hero-name"><span class="cc-name-text" data-cc-user-name>Operator</span><span class="cc-wave">👋</span></h2>
+                    <p class="cc-hero-sub"><span id="ccHeroSub">Apne portals, tools aur billing — sab ek hi jagah se manage karein.</span></p>
+                    <div class="cc-hero-chips">
+                        <span class="cc-today-chip" id="ccTodayChip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5s5.5 4.6 5.5 10.2A5.5 5.5 0 0 1 12 18.2a5.5 5.5 0 0 1-5.5-5.5c0-2.1 1-3.7 2.2-4.8.1 1.8.9 2.9 2 3.2-.5-2.8-.3-5.6 1.3-8.6z"/></svg><b id="ccTodayCount">0</b> portals aaj khole</span>
+                        <button type="button" class="cc-fav-chip" onclick="ccQuickView('fav')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.2 6-.9z"/></svg><b id="ccFavCount">0</b> favorites</button>
+                    </div>
+                </div>
+                <div class="cc-hero-scene" id="ccHeroScene" aria-hidden="true"></div>
+            </section>
+
+            <div class="info-grid-row">
+                <div class="premium-notice-hub-box">
+                    <div class="live-pulse-container">
+                        <div class="live-pulse-dot"></div>
+                        <div class="live-pulse-ring"></div>
+                    </div>
+                    <div class="notice-text-details">
+                        <span class="static-label">SYSTEM LIVE UPDATE:</span>
+                        <div class="scrolling-text-wrapper">
+                            <p id="liveNoticeBoardHeadlineText">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="premium-status-indicator">
+                    <div>
+                        <h5 style="font-weight: 700; color:var(--cc-muted); font-size:10px; text-transform:uppercase;">Clock Node</h5>
+                    </div>
+                    <div class="premium-clock">
+                        <div class="time" id="digital-clock">--:--:--</div>
+                        <div class="date" id="date-text">--- ---</div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Sarkari Portals & Recruitment Desks ke upar ye section add karein -->
+            <!-- Recent Portals Section -->
+<div id="favoritesSectionWrapper" style="display: none;">
+    <div class="cc-recent-strip cc-favorites-strip">
+        <div class="cc-recent-label cc-favorites-label"><i class="fas fa-star"></i> FAVORITES:</div>
+        <div class="cc-recent-chips" id="favoritesPortalsGrid">
+            <!-- Favorite cards yahan dynamically inject honge -->
+        </div>
+    </div>
+</div>
+
+<div id="recentSectionWrapper" style="display: none;">
+    <div class="cc-recent-strip">
+        <div class="cc-recent-label"><i class="fas fa-clock-rotate-left"></i> RECENT:</div>
+        <div class="cc-recent-chips" id="recentPortalsGrid">
+            <!-- Recent cards yahan dynamically inject honge -->
+        </div>
+    </div>
+</div>
+
+            <div class="tools-section-heading" id="gridSectionTitle">Sarkari Portals & Recruitment Desks</div>
+                
+
+
+            <div class="services-grid-container" id="toolsDisplayGrid">
+                <!-- Skeleton placeholders — auto-replaced the instant live data arrives -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div id="noResultsMessage" style="display: none;">
+                    <i class="fas fa-search-minus" style="font-size: 32px; color: #4f46e5; margin-bottom: 12px; display: block;"></i>
+                    <p style="color: #64748b; font-weight: 500; margin-bottom: 20px;">Koi active card nahi mila!</p>
+                    <button class="show-all-btn" onclick="resetSearch()">
+                        <i class="fas fa-redo"></i> Show All Portals
+                    </button>
+                </div>
+            </div>
+             
+            <!-- Fixed Bottom-Right Floating Action Button Wrapper -->
+            <div class="supreme-fab-wrapper" id="supremeFabWrapper">
+                <div class="supreme-fab-menu">
+                    <a href="#" class="supreme-sub-fab" onclick="openSupremeHubModal(); closeSupremeFab(); return false;" title="Supreme Utility Hub">
+                        <i class="fas fa-layer-group"></i>
+                    </a>
+                    <a href="#" class="supreme-sub-fab" onclick="ccOpenNotes(); closeSupremeFab(); return false;" title="Quick Notes (N)">
+                        <i class="fas fa-note-sticky"></i>
+                    </a>
+                    <a href="#" class="supreme-sub-fab" onclick="ccOpenShortcuts(); closeSupremeFab(); return false;" title="Keyboard Shortcuts (?)">
+                        <i class="fas fa-keyboard"></i>
+                    </a>
+                </div>
+                <button class="supreme-main-fab" onclick="toggleSupremeFab(event)" title="Open Menu">
+                    <i class="fas fa-plus" id="supremeFabIcon"></i>
+                </button>
+            </div>
+
+            <div id="calcModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <div id="modalBody"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- #reusableModal ko ab yahan <main> ke bahar body ke andar rakh diya gaya hai taaki blur effect se ye bach sake -->
+    <div id="reusableModal" class="premium-modal" style="display: none;">
+        <div class="premium-modal-content">
+            <button id="closeModalBtn" class="close-icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 id="popupTitle" style="margin-bottom: 20px;">Service Details</h2>
+            <div id="popupLinks" class="link-grid"></div>
+        </div>
+    </div>
+
+    <!-- Unified Multi-Tab Modal -->
+    <div id="supremeHubModal" class="hub-modal-overlay">
+        <div class="hub-modal-card">
+            <button class="hub-close-btn" onclick="closeSupremeHubModal()">&times;</button>
+            <div class="hub-modal-header">
+                <h2>Click &amp; Connect</h2>
+                <p>Calculation tools</p>
+            </div>
+            <div class="hub-tabs-row">
+                <button class="hub-tab-btn active" onclick="switchHubTab(event, 'ageTab')"><i class="fas fa-birthday-cake"></i> Age</button>
+                <button class="hub-tab-btn" onclick="switchHubTab(event, 'marksTab')"><i class="fas fa-percent"></i> Marks</button>
+                <button class="hub-tab-btn" onclick="switchHubTab(event, 'pToC')"><i class="fas fa-exchange-alt"></i> % to CGPA</button>
+                <button class="hub-tab-btn" onclick="switchHubTab(event, 'cToP')"><i class="fas fa-graduation-cap"></i> CGPA to %</button>
+                <button class="hub-tab-btn" onclick="switchHubTab(event, 'calcTab')"><i class="fas fa-calculator"></i> Calculate</button>
+            </div>
+            <div class="hub-tab-body">
+                <div id="ageTab" class="hub-tab-pane active">
+                    <div class="hub-input-group">
+                        <label>Select DOB</label>
+                        <input type="date" id="hubDobInput">
+                    </div>
+                    <button class="hub-action-btn" onclick="calculateHubAge()">Calculate Age</button>
+                    <div id="hubAgeResult" class="hub-result-box" style="display:none;"></div>
+                </div>
+                <div id="marksTab" class="hub-tab-pane">
+                    <div class="hub-input-group">
+                        <label>Obtained Marks</label>
+                        <input type="number" id="hubObtained" placeholder="enter marks">
+                    </div>
+                    <div class="hub-input-group">
+                        <label>Total Marks</label>
+                        <input type="number" id="hubTotal" placeholder="total marks">
+                    </div>
+                    <button class="hub-action-btn" onclick="calculateHubMarks()">Get Percentage</button>
+                    <div id="hubMarksResult" class="hub-result-box" style="display:none;"></div>
+                </div>
+                <div id="pToC" class="hub-tab-pane">
+                    <div class="hub-input-group">
+                        <label>Enter Percentage (%)</label>
+                        <input type="number" id="hubPerInput" step="0.01" placeholder="enter cgpa">
+                    </div>
+                    <button class="hub-action-btn" onclick="calculateHubPerToCgpa()">Get CGPA</button>
+                    <div id="hubPerToCgpaResult" class="hub-result-box" style="display:none;"></div>
+                </div>
+                <div id="cToP" class="hub-tab-pane">
+                    <div class="hub-input-group">
+                        <label>Enter CGPA</label>
+                        <input type="number" id="hubCgpaInput" step="0.01" placeholder="enter cgpa">
+                    </div>
+                    <button class="hub-action-btn" onclick="calculateHubCgpaToPer()">Get Percentage</button>
+                    <div id="hubCgpaToPerResult" class="hub-result-box" style="display:none;"></div>
+                </div>
+                <div id="calcTab" class="hub-tab-pane">
+                    <input type="text" id="hubCalcScreen" readonly class="hub-calc-screen">
+                    <div class="hub-calc-grid">
+                        <button onclick="hubClear()" class="h-btn ac">Ac</button>
+                        <button onclick="hubAppend('(')" class="h-btn op">(</button>
+                        <button onclick="hubAppend(')')" class="h-btn op">)</button>
+                        <button onclick="hubAppend('/')" class="h-btn op">÷</button>
+                        <button onclick="hubAppend('7')" class="h-btn">7</button>
+                        <button onclick="hubAppend('8')" class="h-btn">8</button>
+                        <button onclick="hubAppend('9')" class="h-btn">9</button>
+                        <button onclick="hubAppend('*')" class="h-btn op">×</button>
+                        <button onclick="hubAppend('4')" class="h-btn">4</button>
+                        <button onclick="hubAppend('5')" class="h-btn">5</button>
+                        <button onclick="hubAppend('6')" class="h-btn">6</button>
+                        <button onclick="hubAppend('-')" class="h-btn op">-</button>
+                        <button onclick="hubAppend('1')" class="h-btn">1</button>
+                        <button onclick="hubAppend('2')" class="h-btn">2</button>
+                        <button onclick="hubAppend('3')" class="h-btn">3</button>
+                        <button onclick="hubAppend('+')" class="h-btn op">+</button>
+                        <button onclick="hubAppend('0')" class="h-btn" style="grid-column: span 2;">0</button>
+                        <button onclick="hubAppend('.')" class="h-btn">.</button>
+                        <button onclick="hubCalculate()" class="h-btn eq">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--                  -----------------------------------------------------------------------------------------     -->
+                  <!-- ========================================== -->
+<!-- 1. CTRL + K COMMAND PALETTE SECTION        -->
+<!-- ========================================== -->
+<div id="commandPaletteModal" class="cmd-modal-overlay">
+    <div class="cmd-modal-box">
+        <div class="cmd-search-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="cmdSearchInput" placeholder="Type a command or search portals (Press ESC to close)..." autocomplete="off">
+        </div>
+        <div class="cmd-results-list" id="cmdResultsList"></div>
+        <div class="cmd-modal-footer">
+            <span><kbd>ESC</kbd> to close</span>
+            <span><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+            <span><kbd>ENTER</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+
+    <!-- profile.js / them.js not included in the files you shared yet — send them and I'll wire them back in -->
+    <!-- <script src="profile.js"></script> -->
+    <!-- <script src="them.js"></script> -->
+    <nav class="cc-bottom-nav" id="ccBottomNav" aria-label="Main">
+        <button type="button" class="cc-bn-item active" data-nav="home" onclick="ccNavGo('home')"><span class="cc-bn-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.8V20h13V9.8"/><path d="M10 20v-5.5h4V20"/></svg></span><span class="cc-bn-label">Home</span></button>
+        <button type="button" class="cc-bn-item" data-nav="fav" onclick="ccNavGo('fav')"><span class="cc-bn-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.2 6-.9z"/></svg></span><span class="cc-bn-label">Favorites</span></button>
+        <button type="button" class="cc-bn-item cc-bn-center" data-nav="tools" onclick="ccNavGo('tools')"><span class="cc-bn-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg></span><span class="cc-bn-label">Tools</span></button>
+        <button type="button" class="cc-bn-item" data-nav="notes" onclick="ccNavGo('notes')"><span class="cc-bn-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v10.5l-5 5H5z"/><path d="M14 20v-5h5"/><path d="M8.5 9h7M8.5 12.2h4"/></svg></span><span class="cc-bn-label">Notes</span></button>
+        <button type="button" class="cc-bn-item" data-nav="menu" onclick="ccNavGo('menu')"><span class="cc-bn-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span><span class="cc-bn-label">Menu</span></button>
+    </nav>
+
+    <div id="toastContainer" class="cc-toast-container"></div>
+
+    <div id="ccOfflineBar" class="cc-offline-bar"><i class="fas fa-wifi"></i> Internet disconnected — portals open nahi honge, connection check karein</div>
+
+    <!-- Quick Notes side panel -->
+    <aside id="ccNotesPanel" class="cc-side-panel">
+        <div class="cc-panel-head">
+            <h3><i class="fas fa-note-sticky"></i> Quick Notes</h3>
+            <button type="button" class="cc-panel-close" onclick="ccCloseNotes()"><i class="fas fa-xmark"></i></button>
+        </div>
+        <textarea id="ccNotesArea" placeholder="Customer ka naam, token no., pending kaam... kuch bhi likhein — apne aap save hota hai."></textarea>
+        <div class="cc-panel-foot">
+            <span id="ccNotesStatus"><i class="fas fa-check"></i> Saved</span>
+            <button type="button" class="cc-panel-link" onclick="ccCopyNotes()"><i class="fas fa-copy"></i> Copy</button>
+            <button type="button" class="cc-panel-link danger" onclick="ccClearNotes()"><i class="fas fa-trash"></i> Clear</button>
+        </div>
+    </aside>
+
+    <!-- Keyboard shortcuts -->
+    <div id="ccShortcutsModal" class="cc-lite-overlay" onclick="if(event.target===this)ccCloseShortcuts()">
+        <div class="cc-lite-card">
+            <button type="button" class="cc-panel-close" onclick="ccCloseShortcuts()"><i class="fas fa-xmark"></i></button>
+            <h3><i class="fas fa-keyboard"></i> Keyboard Shortcuts</h3>
+            <ul class="cc-shortcut-list">
+                <li><span>Command palette (sab kuch search)</span><span><kbd>Ctrl</kbd> + <kbd>K</kbd></span></li>
+                <li><span>Search box par jaayein</span><kbd>/</kbd></li>
+                <li><span>Quick Notes kholein</span><kbd>N</kbd></li>
+                <li><span>Dark / Light theme</span><kbd>D</kbd></li>
+                <li><span>Sound on / off</span><kbd>M</kbd></li>
+                <li><span>Fullscreen</span><kbd>F</kbd></li>
+                <li><span>Ye list dikhayein</span><kbd>?</kbd></li>
+                <li><span>Kuch bhi band karein</span><kbd>Esc</kbd></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Idle Auto-Lock — shared cyber-cafe screen ko privacy ke liye lock karta hai -->
+    <div id="ccLockOverlay" class="cc-lock-overlay">
+        <div class="cc-lock-card">
+            <img id="ccLockAvatar" src="Web_Icon.png" class="cc-lock-avatar" alt="">
+            <h3 id="ccLockUserName">Operator</h3>
+            <p>Screen privacy ke liye lock ho gayi hai — jaari rakhne ke liye apna password daalein.</p>
+            <form id="ccUnlockForm" novalidate>
+                <div class="cc-input-wrap">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="ccUnlockPassword" placeholder="Password" required autocomplete="current-password">
+                </div>
+                <div id="ccUnlockError" class="cc-msg-box cc-error-box"></div>
+                <button type="submit" class="cc-submit-btn" id="ccUnlockBtn">Unlock</button>
+            </form>
+            <button type="button" class="cc-unlock-logout-link" onclick="ccLogout()">Ye aap nahi hain? Logout karein</button>
+        </div>
+    </div>
+
+    <script src="dash-engine.js"></script>
+</body>
+</html>

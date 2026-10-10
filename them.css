@@ -1,0 +1,3 @@
+/* Compatibility shim: purane pages jo "them.css" link karte hain unke liye.
+   Asli code theme.css me hai. Sab pages theme.css par aa jayein to ye file delete kar sakte hain. */
+@import url("theme.css");

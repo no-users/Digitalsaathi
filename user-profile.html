@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Click &amp; Connect — Profiles</title>
+    <meta name="theme-color" content="#faf8fc">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Click&amp;Connect">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <script>
+        /* Entrance animation gate + fail-safe: JS atak jaye to bhi page 3.5s me dikh jata hai */
+        document.documentElement.classList.add('cc-js');
+        setTimeout(function () { if (document.body) document.body.classList.add('cc-ready'); }, 3500);
+    </script>
+    <link rel="icon" type="image/png" href="Web_Icon.png">
+    <link rel="apple-touch-icon" href="app-icon-192.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="user-profile.css">
+    <link rel="stylesheet" href="profile-app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Theme sabse pehle apply hoti hai taaki page par default colours ka flash na aaye -->
+    <script src="theme.js"></script>
+
+    <!-- Session-restore splash — hidden by auth-guard.js once auth state resolves -->
+    <div class="cc-splash" id="ccSplash">
+        <div class="cc-splash-badge"></div>
+        <p>Checking your session…</p>
+    </div>
+
+    <!-- Soft Animated Mesh Background -->
+    <div class="cc-bg-mesh">
+        <div class="cc-blob b1"></div>
+        <div class="cc-blob b2"></div>
+        <div class="cc-blob b3"></div>
+    </div>
+
+    <!-- Global Floating Notifications -->
+    <div id="ccToastBox" class="cc-toast-box" role="status" aria-live="polite"></div>
+
+    <!-- Navigation Header -->
+    <header class="cc-navbar">
+        <div class="cc-nav-inner">
+            <div class="cc-brand">
+                <img src="Web_Icon.png" alt="Logo" class="cc-brand-logo" onerror="this.style.display='none'">
+                <div class="cc-brand-text">
+                    <span class="cc-brand-title">CLICK &amp; CONNECT</span>
+                    <span class="cc-brand-badge" id="roleBadge">OPERATOR</span>
+                </div>
+            </div>
+            <div class="cc-nav-actions">
+                <button class="cc-nav-btn" id="quickThemeBtn" title="Theme Switcher" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+                <button class="cc-nav-btn" id="closeBtn" title="Back to Portal" aria-label="Go back" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="cc-app-shell">
+
+        <!-- HERO IDENTITY CARD -->
+        <section class="cc-hero-card">
+            <div class="cc-hero-topline">
+                <div class="cc-sync-indicator" id="syncStatusTag">
+                    <span class="cc-dot-pulse"></span> <span id="syncStatusText">Cloud Connected</span>
+                </div>
+                <button type="button" class="cc-agent-tag" id="agentCodeTag" title="Click karke poora UID copy karein">ID: CC-8921</button>
+            </div>
+
+            <div class="cc-hero-profile">
+                <div class="cc-avatar-container">
+                    <img src="Web_Icon.png" id="profileImage" class="cc-avatar-main" alt="User Profile" onerror="this.onerror=null;this.src='Web_Icon.png'">
+                    <button class="cc-avatar-picker-btn" id="openAvatarModalBtn" type="button" title="Choose Cool Avatar" aria-label="Change avatar">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                    </button>
+                </div>
+
+                <div class="cc-hero-details">
+                    <div class="cc-name-row">
+                        <h1 class="cc-user-name" id="mainName">Loading Account...</h1>
+                        <span class="cc-verify-pill" id="emailVerifyBadge"><i class="fas fa-circle-question"></i> Checking</span>
+                    </div>
+                    <p class="cc-user-email" id="mainEmail"><i class="fas fa-envelope"></i> <span id="mainEmailText">syncing-session@cloud...</span></p>
+                    <p class="cc-user-shop" id="mainShop" hidden><i class="fas fa-store"></i> <span></span></p>
+                    
+                    <div class="cc-hero-metrics">
+                        <div class="cc-metric-box">
+                            <span class="cc-metric-val" id="profileScoreVal">0%</span>
+                            <span class="cc-metric-lbl">Profile Complete</span>
+                        </div>
+                        <div class="cc-metric-box">
+                            <span class="cc-metric-val" id="securityAuditVal">70/100</span>
+                            <span class="cc-metric-lbl">Security Rating</span>
+                        </div>
+                        <div class="cc-metric-box">
+                            <span class="cc-metric-val" id="accountAgeVal">Active</span>
+                            <span class="cc-metric-lbl">Session Health</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cc-hero-footer-bar">
+                <div class="cc-action-group">
+                    <button class="cc-btn cc-btn-secondary" id="copyEmailBtn"><i class="fas fa-copy"></i> Copy Email</button>
+                    <button class="cc-btn cc-btn-primary" id="signInHeroBtn"><i class="fab fa-google"></i> Link Google Account</button>
+                    <button class="cc-btn cc-btn-ghost" id="verifyEmailActionBtn" style="display:none;"><i class="fas fa-paper-plane"></i> Verify Email</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODERN SEGMENTED TABS -->
+        <nav class="cc-segmented-tabs" id="mainNavTabs" role="tablist" aria-label="Profile sections">
+            <button class="cc-tab-item active" data-tab="tabProfile" role="tab" aria-selected="true" aria-label="Personal Info"><i class="fas fa-user-circle"></i> <span>Personal Info</span></button>
+            <button class="cc-tab-item" data-tab="tabSecurity" role="tab" aria-selected="false" aria-label="Security and Sessions"><i class="fas fa-shield-halved"></i> <span>Security &amp; Sessions</span></button>
+            <button class="cc-tab-item" data-tab="tabWorkspace" role="tab" aria-selected="false" aria-label="Connected Portals"><i class="fas fa-cubes"></i> <span>Connected Portals</span></button>
+            <button class="cc-tab-item" data-tab="tabPreferences" role="tab" aria-selected="false" aria-label="Display and Export"><i class="fas fa-sliders"></i> <span>Display &amp; Export</span></button>
+            <div class="cc-tab-highlighter" id="tabHighlight"></div>
+        </nav>
+
+        <!-- TAB CONTENT PANELS -->
+        <div class="cc-tab-stage">
+
+            <!-- 1. PERSONAL INFORMATION TAB -->
+            <section class="cc-tab-pane is-active" id="tabProfile">
+                <div class="cc-panel-grid">
+                    
+                    <form class="cc-card cc-span-2" id="profileForm" novalidate>
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Operator Profile &amp; Contact</h2>
+                                <p class="cc-card-subtitle">Yeh details aapke receipts aur billing header par print hoti hain.</p>
+                            </div>
+                            <span class="cc-card-icon cc-purple"><i class="fas fa-id-card"></i></span>
+                        </div>
+
+                        <div class="cc-form-grid">
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-signature"></i> Operator Full Name</label>
+                                <input type="text" id="inputName" class="cc-form-control" placeholder="Aapka Poora Naam" autocomplete="name" maxlength="60" required>
+                                <span class="cc-err-text" id="nameError">Naam khali nahi ho sakta</span>
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-phone-volume"></i> Mobile Number (10 Digits)</label>
+                                <input type="tel" id="inputPhone" class="cc-form-control" placeholder="98XXXXXXXX" maxlength="10" inputmode="numeric" autocomplete="tel-national">
+                                <span class="cc-err-text" id="phoneError">Sahi 10-digit mobile number enter karein</span>
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-store"></i> Shop / Center Name</label>
+                                <input type="text" id="inputShopName" class="cc-form-control" placeholder="e.g. Saathi Cyber Cafe" maxlength="60" autocomplete="organization">
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-location-dot"></i> Cyber Cafe / Shop Location</label>
+                                <input type="text" id="inputLocation" class="cc-form-control" placeholder="Center Name, City" maxlength="80">
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-at"></i> Alternate / Recovery Email</label>
+                                <input type="email" id="inputAltEmail" class="cc-form-control" placeholder="backup@example.com" autocomplete="email">
+                                <span class="cc-err-text" id="altEmailError">Sahi email address enter karein</span>
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-clock"></i> Working Hours</label>
+                                <input type="text" id="inputHours" class="cc-form-control" placeholder="e.g. 9 AM – 8 PM (Mon–Sat)" maxlength="40">
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-indian-rupee-sign"></i> UPI ID <span class="cc-label-hint">(payment QR ke liye)</span></label>
+                                <input type="text" id="inputUpi" class="cc-form-control" placeholder="yourname@okaxis" maxlength="60" autocapitalize="off" autocomplete="off" spellcheck="false">
+                                <span class="cc-err-text" id="upiError">Sahi UPI ID likhein, jaise name@bank</span>
+                            </div>
+
+                            <div class="cc-input-group">
+                                <label class="cc-label"><i class="fas fa-image"></i> Shop Logo <span class="cc-label-hint">(receipt par chhapega)</span></label>
+                                <div class="cc-logo-row">
+                                    <div class="cc-logo-preview" id="shopLogoPreview"><i class="fas fa-store"></i></div>
+                                    <button type="button" class="cc-btn cc-btn-secondary cc-btn-sm" id="uploadLogoBtn"><i class="fas fa-upload"></i> Upload</button>
+                                    <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" id="removeLogoBtn" hidden><i class="fas fa-trash"></i> Remove</button>
+                                    <input type="file" id="shopLogoInput" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                                </div>
+                            </div>
+
+                            <div class="cc-input-group cc-span-2">
+                                <label class="cc-label"><i class="fas fa-list-check"></i> Services Offered <span class="cc-label-hint">(jo bhi lagu ho chuniye)</span></label>
+                                <div class="cc-chip-select" id="servicesPicker" role="group" aria-label="Services offered"></div>
+                            </div>
+
+                            <div class="cc-input-group cc-span-2">
+                                <label class="cc-label"><i class="fas fa-feather-pointed"></i> Center Headline / Public Bio</label>
+                                <input type="text" id="inputBio" class="cc-form-control" placeholder="e.g. Fast Online Services, Xerox &amp; CSC Center" maxlength="90">
+                                <div class="cc-char-tracker"><span id="bioCount">0</span>/90 characters</div>
+                            </div>
+                        </div>
+
+                        <div class="cc-card-bottom-actions">
+                            <span class="cc-dirty-pill" id="dirtyPill" hidden><i class="fas fa-circle"></i> Unsaved changes &middot; Ctrl+S</span>
+                            <button type="submit" class="cc-btn cc-btn-primary cc-btn-lg" id="saveProfileBtn">
+                                <i class="fas fa-cloud-arrow-up"></i> Save &amp; Sync Everywhere
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Profile Completion Radar -->
+                    <div class="cc-card">
+                        <div class="cc-card-header">
+                            <div>
+                                <h3 class="cc-card-title">Profile Strength</h3>
+                                <p class="cc-card-subtitle">Data verification status</p>
+                            </div>
+                            <span class="cc-card-icon cc-green"><i class="fas fa-chart-pie"></i></span>
+                        </div>
+                        <div class="cc-progress-track">
+                            <div class="cc-progress-bar" id="profileMeterBar" style="width: 0%;"></div>
+                        </div>
+                        <p class="cc-progress-desc" id="profileMeterAdvice">Mobile &amp; recovery details add karein.</p>
+                    </div>
+
+                    <!-- Quick Cloud Storage Info -->
+                    <div class="cc-card">
+                        <div class="cc-card-header">
+                            <div>
+                                <h3 class="cc-card-title">Cloud Sync Engine</h3>
+                                <p class="cc-card-subtitle">Multi-session Firestore cluster</p>
+                            </div>
+                            <span class="cc-card-icon cc-pink"><i class="fas fa-server"></i></span>
+                        </div>
+                        <div class="cc-badge-chip-row">
+                            <span class="cc-status-chip ok"><i class="fas fa-bolt"></i> Realtime Listener Active</span>
+                            <span class="cc-status-chip purple"><i class="fas fa-shield"></i> 2-Device Strict Policy</span>
+                            <span class="cc-status-chip purple" id="memberSinceChip" hidden><i class="fas fa-calendar-check"></i> <span></span></span>
+                            <span class="cc-status-chip ok" id="lastSignInChip" hidden><i class="fas fa-right-to-bracket"></i> <span></span></span>
+                        </div>
+                    </div>
+
+                    <!-- Receipt header preview + business share card -->
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h3 class="cc-card-title">Receipt Header Preview</h3>
+                                <p class="cc-card-subtitle">Aapki details receipt par aise dikhengi (live preview)</p>
+                            </div>
+                            <span class="cc-card-icon cc-warm"><i class="fas fa-receipt"></i></span>
+                        </div>
+                        <div class="cc-receipt-wrap">
+                            <div class="cc-receipt" id="receiptPreview" aria-label="Receipt header preview"></div>
+                            <div class="cc-receipt-side">
+                                <p class="cc-progress-desc">Is card ko WhatsApp par customers ko bhej sakte hain — logo, services, contact aur UPI QR ke saath.</p>
+                                <button type="button" class="cc-btn cc-btn-primary" id="openShareCardBtn"><i class="fas fa-share-nodes"></i> Business Share Card</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Share & Payment QR -->
+                    <div class="cc-card cc-span-2" id="qrCard">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Share &amp; Payment QR</h2>
+                                <p class="cc-card-subtitle">Customer scan karke seedha UPI se pay kare ya aapka contact save kare.</p>
+                            </div>
+                            <span class="cc-card-icon cc-green"><i class="fas fa-qrcode"></i></span>
+                        </div>
+                        <div class="cc-qr-layout">
+                            <div class="cc-qr-stage">
+                                <canvas id="qrCanvas" width="360" height="440" aria-label="QR code preview"></canvas>
+                            </div>
+                            <div class="cc-qr-controls">
+                                <div class="cc-seg" role="tablist" aria-label="QR type">
+                                    <button type="button" class="cc-seg-btn active" data-qr="upi" role="tab" aria-selected="true"><i class="fas fa-indian-rupee-sign"></i> UPI Payment</button>
+                                    <button type="button" class="cc-seg-btn" data-qr="vcard" role="tab" aria-selected="false"><i class="fas fa-address-card"></i> Contact Card</button>
+                                </div>
+                                <div class="cc-input-group" id="qrAmountGroup">
+                                    <label class="cc-label"><i class="fas fa-coins"></i> Amount ₹ <span class="cc-label-hint">(optional — khali chhodein to customer khud likhega)</span></label>
+                                    <input type="number" id="qrAmount" class="cc-form-control" placeholder="e.g. 50" min="1" max="100000" step="0.01" inputmode="decimal">
+                                </div>
+                                <p class="cc-qr-hint" id="qrHint"></p>
+                                <div class="cc-action-group">
+                                    <button type="button" class="cc-btn cc-btn-primary" id="qrDownloadBtn"><i class="fas fa-download"></i> Download PNG</button>
+                                    <button type="button" class="cc-btn cc-btn-secondary" id="qrShareBtn" hidden><i class="fas fa-share-nodes"></i> Share</button>
+                                    <button type="button" class="cc-btn cc-btn-secondary" id="qrPrintBtn"><i class="fas fa-print"></i> Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 2. SECURITY & ACTIVE SESSIONS TAB -->
+            <section class="cc-tab-pane" id="tabSecurity">
+                <div class="cc-panel-grid">
+
+                    <!-- Live Security Radar Score -->
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Live Security Health Check</h2>
+                                <p class="cc-card-subtitle">Account security aur safety parameters ka audit</p>
+                            </div>
+                            <span class="cc-card-icon cc-purple"><i class="fas fa-shield-virus"></i></span>
+                        </div>
+                        <div class="cc-security-audit-bar">
+                            <div class="cc-audit-score-pill" id="auditScorePill">Rating: 80 / 100</div>
+                            <div class="cc-audit-tips" id="auditTipsList">
+                                <span><i class="fas fa-circle-check" style="color:var(--cc-green);"></i> Google Multi-factor verification active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Devices List -->
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Authorized Devices (Max 2 Permitted)</h2>
+                                <p class="cc-card-subtitle">Aapke account par active computers aur phones.</p>
+                            </div>
+                            <button class="cc-btn cc-btn-danger-outline cc-btn-sm" id="revokeAllOtherSessionsBtn">
+                                <i class="fas fa-power-off"></i> Kick Other Device
+                            </button>
+                        </div>
+                        <div class="cc-device-deck" id="deviceListContainer">
+                            <div class="cc-empty-state"><i class="fas fa-spinner fa-spin"></i> Checking device authorization...</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Login Activity -->
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Recent Login Activity</h2>
+                                <p class="cc-card-subtitle">Aapke account me kab aur kis device se sign-in hua (last 10). Koi anjaan entry dikhe to password badal dein.</p>
+                            </div>
+                            <button class="cc-btn cc-btn-danger-outline cc-btn-sm" id="clearLoginHistoryBtn"><i class="fas fa-eraser"></i> Clear</button>
+                        </div>
+                        <div class="cc-device-deck" id="loginHistoryList">
+                            <div class="cc-empty-state"><i class="fas fa-spinner fa-spin"></i> Loading activity...</div>
+                        </div>
+                    </div>
+
+                    <!-- Change Password Card -->
+                    <div class="cc-card" id="passwordTile">
+                        <div class="cc-card-header">
+                            <div>
+                                <h3 class="cc-card-title">Update Password</h3>
+                                <p class="cc-card-subtitle">Minimum 6 characters ka naya password banayein</p>
+                            </div>
+                            <span class="cc-card-icon cc-warm"><i class="fas fa-key"></i></span>
+                        </div>
+                        <p class="cc-google-only-note" id="googleOnlyNote" style="display:none;">
+                            <i class="fab fa-google"></i> Aapne Google se sign in kiya hai — is account ka koi separate password nahi hota, isliye yahan password change nahi hoga.
+                        </p>
+                        <form id="changePasswordForm">
+                            <div class="cc-input-group">
+                                <label class="cc-label">New Password</label>
+                                <input type="password" id="newPwdInput" class="cc-form-control" placeholder="••••••••" minlength="6" autocomplete="new-password" required>
+                                <div class="cc-pwd-meter" aria-hidden="true"><span id="pwdMeterBar"></span></div>
+                                <span class="cc-pwd-text" id="pwdMeterText">Password ki strength yahan dikhegi</span>
+                            </div>
+                            <div class="cc-input-group" style="margin-top:12px;">
+                                <label class="cc-label">Confirm New Password</label>
+                                <input type="password" id="confirmPwdInput" class="cc-form-control" placeholder="••••••••" minlength="6" autocomplete="new-password" required>
+                            </div>
+                            <button type="submit" class="cc-btn cc-btn-primary cc-btn-block" id="pwdUpdateBtn" style="margin-top:16px;">
+                                <i class="fas fa-lock"></i> Update Password
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="cc-card cc-danger-border">
+                        <div class="cc-card-header">
+                            <div>
+                                <h3 class="cc-card-title" style="color:var(--cc-rust);">Danger Zone</h3>
+                                <p class="cc-card-subtitle">Account permanent termination</p>
+                            </div>
+                            <span class="cc-card-icon cc-rust"><i class="fas fa-triangle-exclamation"></i></span>
+                        </div>
+                        <p class="cc-danger-note">Account delete karne par aapka cloud sync data aur active sessions hamesha ke liye expire ho jayenge.</p>
+                        <button type="button" class="cc-btn cc-btn-danger cc-btn-block" id="deleteAccountBtn" style="margin-top:18px;">
+                            <i class="fas fa-trash-can"></i> Delete Account Permanently
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. CONNECTED PORTALS TAB -->
+            <section class="cc-tab-pane" id="tabWorkspace">
+                <div class="cc-panel-grid">
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Integrated Workspace &amp; Portals</h2>
+                                <p class="cc-card-subtitle">Ek click me switch karein bina session drop kiye</p>
+                            </div>
+                            <span class="cc-card-icon cc-green"><i class="fas fa-network-wired"></i></span>
+                        </div>
+                        <div class="cc-portal-matrix">
+                            <a href="bill.html" class="cc-portal-card">
+                                <div class="cc-portal-icon"><i class="fas fa-receipt"></i></div>
+                                <div class="cc-portal-text">
+                                    <h4>Smart Billing &amp; Invoicing</h4>
+                                    <p>Fast customer receipts, token &amp; cash counter records.</p>
+                                </div>
+                                <span class="cc-portal-link"><i class="fas fa-arrow-up-right-from-square"></i> Open</span>
+                            </a>
+
+                            <div class="cc-portal-card disabled">
+                                <div class="cc-portal-icon" style="background:#ECECEC;color:#888;"><i class="fas fa-folder-open"></i></div>
+                                <div class="cc-portal-text">
+                                    <h4>CSC Document Storage</h4>
+                                    <p>Upcoming encrypted locker module.</p>
+                                </div>
+                                <span class="cc-portal-link" style="color:#999;">In Pipeline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. DISPLAY, EXPORT & PREFERENCES TAB -->
+            <section class="cc-tab-pane" id="tabPreferences">
+                <div class="cc-panel-grid">
+
+                    <div class="cc-card cc-span-2">
+                        <div class="cc-card-header">
+                            <div>
+                                <h2 class="cc-card-title">Workspace Themes &amp; Data Export</h2>
+                                <p class="cc-card-subtitle">Visual comfort aur account data backup options</p>
+                            </div>
+                            <span class="cc-card-icon cc-purple"><i class="fas fa-palette"></i></span>
+                        </div>
+
+                        <div class="cc-settings-row">
+                            <div class="cc-setting-info">
+                                <h4>Global Color Palette</h4>
+                                <p>Saari screens ke liye background &amp; card themes</p>
+                            </div>
+                            <select id="globalThemeSelector" class="cc-select" aria-label="Color palette">
+                                <option value="default">Click &amp; Connect (Purple-Pink Glow)</option>
+                                <option value="dark">Midnight Dark (Ultra-Gloss)</option>
+                                <option value="neon">Cyberpunk Neon</option>
+                                <option value="glass">Pure Glassmorphism</option>
+                                <option value="light">Pristine Light</option>
+                                <option value="auto">System (Auto Dark / Light)</option>
+                            </select>
+                        </div>
+
+                        <div class="cc-settings-row cc-settings-stack">
+                            <div class="cc-setting-info">
+                                <h4>Accent Colour</h4>
+                                <p>Buttons, tabs aur highlights ka rang — saare pages par lagu hoga</p>
+                            </div>
+                            <div class="cc-swatch-row" id="accentSwatches" role="group" aria-label="Accent colour"></div>
+                        </div>
+
+                        <div class="cc-settings-row">
+                            <div class="cc-setting-info">
+                                <h4>Export My Profile &amp; Session Data</h4>
+                                <p>Google Takeout style: Apna saara operator profile data JSON file me download karein.</p>
+                            </div>
+                            <button type="button" class="cc-btn cc-btn-secondary" id="exportDataBtn">
+                                <i class="fas fa-file-arrow-down"></i> Export JSON Data
+                            </button>
+                        </div>
+
+                        <div class="cc-settings-row">
+                            <div class="cc-setting-info">
+                                <h4>Import / Restore Profile</h4>
+                                <p>Pehle export ki hui JSON file se form bhar dein. Check karke Save dabayein — turant overwrite nahi hota.</p>
+                            </div>
+                            <button type="button" class="cc-btn cc-btn-secondary" id="importDataBtn">
+                                <i class="fas fa-file-import"></i> Import JSON
+                            </button>
+                            <input type="file" id="importDataInput" accept="application/json,.json" style="display:none;">
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- FLOATING GLASS DOCK (Google Workspace Style) -->
+    <nav class="cc-dock" id="floatingDock">
+        <button class="cc-dock-btn active" data-tab="tabProfile"><i class="fas fa-user-circle"></i><span>Profile</span></button>
+        <button class="cc-dock-btn" data-tab="tabSecurity"><i class="fas fa-shield-halved"></i><span>Security</span></button>
+        <button class="cc-dock-btn" data-tab="tabWorkspace"><i class="fas fa-cubes"></i><span>Portals</span></button>
+        <button class="cc-dock-btn" data-tab="tabPreferences"><i class="fas fa-sliders"></i><span>Settings</span></button>
+        <span class="cc-dock-divider"></span>
+        <button class="cc-dock-btn danger" id="globalLogoutBtn"><i class="fas fa-power-off"></i><span>Sign Out</span></button>
+    </nav>
+
+    <!-- AVATAR STUDIO MODAL (No Camera - Ready Avatars & Custom Upload) -->
+    <div id="avatarStudioModal" class="cc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Choose avatar">
+        <div class="cc-modal-box">
+            <div class="cc-modal-top">
+                <h3><i class="fas fa-wand-magic-sparkles" style="color:var(--cc-purple);"></i> Choose Operator Avatar</h3>
+                <i class="fas fa-times cc-modal-close" data-dismiss-modal="avatarStudioModal" role="button" tabindex="0" aria-label="Close"></i>
+            </div>
+            
+            <p class="cc-modal-subtitle">Pick a character avatar or upload your photo</p>
+            
+            <!-- Curated SVG/3D Avatar Grid -->
+            <div class="cc-avatar-selection-grid" id="avatarPresetGrid">
+                <!-- Avatars rendered via JS -->
+            </div>
+
+            <div class="cc-modal-footer-opts">
+                <button type="button" class="cc-btn cc-btn-secondary cc-btn-block" id="uploadAvatarBtn">
+                    <i class="fas fa-upload"></i> Upload From Device Image
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUSINESS SHARE CARD MODAL -->
+    <div id="shareCardModal" class="cc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Business share card">
+        <div class="cc-modal-box cc-modal-wide">
+            <div class="cc-modal-top">
+                <h3><i class="fas fa-share-nodes" style="color:var(--cc-purple);"></i> Business Share Card</h3>
+                <i class="fas fa-times cc-modal-close" data-dismiss-modal="shareCardModal" role="button" tabindex="0" aria-label="Close"></i>
+            </div>
+            <canvas id="shareCardCanvas" class="cc-share-canvas" width="1080" height="1350"></canvas>
+            <div class="cc-share-actions">
+                <button type="button" class="cc-btn cc-btn-primary" id="shareDownloadBtn"><i class="fas fa-download"></i> Download PNG</button>
+                <button type="button" class="cc-btn cc-btn-secondary" id="shareNativeBtn"><i class="fas fa-share-nodes"></i> Share</button>
+                <button type="button" class="cc-btn cc-btn-secondary" id="shareWhatsappBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                <button type="button" class="cc-btn cc-btn-secondary" id="shareCopyBtn"><i class="fas fa-copy"></i> Copy Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION PROMPT MODAL -->
+    <div id="actionConfirmModal" class="cc-modal-backdrop" role="alertdialog" aria-modal="true" aria-labelledby="confirmPromptTitle">
+        <div class="cc-modal-box cc-text-center">
+            <div class="cc-confirm-icon-wrap"><i class="fas fa-triangle-exclamation"></i></div>
+            <h3 id="confirmPromptTitle" class="cc-confirm-title">Are you sure?</h3>
+            <p id="confirmPromptDesc" class="cc-confirm-desc">This action cannot be undone.</p>
+            <div class="cc-confirm-actions">
+                <button class="cc-btn cc-btn-secondary" id="confirmPromptCancel">Cancel</button>
+                <button class="cc-btn cc-btn-danger" id="confirmPromptOk">Confirm &amp; Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="customAvatarInput" style="display:none;" accept="image/png,image/jpeg,image/webp,image/gif">
+
+    <!-- Firebase SDKs (v9.22.0 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Common Auth & Guard -->
+    <script src="auth-firebase.js"></script>
+    <script src="auth-guard.js"></script>
+
+    <!-- Offline QR encoder (MIT) -->
+    <script src="qr-lib.js"></script>
+
+    <!-- Profile Controller -->
+    <script src="user-profile.js"></script>
+    <!-- Receipt preview + Business Share Card -->
+    <script src="profile-extras.js"></script>
+    <!-- App feel: entrance, swipe tabs, haptics, count-up -->
+    <script src="profile-app.js"></script>
+</body>
+</html>

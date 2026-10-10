@@ -1,0 +1,356 @@
+/* ===========================================================
+   CLICK & CONNECT — Global Themes (dark / neon / glass / light)
+
+   Kaise kaam karta hai:
+   1. Har theme sirf <body> par ek class lagata hai (theme.js se).
+   2. Har theme do cheezein define karta hai:
+        a) --cc-*  : site ke colour tokens (palette.css wale) override karta hai,
+                     isse chip, buttons, text, borders sab apne aap theme ho jaate hain.
+        b) --t-*   : surface (card / nav / input / sidebar) ka look.
+   3. Neeche ek hi shared ruleset hai jo --t-* use karta hai.
+   =========================================================== */
+
+
+/* ---------- 1. MIDNIGHT DARK ---------- */
+body.dark {
+    --cc-white: #111a30;
+    --cc-offwhite: #0b1120;
+    --cc-panel: rgba(255, 255, 255, 0.04);
+    --cc-ink: #f1f5f9;
+    --cc-muted: #94a3b8;
+    --cc-border: rgba(255, 255, 255, 0.1);
+    --cc-purple: #38bdf8;
+    --cc-purple-hover: #0ea5e9;
+    --cc-purple-soft: rgba(56, 189, 248, 0.15);
+    --cc-pink: #f472b6;
+    --cc-pink-soft: rgba(244, 114, 182, 0.15);
+    --cc-green: #34d399;
+    --cc-green-soft: rgba(52, 211, 153, 0.15);
+    --cc-rust: #f0663f;
+    --cc-rust-soft: rgba(240, 102, 63, 0.16);
+    --cc-on-accent: #04202f;
+    --cc-toast-bg: #1e293b;
+    --cc-toast-success: #059669;
+    --cc-toast-error: #dc4a26;
+    --cc-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+
+    --t-body-bg: radial-gradient(circle at 15% 15%, #182848 0%, #0b1120 45%, #030508 100%);
+    --t-letter: 0.015em;
+    --t-sidebar-bg: linear-gradient(180deg, rgba(13, 20, 38, 0.85) 0%, rgba(7, 11, 20, 0.95) 100%);
+    --t-sidebar-blur: 25px;
+    --t-sidebar-border: rgba(255, 255, 255, 0.06);
+    --t-sidebar-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
+    --t-card-bg: linear-gradient(135deg, rgba(25, 38, 70, 0.5) 0%, rgba(12, 18, 33, 0.75) 100%);
+    --t-card-bg-hover: linear-gradient(135deg, rgba(30, 45, 82, 0.6) 0%, rgba(15, 23, 42, 0.85) 100%);
+    --t-card-blur: 16px;
+    --t-card-bc: rgba(255, 255, 255, 0.08);
+    --t-card-bc-top: rgba(255, 255, 255, 0.12);
+    --t-card-bc-left: rgba(255, 255, 255, 0.08);
+    --t-card-bc-hover: rgba(56, 189, 248, 0.4);
+    --t-card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --t-card-shadow-hover: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    --t-card-radius: 16px;
+    --t-card-lift: translateY(-4px) scale(1.005);
+    --t-nav-bg: rgba(11, 17, 32, 0.75);
+    --t-nav-blur: 20px;
+    --t-nav-border: rgba(255, 255, 255, 0.07);
+    --t-nav-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --t-input-bg: rgba(15, 23, 42, 0.6);
+    --t-input-bc: rgba(255, 255, 255, 0.08);
+    --t-input-color: #f8fafc;
+    --t-input-bg-focus: rgba(15, 23, 42, 0.6);
+    --t-input-bc-focus: #38bdf8;
+    --t-input-shadow-focus: 0 0 15px rgba(56, 189, 248, 0.25);
+    --t-option-bg: #0f172a;
+
+    color-scheme: dark;
+}
+
+/* ---------- 2. CYBERPUNK NEON ---------- */
+body.neon {
+    --cc-white: #050b16;
+    --cc-offwhite: #02050b;
+    --cc-panel: rgba(0, 255, 204, 0.05);
+    --cc-ink: #e6fffa;
+    --cc-muted: #7fd9c6;
+    --cc-border: rgba(0, 255, 204, 0.28);
+    --cc-purple: #00ffcc;
+    --cc-purple-hover: #00d9ad;
+    --cc-purple-soft: rgba(0, 255, 204, 0.14);
+    --cc-pink: #ff3d9a;
+    --cc-pink-soft: rgba(255, 61, 154, 0.16);
+    --cc-green: #39ff88;
+    --cc-green-soft: rgba(57, 255, 136, 0.14);
+    --cc-rust: #ff6b4a;
+    --cc-rust-soft: rgba(255, 107, 74, 0.16);
+    --cc-on-accent: #00221c;
+    --cc-toast-bg: #06141f;
+    --cc-toast-success: #0a8f76;
+    --cc-toast-error: #c2410c;
+    --cc-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 255, 204, 0.12);
+
+    --t-body-bg: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #050811 50%, #010204 100%);
+    --t-letter: 0.03em;
+    --t-sidebar-bg: linear-gradient(180deg, rgba(5, 10, 20, 0.92) 0%, rgba(2, 4, 8, 0.98) 100%);
+    --t-sidebar-blur: 25px;
+    --t-sidebar-border: rgba(0, 255, 204, 0.3);
+    --t-sidebar-shadow: 10px 0 40px rgba(0, 0, 0, 0.8), inset -1px 0 0 rgba(0, 255, 204, 0.1);
+    --t-card-bg: linear-gradient(135deg, rgba(10, 20, 38, 0.85) 0%, rgba(4, 8, 18, 0.95) 100%);
+    --t-card-bg-hover: linear-gradient(135deg, rgba(15, 30, 55, 0.9) 0%, rgba(6, 12, 25, 0.98) 100%);
+    --t-card-blur: 20px;
+    --t-card-bc: rgba(0, 255, 204, 0.3);
+    --t-card-bc-top: rgba(0, 255, 204, 0.6);
+    --t-card-bc-left: rgba(0, 255, 204, 0.3);
+    --t-card-bc-hover: #00ffcc;
+    --t-card-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 255, 204, 0.12), inset 0 1px 0 rgba(0, 255, 204, 0.2);
+    --t-card-shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 255, 204, 0.45), 0 0 60px rgba(255, 0, 127, 0.15), inset 0 0 15px rgba(0, 255, 204, 0.2);
+    --t-card-radius: 12px;
+    --t-card-lift: translateY(-4px) scale(1.008);
+    --t-nav-bg: rgba(3, 7, 15, 0.85);
+    --t-nav-blur: 25px;
+    --t-nav-border: rgba(0, 255, 204, 0.3);
+    --t-nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 1px 15px rgba(0, 255, 204, 0.1);
+    --t-input-bg: rgba(4, 9, 20, 0.8);
+    --t-input-bc: rgba(0, 255, 204, 0.3);
+    --t-input-color: #00ffcc;
+    --t-input-bg-focus: rgba(4, 9, 20, 0.8);
+    --t-input-bc-focus: #00ffcc;
+    --t-input-shadow-focus: 0 0 25px rgba(0, 255, 204, 0.4), inset 0 0 5px rgba(0, 255, 204, 0.2);
+    --t-option-bg: #050b16;
+
+    color-scheme: dark;
+}
+
+/* ---------- 3. PURE GLASSMORPHISM ---------- */
+body.glass {
+    --cc-white: #1a1535;
+    --cc-offwhite: #0d0f18;
+    --cc-panel: rgba(255, 255, 255, 0.05);
+    --cc-ink: #f8fafc;
+    --cc-muted: #b4b9d6;
+    --cc-border: rgba(255, 255, 255, 0.16);
+    --cc-purple: #a78bfa;
+    --cc-purple-hover: #8b5cf6;
+    --cc-purple-soft: rgba(167, 139, 250, 0.2);
+    --cc-pink: #f0abfc;
+    --cc-pink-soft: rgba(240, 171, 252, 0.18);
+    --cc-green: #6ee7b7;
+    --cc-green-soft: rgba(110, 231, 183, 0.16);
+    --cc-rust: #f2744f;
+    --cc-rust-soft: rgba(242, 116, 79, 0.18);
+    --cc-on-accent: #160a33;
+    --cc-toast-bg: #231c45;
+    --cc-toast-success: #059669;
+    --cc-toast-error: #dc4a26;
+    --cc-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+    --t-body-bg: linear-gradient(135deg, #090d16 0%, #171235 40%, #29103b 70%, #0d0f18 100%);
+    --t-letter: 0.02em;
+    --t-sidebar-bg: rgba(255, 255, 255, 0.025);
+    --t-sidebar-blur: 35px;
+    --t-sidebar-border: rgba(255, 255, 255, 0.08);
+    --t-sidebar-shadow: 15px 0 50px rgba(0, 0, 0, 0.5);
+    --t-card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+    --t-card-bg-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+    --t-card-blur: 25px;
+    --t-card-bc: rgba(255, 255, 255, 0.14);
+    --t-card-bc-top: rgba(255, 255, 255, 0.3);
+    --t-card-bc-left: rgba(255, 255, 255, 0.2);
+    --t-card-bc-hover: rgba(255, 255, 255, 0.4);
+    --t-card-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    --t-card-shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    --t-card-radius: 20px;
+    --t-card-lift: translateY(-5px) scale(1.008);
+    --t-nav-bg: rgba(255, 255, 255, 0.035);
+    --t-nav-blur: 30px;
+    --t-nav-border: rgba(255, 255, 255, 0.1);
+    --t-nav-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --t-input-bg: rgba(255, 255, 255, 0.04);
+    --t-input-bc: rgba(255, 255, 255, 0.12);
+    --t-input-color: #ffffff;
+    --t-input-bg-focus: rgba(255, 255, 255, 0.08);
+    --t-input-bc-focus: rgba(255, 255, 255, 0.4);
+    --t-input-shadow-focus: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    --t-option-bg: #1a1535;
+
+    color-scheme: dark;
+}
+
+/* ---------- 4. PRISTINE LIGHT ---------- */
+body.light {
+    --cc-white: #ffffff;
+    --cc-offwhite: #f1f5f9;
+    --cc-panel: #f1f5f9;
+    --cc-ink: #0f172a;
+    --cc-muted: #5b6b82;
+    --cc-border: #e2e8f0;
+    --cc-purple: #2563eb;
+    --cc-purple-hover: #1d4ed8;
+    --cc-purple-soft: rgba(37, 99, 235, 0.1);
+    --cc-pink: #db2777;
+    --cc-pink-soft: rgba(219, 39, 119, 0.1);
+    --cc-green: #047857;
+    --cc-green-soft: rgba(4, 120, 87, 0.1);
+    --cc-rust: #c2410c;
+    --cc-rust-soft: rgba(194, 65, 12, 0.1);
+    --cc-on-accent: #ffffff;
+    --cc-toast-bg: #0f172a;
+    --cc-toast-success: #047857;
+    --cc-toast-error: #c2410c;
+    --cc-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+
+    --t-body-bg: radial-gradient(circle at 15% 15%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+    --t-letter: 0.015em;
+    --t-sidebar-bg: rgba(255, 255, 255, 0.88);
+    --t-sidebar-blur: 25px;
+    --t-sidebar-border: rgba(0, 0, 0, 0.06);
+    --t-sidebar-shadow: 10px 0 40px rgba(0, 0, 0, 0.03);
+    --t-card-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --t-card-bg-hover: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    --t-card-blur: 15px;
+    --t-card-bc: rgba(0, 0, 0, 0.07);
+    --t-card-bc-top: rgba(255, 255, 255, 1);
+    --t-card-bc-left: rgba(0, 0, 0, 0.07);
+    --t-card-bc-hover: rgba(37, 99, 235, 0.35);
+    --t-card-shadow: 0 12px 40px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --t-card-shadow-hover: 0 20px 45px rgba(15, 23, 42, 0.1), 0 0 25px rgba(37, 99, 235, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+    --t-card-radius: 16px;
+    --t-card-lift: translateY(-4px) scale(1.005);
+    --t-nav-bg: rgba(255, 255, 255, 0.82);
+    --t-nav-blur: 20px;
+    --t-nav-border: rgba(0, 0, 0, 0.06);
+    --t-nav-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    --t-input-bg: #f8fafc;
+    --t-input-bc: rgba(15, 23, 42, 0.12);
+    --t-input-color: #0f172a;
+    --t-input-bg-focus: #ffffff;
+    --t-input-bc-focus: #2563eb;
+    --t-input-shadow-focus: 0 0 20px rgba(37, 99, 235, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    --t-option-bg: #ffffff;
+
+    color-scheme: light;
+}
+
+
+/* ===========================================================
+   SHARED RULES — chaaron themes ke liye ek hi jagah
+   =========================================================== */
+
+body:is(.dark, .neon, .glass, .light) {
+    background: var(--t-body-bg) !important;
+    background-attachment: fixed !important;
+    color: var(--cc-ink) !important;
+    letter-spacing: var(--t-letter);
+    -webkit-font-smoothing: antialiased;
+}
+
+body:is(.dark, .neon, .glass, .light) :is(.main-content, .app-canvas) {
+    background: transparent !important;
+}
+
+/* Sidebar */
+body:is(.dark, .neon, .glass, .light) .sidebar {
+    background: var(--t-sidebar-bg) !important;
+    backdrop-filter: blur(var(--t-sidebar-blur)) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(var(--t-sidebar-blur)) saturate(200%) !important;
+    border-right: 1px solid var(--t-sidebar-border) !important;
+    box-shadow: var(--t-sidebar-shadow) !important;
+}
+
+/* Cards
+   NOTE: pehle `div[class*="card"]` tha jo "cc-card-header", "cc-card-bottom-actions" jaise
+   andar ke boxes ko bhi card bana deta tha (box ke andar box) aur <form class="cc-card"> ko
+   miss kar deta tha. Ab sirf asli card classes match hoti hain:
+   .card  |  koi bhi class jo "-card" par khatam ho (cc-card, cc-hero-card, stat-card ...)  */
+body:is(.dark, .neon, .glass, .light) :is(.card, [class$="-card"], [class*="-card "]):not(.cc-portal-card),
+body:is(.dark, .neon, .glass, .light) .cc-modal-box {
+    background: var(--t-card-bg) !important;
+    backdrop-filter: blur(var(--t-card-blur)) saturate(220%) !important;
+    -webkit-backdrop-filter: blur(var(--t-card-blur)) saturate(220%) !important;
+    border: 1px solid var(--t-card-bc) !important;
+    border-top-color: var(--t-card-bc-top) !important;
+    border-left-color: var(--t-card-bc-left) !important;
+    box-shadow: var(--t-card-shadow) !important;
+    color: var(--cc-ink) !important;
+    border-radius: var(--t-card-radius) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Card hover — form aur modal par lift nahi (typing ke time jump karta tha) */
+body:is(.dark, .neon, .glass, .light) :is(.card, [class$="-card"], [class*="-card "]):not(.cc-portal-card):not(form):not(.disabled):hover {
+    background: var(--t-card-bg-hover) !important;
+    border-color: var(--t-card-bc-hover) !important;
+    box-shadow: var(--t-card-shadow-hover) !important;
+    transform: var(--t-card-lift);
+}
+
+/* Nav / header */
+body:is(.dark, .neon, .glass, .light) :is(nav, header) {
+    background: var(--t-nav-bg) !important;
+    backdrop-filter: blur(var(--t-nav-blur)) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(var(--t-nav-blur)) saturate(190%) !important;
+    border-bottom: 1px solid var(--t-nav-border) !important;
+    box-shadow: var(--t-nav-shadow) !important;
+}
+
+/* Inputs (checkbox / radio / file / button types ko nahi chheda) */
+body:is(.dark, .neon, .glass, .light) :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="color"]),
+    textarea,
+    select
+) {
+    background: var(--t-input-bg) !important;
+    border: 1px solid var(--t-input-bc) !important;
+    color: var(--t-input-color) !important;
+    transition: all 0.3s ease;
+}
+
+body:is(.dark, .neon, .glass, .light) :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="color"]),
+    textarea,
+    select
+):focus {
+    background: var(--t-input-bg-focus) !important;
+    border-color: var(--t-input-bc-focus) !important;
+    box-shadow: var(--t-input-shadow-focus) !important;
+    outline: none !important;
+}
+
+body:is(.dark, .neon, .glass, .light) ::placeholder {
+    color: var(--cc-muted);
+    opacity: 0.75;
+}
+
+body:is(.dark, .neon, .glass, .light) option {
+    background: var(--t-option-bg);
+    color: var(--cc-ink);
+}
+
+/* Chhoti screens par heavy blur phones ko slow karta hai */
+@media (max-width: 600px) {
+    body:is(.dark, .neon, .glass, .light) :is(.card, [class$="-card"], [class*="-card "]):not(.cc-portal-card) {
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+    }
+}
+
+
+/* ===========================================================
+   PAGE TRANSITIONS (index <-> profile, any page with the chip)
+   Chrome/Edge/Safari me native cross-page transition; baaki browsers me
+   profile-avtor.js / profile-app.js ka chhota fade-out fallback.
+   =========================================================== */
+@view-transition { navigation: auto; }
+
+@keyframes ccVtOut { to { opacity: 0; transform: scale(0.97); } }
+@keyframes ccVtIn  { from { opacity: 0; transform: translateY(22px) scale(0.985); } }
+::view-transition-old(root) { animation: ccVtOut 0.22s ease both; }
+::view-transition-new(root) { animation: ccVtIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Fallback exit (jab view-transition support na ho) */
+body.cc-leaving { opacity: 0; transform: scale(0.985); transition: opacity 0.18s ease, transform 0.18s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+    body.cc-leaving { transition: none; }
+}

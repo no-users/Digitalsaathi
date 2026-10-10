@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Click &amp; Connect — Sign In</title>
+    <meta name="description" content="Click & Connect — Cyber Cafe Suite. Ek secure login, saare portals.">
+    <meta name="theme-color" content="#F6E9FF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Click & Connect">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="logo-mark.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="cc-ui.css">
+    <link rel="stylesheet" href="auth-login.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="auth-firebase.js"></script>
+</head>
+<body>
+
+    <!-- soft background -->
+    <div class="cc-bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+    <div id="ccToastStack" class="cc-toast-stack"></div>
+
+    <main class="cc-login-shell" id="shell">
+
+        <!-- ================= BRAND PANEL ================= -->
+        <section class="cc-brand-panel" aria-label="Click & Connect">
+            <div class="cc-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+
+            <div class="cc-brand-top">
+                <svg class="cc-mark" viewBox="0 0 64 64" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="ccMarkGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#9B00D2"/><stop offset=".55" stop-color="#FE28AF"/><stop offset="1" stop-color="#DD603E"/>
+                        </linearGradient>
+                    </defs>
+                    <path class="mk-arc" pathLength="100" d="M47.56 16.44A22 22 0 1 0 47.56 47.56" stroke="url(#ccMarkGrad)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+                    <line class="mk-dots" x1="47.56" y1="23" x2="47.56" y2="41" stroke="#DD603E" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 6"/>
+                    <circle class="mk-n1" cx="47.56" cy="16.44" r="5.2" fill="#FE28AF"/>
+                    <circle class="mk-n2" cx="47.56" cy="47.56" r="5.2" fill="#007800"/>
+                    <path class="mk-cursor" d="M22 18v25.5l6.8-6.2 4.6 10.2 4.6-2.1-4.6-9.8H42.5z"/>
+                </svg>
+                <div class="cc-wordmark">
+                    <b>Click <span>&amp; Connect</span></b>
+                    <small>Cyber Cafe Suite</small>
+                </div>
+            </div>
+
+            <div class="cc-brand-copy">
+                <h1>Apna cyber cafe, ab <em>ek hi jagah</em> se.</h1>
+                <p>Portals, billing, tools aur profile — sab kuch ek secure login ke peeche. Sign in karein ya naya account banayein.</p>
+            </div>
+
+            <!-- floating product cards -->
+            <div class="cc-float-stage" aria-hidden="true">
+                <div class="cc-fcard c1">
+                    <span class="ico a"><i class="fas fa-receipt"></i></span>
+                    <div class="tx"><b>Smart Billing</b><small>Receipt #1042 · ₹1,250</small></div>
+                    <span class="chip ok"><i class="fas fa-check"></i> Paid</span>
+                </div>
+                <div class="cc-fcard c2">
+                    <span class="ico b"><i class="fas fa-shield-halved"></i></span>
+                    <div class="tx"><b>2-Device Session</b><small>Counter PC · Mobile</small></div>
+                    <span class="live"><i></i><i></i></span>
+                </div>
+                <div class="cc-fcard c3">
+                    <span class="ico c"><i class="fas fa-clock"></i></span>
+                    <div class="tx"><b>Auto-Protect</b><small>10 min idle → safe logout</small></div>
+                </div>
+            </div>
+
+            <ul class="cc-trust" aria-hidden="true">
+                <li><i class="fas fa-lock"></i> Encrypted</li>
+                <li><i class="fas fa-bolt"></i> Fast</li>
+                <li><i class="fas fa-cloud"></i> Cloud Sync</li>
+            </ul>
+        </section>
+
+        <!-- ================= FORM PANEL ================= -->
+        <section class="cc-form-panel" id="formPanel">
+
+            <!-- ===== AUTH VIEW (Sign In / Sign Up) ===== -->
+            <div class="cc-view active" id="authView">
+
+                <div class="cc-seg" id="seg" role="tablist" aria-label="Sign in or sign up">
+                    <i class="cc-seg-glider" id="segGlider"></i>
+                    <button type="button" class="active" id="tabLoginBtn" role="tab" aria-selected="true">Sign In</button>
+                    <button type="button" id="tabSignupBtn" role="tab" aria-selected="false">Sign Up</button>
+                </div>
+
+                <!-- already signed-in banner -->
+                <div class="cc-session" id="ccSessionBanner" hidden>
+                    <span class="av" id="sessAv">U</span>
+                    <div class="tx"><b id="sessName">Signed in</b><small id="sessEmail"></small></div>
+                    <div class="act">
+                        <button type="button" class="cc-btn cc-btn-primary cc-btn-sm" id="sessContinue">Continue</button>
+                        <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" id="sessSwitch">Switch</button>
+                    </div>
+                </div>
+
+                <div class="cc-alert warn" id="ccReasonBanner" role="status" hidden></div>
+                <div class="cc-alert error" id="ccErrorBox" role="alert" hidden></div>
+                <div class="cc-alert success" id="ccSuccessBox" role="status" hidden></div>
+
+                <!-- LOGIN -->
+                <div class="cc-pane active" id="loginView">
+                    <h2>Welcome back 👋</h2>
+                    <p class="cc-sub">Apne account me sign in karein</p>
+
+                    <form id="loginForm" novalidate>
+                        <div class="cc-field">
+                            <label for="loginEmail">Email</label>
+                            <div class="cc-input">
+                                <i class="fas fa-envelope lead"></i>
+                                <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="username" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
+                            </div>
+                        </div>
+                        <div class="cc-field">
+                            <label for="loginPassword">Password</label>
+                            <div class="cc-input">
+                                <i class="fas fa-lock lead"></i>
+                                <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" enterkeyhint="go">
+                                <button type="button" class="eye" data-eye="loginPassword" aria-label="Password dikhayein"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <div class="cc-caps" id="capsHint" hidden><i class="fas fa-arrow-up"></i> Caps Lock ON hai</div>
+                        </div>
+
+                        <div class="cc-row">
+                            <label class="cc-check">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="box"><i class="fas fa-check"></i></span>
+                                <span>Email yaad rakhein</span>
+                            </label>
+                            <a href="#" class="cc-link" id="goForgotPwd">Password bhool gaye?</a>
+                        </div>
+
+                        <button type="submit" class="cc-btn cc-btn-primary cc-btn-lg cc-btn-block" id="loginSubmitBtn">
+                            <span class="lbl">Sign In</span><i class="fas fa-arrow-right arr"></i>
+                        </button>
+                    </form>
+
+                    <p class="cc-foot">Email yaad nahi hai? <a href="#" id="goForgotEmail">Yahan dhoondein</a></p>
+                </div>
+
+                <!-- SIGN UP -->
+                <div class="cc-pane" id="signupView">
+                    <h2>Create account ✨</h2>
+                    <p class="cc-sub">Naya account banayein — sirf ek minute</p>
+
+                    <form id="signupForm" novalidate>
+                        <div class="cc-field">
+                            <label for="signupName">Full Name</label>
+                            <div class="cc-input">
+                                <i class="fas fa-user lead"></i>
+                                <input type="text" id="signupName" placeholder="Aapka naam" required autocomplete="name" autocapitalize="words" enterkeyhint="next">
+                            </div>
+                        </div>
+                        <div class="cc-field">
+                            <label for="signupEmail">Email</label>
+                            <div class="cc-input">
+                                <i class="fas fa-envelope lead"></i>
+                                <input type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
+                            </div>
+                        </div>
+                        <div class="cc-field">
+                            <label for="signupPassword">Password</label>
+                            <div class="cc-input">
+                                <i class="fas fa-lock lead"></i>
+                                <input type="password" id="signupPassword" placeholder="Kam se kam 6 characters" minlength="6" required autocomplete="new-password" enterkeyhint="go">
+                                <button type="button" class="eye" data-eye="signupPassword" aria-label="Password dikhayein"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <div class="cc-meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                            <div class="cc-meter-lbl" id="pwdMeterLbl">&nbsp;</div>
+                        </div>
+                        <button type="submit" class="cc-btn cc-btn-primary cc-btn-lg cc-btn-block" id="signupSubmitBtn">
+                            <span class="lbl">Create Account</span><i class="fas fa-arrow-right arr"></i>
+                        </button>
+                    </form>
+                    <p class="cc-foot small">Account banakar aap Click &amp; Connect ke terms se sehmat hote hain.</p>
+                </div>
+            </div>
+
+            <!-- ===== FORGOT PASSWORD ===== -->
+            <div class="cc-view" id="forgotPasswordView">
+                <button class="cc-back" type="button" data-go="authView"><i class="fas fa-arrow-left"></i> Sign In par wapas</button>
+                <div class="cc-hero-ico"><i class="fas fa-key"></i></div>
+                <h2>Password reset karein</h2>
+                <p class="cc-sub">Apna email daalein — reset link turant mil jayega.</p>
+                <div class="cc-alert error" id="fpErrorBox" role="alert" hidden></div>
+                <form id="forgotPasswordForm" novalidate>
+                    <div class="cc-field">
+                        <label for="fpEmail">Email</label>
+                        <div class="cc-input">
+                            <i class="fas fa-envelope lead"></i>
+                            <input type="email" id="fpEmail" placeholder="you@example.com" required autocomplete="username" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false">
+                        </div>
+                    </div>
+                    <button type="submit" class="cc-btn cc-btn-primary cc-btn-lg cc-btn-block" id="fpSubmitBtn">
+                        <span class="lbl">Reset Link Bhejein</span><i class="fas fa-paper-plane arr"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ===== FORGOT EMAIL ===== -->
+            <div class="cc-view" id="forgotEmailView">
+                <button class="cc-back" type="button" data-go="authView"><i class="fas fa-arrow-left"></i> Sign In par wapas</button>
+                <div class="cc-hero-ico"><i class="fas fa-magnifying-glass"></i></div>
+                <h2>Email dhoondein</h2>
+                <p class="cc-sub">Signup ke waqt jo naam diya tha wahi daalein.</p>
+                <div class="cc-alert error" id="feErrorBox" role="alert" hidden></div>
+                <div class="cc-results" id="feResultBox" hidden></div>
+                <form id="forgotEmailForm" novalidate>
+                    <div class="cc-field">
+                        <label for="feName">Full Name</label>
+                        <div class="cc-input">
+                            <i class="fas fa-user lead"></i>
+                            <input type="text" id="feName" placeholder="Aapka naam" required autocomplete="name" autocapitalize="words">
+                        </div>
+                    </div>
+                    <button type="submit" class="cc-btn cc-btn-primary cc-btn-lg cc-btn-block" id="feSubmitBtn">
+                        <span class="lbl">Email Dhoondein</span><i class="fas fa-magnifying-glass arr"></i>
+                    </button>
+                </form>
+            </div>
+
+            <p class="cc-legal">© Click &amp; Connect · Secure by design</p>
+        </section>
+    </main>
+
+    <script src="cc-ui.js"></script>
+    <script src="auth-login.js"></script>
+</body>
+</html>

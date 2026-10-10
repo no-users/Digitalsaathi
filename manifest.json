@@ -1,0 +1,21 @@
+{
+  "id": "/index.html",
+  "name": "Click & Connect",
+  "short_name": "Click&Connect",
+  "description": "Cyber cafe suite - portals, tools and billing in one place",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDFFF0",
+  "theme_color": "#FFFFFF",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    { "src": "Web_Icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "Web_Icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Favorites", "short_name": "Favorites", "url": "index.html?view=fav" },
+    { "name": "Quick Notes", "short_name": "Notes", "url": "index.html?open=notes" }
+  ]
+}
