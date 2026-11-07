@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Click & Connect · Admin</title>
+<link rel="icon" type="image/png" href="Web_Icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<style>
+:root{--g:#007800;--p:#FE28AF;--v:#9B00D2;--r:#DD603E;--bg:#FDFFF0;--card:#fff;--tx:#241632;--mu:#7a6f86;--ln:#ece7f1;--side:linear-gradient(180deg,#2b0a3d,#5a0a85)}
+[data-t=dark]{--bg:#150d1c;--card:#21152c;--tx:#f3ecf8;--mu:#a597b3;--ln:#33223f}
+*{box-sizing:border-box;margin:0;font-family:'Plus Jakarta Sans',sans-serif}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--tx);font-size:14px}
+button{cursor:pointer;border:0;font-weight:600;font-size:13px}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:10px;background:var(--card);color:var(--tx);font-size:14px;outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--v);box-shadow:0 0 0 3px #9b00d222}
+.err{border-color:var(--r)!important}
+:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.btn{padding:10px 16px;border-radius:10px;background:var(--g);color:#fff;display:inline-flex;gap:8px;align-items:center}
+.btn.alt{background:transparent;color:var(--tx);border:1.5px solid var(--ln)}
+.btn.bad{background:var(--r)}
+.btn.sm{padding:6px 10px;font-size:12px}
+#login{min-height:100vh;display:grid;place-items:center;background:var(--side);padding:20px}
+#login form{background:var(--card);padding:36px;border-radius:22px;width:380px;max-width:100%;display:grid;gap:14px}
+#login h1{font-size:24px;font-weight:800}
+#login h1 b{color:var(--p)}
+#app{display:flex;min-height:100vh}
+aside{width:236px;background:var(--side);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+aside .brand{font-weight:800;font-size:18px;padding:0 10px 18px}
+aside .brand b{color:var(--p)}
+.nav{background:0;color:#e5d3f3;text-align:left;padding:11px 12px;border-radius:11px;display:flex;gap:11px;align-items:center}
+.nav i{width:18px;text-align:center}
+.nav em{margin-left:auto;font-style:normal;font-size:11px;background:#ffffff22;padding:2px 8px;border-radius:99px}
+.nav:hover{background:#ffffff14}
+.nav.on{background:var(--p);color:#fff}
+.sp{flex:1}
+main{flex:1;min-width:0;padding:24px 30px}
+.top{display:flex;gap:12px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+.top h2{font-size:24px;font-weight:800;flex:1}
+.top input{max-width:280px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px;cursor:pointer;border-left:5px solid var(--c)}
+.stat b{font-size:30px;display:block;font-weight:800}
+.stat span{color:var(--mu)}
+.box{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:18px;margin-bottom:18px}
+.box h3{margin-bottom:12px;font-size:15px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hl{display:grid;gap:8px}
+.hl div{padding:9px 12px;border-radius:10px;background:#dd603e14;display:flex;gap:10px;align-items:center}
+.hl .ok{background:#00780016;color:var(--g)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;color:var(--mu);font-weight:600;font-size:12px;padding:10px;border-bottom:1.5px solid var(--ln)}
+td{padding:10px;border-bottom:1px solid var(--ln)}
+tr[draggable=true]{cursor:grab}
+tr.ov td{background:#fe28af18}
+.chip{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;flex-shrink:0}
+.bd{background:#9b00d214;color:var(--v);padding:3px 9px;border-radius:99px;font-size:12px;margin-right:4px;display:inline-block}
+.act{text-align:right;white-space:nowrap}
+.act button{background:0;color:var(--mu);padding:7px 9px;border-radius:8px}
+.act button:hover{background:#9b00d214;color:var(--v)}
+.empty{text-align:center;padding:40px;color:var(--mu)}
+#modal{position:fixed;inset:0;background:#150820aa;display:grid;place-items:center;z-index:50;padding:16px;backdrop-filter:blur(3px)}
+.dlg{background:var(--card);border-radius:20px;width:640px;max-width:100%;max-height:92vh;overflow:auto;padding:24px;display:grid;gap:14px}
+.dlg h3{font-size:18px}
+.fld label{font-size:12px;font-weight:600;color:var(--mu);display:block;margin-bottom:5px}
+.pre{display:flex;gap:12px;align-items:center;background:var(--bg);padding:12px;border-radius:14px}
+.ig{display:grid;grid-template-columns:repeat(auto-fill,38px);gap:5px;max-height:210px;overflow:auto;margin-top:8px}
+.ct{display:flex;gap:6px;overflow:auto;margin-top:8px;padding-bottom:4px}.ct .btn{white-space:nowrap}
+.ig button{height:38px;background:var(--bg);color:var(--tx);border-radius:9px}
+.ig button:hover{background:var(--v);color:#fff}
+.sw{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.sw button{width:28px;height:28px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--ln)}
+.sw input{width:42px;height:32px;padding:2px}
+.lk{display:grid;grid-template-columns:1fr 1fr 1.4fr auto;gap:6px;margin-bottom:6px}
+#toasts{position:fixed;right:18px;bottom:18px;display:grid;gap:8px;z-index:99}
+.ts{background:var(--tx);color:var(--bg);padding:12px 16px;border-radius:12px;border-left:5px solid var(--g);animation:in .25s}
+.ts.e{border-color:var(--r)}
+@keyframes in{from{transform:translateX(30px);opacity:0}}
+.nt{background:linear-gradient(90deg,var(--v),var(--p));color:#fff;padding:12px 16px;border-radius:12px;margin-bottom:12px}
+.ring{width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--g) calc(var(--s)*1%),var(--ln) 0);display:grid;place-items:center}
+.ring b{background:var(--card);width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-size:24px}
+.bar{display:flex;gap:10px;align-items:center;margin:7px 0}.bar span{height:10px;border-radius:9px;display:block;background:var(--c)}.bar small{width:110px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.btn{text-decoration:none}
+.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.gc{background:var(--card);border:1px solid var(--ln);border-top:5px solid var(--c);border-radius:16px;padding:14px;display:grid;gap:6px}.gc img{width:100%;height:110px;object-fit:cover;border-radius:10px}.gi{height:110px;display:grid;place-items:center;background:var(--bg);border-radius:10px}.gc small{color:var(--mu)}
+#view>*{animation:up .5s cubic-bezier(.2,.8,.2,1) both}#view>*:nth-child(2){animation-delay:.06s}#view>*:nth-child(3){animation-delay:.12s}#view>*:nth-child(4){animation-delay:.18s}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+tbody tr,.gc,.stat,.kk{animation:up .45s cubic-bezier(.2,.8,.2,1) both}
+.stat,.gc,.box,.kk{transition:transform .25s,box-shadow .25s}.stat:hover,.gc:hover,.kk:hover{transform:translateY(-4px);box-shadow:0 14px 30px #9b00d226}
+.btn{transition:transform .15s,box-shadow .2s,filter .2s}.btn:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 6px 16px #0000001f}.btn:active{transform:scale(.96)}
+.nav{transition:background .25s,transform .25s}.nav:hover{transform:translateX(4px)}a.nav{text-decoration:none}.nav.ext{margin-top:6px;border:1px dashed #ffffff55}
+.dlg{animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}@keyframes pop{from{opacity:0;transform:scale(.92) translateY(12px)}}
+#modal{animation:fade .2s}@keyframes fade{from{opacity:0}}
+.bar span{animation:grow 1s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}@keyframes grow{from{transform:scaleX(0)}}
+.ring{animation:rg 1s ease both}@keyframes rg{from{transform:rotate(-120deg) scale(.6);opacity:0}}
+aside{background-size:100% 220%;animation:flow 14s ease-in-out infinite alternate}@keyframes flow{to{background-position:0 100%}}
+.top h2{background:linear-gradient(90deg,var(--v),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent}
+.kb{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.kc{background:var(--card);border:1px solid var(--ln);border-top:5px solid var(--c);border-radius:16px;padding:12px;min-height:220px;display:grid;gap:8px;align-content:start}.kc h3{font-size:14px}.kc em{font-style:normal;background:var(--bg);padding:1px 8px;border-radius:99px;font-size:12px}
+.kk{background:var(--bg);border-radius:12px;padding:10px;cursor:grab;display:grid;gap:3px}.kk small{color:var(--mu)}
+/* ===== premium polish ===== */
+:root{--e:cubic-bezier(.22,1,.36,1);color-scheme:light}
+[data-t=dark]{color-scheme:dark;--bg:#0f0a16;--card:#1a1226;--ln:#2d2140;--mu:#a99bbd;--side:linear-gradient(180deg,#0b0613,#2a0a40)}
+html.tt *,html.tt *::before{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease!important}
+body{background:radial-gradient(900px 480px at 88% -8%,#fe28af18,transparent 70%),radial-gradient(800px 480px at -8% 6%,#9b00d218,transparent 70%),var(--bg) fixed}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#9b00d244;border-radius:9px}
+aside{overflow-y:auto;scrollbar-width:thin;box-shadow:6px 0 30px #2b0a3d33}
+.nav{font-weight:600;position:relative}
+.nav i{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#ffffff14;transition:background .25s,transform .35s var(--e)}
+.nav:hover i{transform:rotate(-8deg) scale(1.1)}
+.nav.on{background:linear-gradient(90deg,var(--p),var(--v));box-shadow:0 8px 22px #fe28af55}.nav.on i{background:#ffffff33}
+.xl{margin-top:8px;display:flex;gap:11px;align-items:center;padding:11px;border-radius:14px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#ffffff1c,#ffffff0a);border:1px solid #ffffff30;backdrop-filter:blur(8px);transition:transform .35s var(--e),box-shadow .35s,border-color .35s}
+.xl:hover{transform:translateY(-3px);border-color:var(--p);box-shadow:0 12px 26px #fe28af44}
+.xi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--p),var(--v));flex-shrink:0}
+.xl b{display:block;font-size:13px}.xl small{opacity:.7;font-size:11px}
+.xa{margin-left:auto;font-size:12px;opacity:.7;transition:transform .35s var(--e)}.xl:hover .xa{transform:translate(3px,-3px);opacity:1}
+.top{position:sticky;top:0;z-index:20;margin:-24px -30px 22px;padding:16px 30px;backdrop-filter:blur(16px) saturate(160%);background:color-mix(in srgb,var(--bg) 74%,transparent);border-bottom:1px solid var(--ln)}
+.thb{width:38px;height:34px;padding:0!important;justify-content:center;font-size:15px}.thb i{transition:transform .5s var(--e)}.thb:hover i{transform:rotate(180deg)}
+.box,.stat,.gc,.kc{border-radius:20px;box-shadow:0 1px 2px #2b0a3d0a,0 10px 28px #2b0a3d0f}
+[data-t=dark] .box,[data-t=dark] .stat,[data-t=dark] .gc,[data-t=dark] .kc{box-shadow:0 10px 28px #00000040}
+.stat b{font-size:34px;background:linear-gradient(135deg,var(--c),var(--tx) 120%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{background:linear-gradient(135deg,#00a000,var(--g));box-shadow:0 4px 14px #00780033}.btn.alt{background:transparent;box-shadow:none}.btn.bad{background:linear-gradient(135deg,#f07a58,var(--r))}
+.btn:hover{transition-timing-function:var(--e)}
+tbody tr{transition:background .2s}tbody tr:hover td{background:#9b00d20b}
+input,select,textarea{transition:border-color .25s,box-shadow .25s,background .3s}
+.hero{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:26px 28px;margin-bottom:20px;border-radius:24px;color:#fff;background:linear-gradient(120deg,#2b0a3d,var(--v) 55%,var(--p));background-size:160% 160%;animation:up .5s var(--e) both,hg 10s ease-in-out infinite alternate;box-shadow:0 18px 40px #9b00d244;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;width:260px;height:260px;right:-60px;top:-90px;border-radius:50%;background:#ffffff1c;filter:blur(2px)}
+@keyframes hg{to{background-position:100% 100%}}
+.hero small{opacity:.8}.hero h1{font-size:26px;font-weight:800;margin:4px 0}.hero p{opacity:.85}
+.hero .btn{background:#ffffff26;backdrop-filter:blur(8px);box-shadow:none;border:1px solid #ffffff33}.hero .btn:hover{background:#ffffff40}
+.ts{backdrop-filter:blur(10px);box-shadow:0 12px 30px #0000003a}
+#login{background:linear-gradient(135deg,#2b0a3d,#5a0a85,#9B00D2);background-size:200% 200%;animation:hg 12s ease infinite alternate;position:relative;overflow:hidden}
+#login::before,#login::after{content:'';position:absolute;width:440px;height:440px;border-radius:50%;filter:blur(90px);opacity:.45;animation:fl 9s ease-in-out infinite alternate}
+#login::before{background:var(--p);left:-120px;top:-120px}#login::after{background:var(--g);right:-140px;bottom:-140px;animation-delay:-4s}
+@keyframes fl{to{transform:translate(70px,50px) scale(1.15)}}
+#login form{position:relative;z-index:1;animation:pop .7s var(--e) both;box-shadow:0 30px 70px #00000055}
+.tg{position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;background:#ffffff26;color:#fff;border:1px solid #ffffff44;backdrop-filter:blur(8px);z-index:2;cursor:pointer}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.4s;animation-timing-function:var(--e)}
+#fab{position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;font-size:26px;justify-content:center;padding:0;z-index:40;background:linear-gradient(135deg,var(--p),var(--v));box-shadow:0 12px 28px #fe28af66}#fab:hover{transform:rotate(90deg) scale(1.08)}#toasts{bottom:92px}
+@media(max-width:820px){.top{margin:-16px -16px 16px;padding:12px 16px}.xl small,.xa{display:none}.xl{margin:0 0 0 6px;white-space:nowrap}.hero{padding:18px}.hero h1{font-size:20px}}
+@media(max-width:820px){#app{flex-direction:column}aside{width:100%;height:auto;flex-direction:row;overflow-x:auto;position:static;padding:10px}aside .brand,.sp,.nav em{display:none}.nav{white-space:nowrap}main{padding:16px}.lk{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="login" hidden>
+ <button type="button" class="thb tg" title="Dark / Light"></button>
+ <form id="lf">
+  <h1>Click <b>&</b> Connect</h1>
+  <p style="color:var(--mu)">Admin panel me login karein.</p>
+  <input id="em" type="email" placeholder="Email" required autocomplete="username">
+  <input id="pw" type="password" placeholder="Password" required autocomplete="current-password">
+  <button class="btn" style="justify-content:center">Login</button>
+  <button type="button" id="fg" class="btn alt" style="justify-content:center">Password reset email bhejein</button>
+ </form>
+</div>
+<div id="app" hidden>
+ <aside id="nav"></aside>
+ <main>
+  <div class="top">
+   <h2 id="ttl"></h2>
+   <input id="q" placeholder="Search karein ( / )" aria-label="Search">
+   <button class="btn alt sm thb" title="Dark / Light"></button><button class="btn alt sm" id="bell"><i class="fas fa-bell"></i><span id="bc" class="bd" style="margin:0 0 0 4px;background:var(--p);color:#fff"></span></button><button class="btn alt sm" id="kb"><i class="fas fa-bolt"></i> Ctrl+K</button><button class="btn alt sm" id="un" title="Undo (Ctrl+Z)"><i class="fas fa-rotate-left"></i> Undo</button>
+  </div>
+  <div id="view"></div>
+ </main>
+</div>
+<button id="fab" class="btn" title="Quick add">+</button>
+<div id="modal" hidden></div>
+<div id="toasts"></div>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",authDomain:"agency-136b6.firebaseapp.com",projectId:"agency-136b6",storageBucket:"agency-136b6.firebasestorage.app",messagingSenderId:"503663950718",appId:"1:503663950718:web:8a30b18039c279ffac112f"});
+const db=firebase.firestore(),auth=firebase.auth(),REF=db.collection('data').doc('matrix_config');
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mk=(p,s)=>s.split(' ').map(n=>p+' fa-'+n);
+const CAT={'Documents':mk('fas','folder folder-open file file-alt file-pdf file-word file-excel file-powerpoint file-invoice file-signature file-contract file-download file-upload file-image file-code file-archive copy clipboard clipboard-list clipboard-check book book-open bookmark scroll sticky-note newspaper'),'Government':mk('fas','id-card address-card id-badge fingerprint stamp landmark university gavel balance-scale flag passport vote-yea building-columns user-shield shield-alt certificate award medal'),'Education':mk('fas','graduation-cap user-graduate school book-reader chalkboard-teacher pen-nib pen pencil-alt ruler atlas globe-asia microscope flask brain lightbulb calculator laptop-code'),'Money':mk('fas','rupee-sign wallet credit-card money-bill-wave money-check coins piggy-bank receipt file-invoice-dollar chart-bar chart-line chart-pie percent handshake briefcase store shopping-cart shopping-bag tags tag cash-register hand-holding-dollar'),'Health & Farm':mk('fas','heartbeat hospital stethoscope pills syringe ambulance user-md tractor seedling leaf wheat-awn cow paw tree sun cloud-rain'),'Travel':mk('fas','car bus train subway bicycle motorcycle plane ship truck taxi gas-pump map map-marker-alt location-dot route compass hotel ticket-alt suitcase'),'Tech':mk('fas','globe wifi link external-link-alt cloud server database laptop desktop mobile-alt tablet-alt keyboard print camera video tv headphones microphone qrcode barcode plug bolt microchip code terminal bug robot shield-halved'),'Contact':mk('fas','envelope phone phone-alt comments comment-dots headset share-alt paper-plane bell address-book at inbox rss bullhorn'),'People':mk('fas','user users user-tie user-plus user-check user-lock child baby person-dress people-group hands-helping heart star thumbs-up smile'),'Tools':mk('fas','cog cogs sliders-h wrench hammer tools screwdriver-wrench paint-brush palette magic filter sort search download upload edit trash save sync redo history lock unlock key eye'),'Misc':mk('fas','calendar calendar-check clock hourglass-half stopwatch gift trophy crown fire rocket flag-checkered bullseye cube cubes puzzle-piece gamepad music film utensils coffee pizza-slice'),'Brands':mk('fab','whatsapp facebook instagram youtube twitter telegram google google-drive google-pay paypal linkedin github android apple chrome amazon cc-visa cc-mastercard')};
+const ICONS=[...new Set(Object.values(CAT).flat())];
+let ct='Sab';
+const BR=['#007800','#FE28AF','#9B00D2','#DD603E','#0077BE','#FFA500','#2F4F4F','#C71585'];
+const F=(k,l,t,r)=>[k,l,t,r];
+const IC=F('icon','Icon','icon'),CO=F('color','Color','color');
+const SC={
+ folders:{t:'Main Folders',i:'folder',c:'#007800',f:[F('name','Name','text',1),IC,CO],L:x=>x.name},
+ subs:{t:'Sub-Portals',i:'folder-open',c:'#9B00D2',f:[F('parent','Main Folder','folder',1),F('name','Name','text',1),IC,CO],L:x=>x.name},
+ sideLinks:{t:'Side-Links',i:'link',c:'#FE28AF',f:[F('folder','Main Folder','folder',1),F('sub','Sub-Portal','sub',1),F('label','Link name','text',1),F('url','URL','url',1),IC,CO],L:x=>x.label},
+ cards:{t:'Workspace Cards',i:'th-large',c:'#DD603E',f:[F('folder','Main Folder','folder',1),F('sub','Sub-Portal','sub',1),F('title','Heading','text',1),F('url','Redirect URL','url',1),F('desc','Description','area'),F('imageUrl','Image URL','url'),F('showFrom','Dikhana shuru (date)','date'),F('showUntil','Last date, iske baad chhupa dein','date'),IC,CO,F('links','Extra links','links')],L:x=>x.title},
+ pdfs:{t:'Drive PDFs',i:'file-pdf',c:'#0077BE',f:[F('title','PDF title','text',1),F('driveLink','Google Drive link','url',1),F('portalLink','Portal link','url'),IC,CO],L:x=>x.title}
+ ,apps:{t:'Customers',i:'address-book',c:'#007800',f:[F('customer','Customer name','text',1),F('phone','Phone','text'),F('service','Service','text',1),F('amount','Amount (₹)','num'),F('status','Status','status'),F('date','Date','date'),IC,CO],L:x=>x.customer}
+ ,bills:{t:'Bills & Udhaar',i:'receipt',c:'#9B00D2',f:[F('customer','Customer','text',1),F('service','Service','text',1),F('amount','Total (₹)','num',1),F('discount','Discount (₹)','num'),F('paid','Jama (₹)','num'),F('mode','Payment mode','mode'),F('phone','Phone (udhaar reminder ke liye)','text'),F('by','Bill kisne banaya (staff)','text'),F('date','Date','date'),IC,CO],L:x=>x.customer},
+ expenses:{t:'Expenses',i:'wallet',c:'#DD603E',f:[F('title','Kharch ka naam','text',1),F('amount','Amount (₹)','num',1),F('category','Category','text'),F('date','Date','date'),IC,CO],L:x=>x.title},
+ prices:{t:'Price List',i:'tags',c:'#FFA500',f:[F('service','Service','text',1),F('amount','Rate (₹)','num',1),IC,CO],L:x=>x.service}
+ ,staff:{t:'Staff & Salary',i:'user-tie',c:'#0077BE',f:[F('name','Naam','text',1),F('phone','Phone','text'),F('role','Kaam / Role','text'),F('salary','Mahine ki salary (₹)','num',1),F('present','Is mahine ke din present','num'),F('advance','Advance liya (₹)','num'),IC,CO],L:x=>x.name},
+ cash:{t:'Cash Closing',i:'cash-register',c:'#007800',f:[F('date','Date','date',1),F('opening','Subah ka balance (₹)','num'),F('closing','Shaam ka actual balance (₹)','num',1),F('note','Note','text'),IC,CO],L:x=>x.date}
+};
+const NAV=[['dash','Dashboard','chart-pie'],...Object.keys(SC).map(k=>[k,SC[k].t,SC[k].i]),['kanban','Kanban Board','table-columns'],['bcast','WhatsApp Broadcast','paper-plane'],['trash','Recycle Bin','trash-restore'],['analytics','Analytics & Kamai','chart-line'],['tools','Link Checker','link-slash'],['logs','Audit Log','list-check'],['preview','Live Preview','eye'],['settings','Settings','cog']];
+const fk=k=>k==='subs'?'parent':'folder';
+let D={folders:[],subs:[],sideLinks:[],cards:[],notice:''},P=[],A=[],Z={bills:[],expenses:[],prices:[],staff:[],cash:[]},kd=-1,ROLE='viewer',PM={},ADM=[],mode='table',view='dash',sel=new Set(),fl='',undo=[],drag=-1;
+const can=a=>ROLE==='owner'||(PM.act||[]).includes(a);
+const see=v=>v==='dash'||(v==='settings'?ROLE==='owner':ROLE==='owner'||(PM.sec||[]).includes(v));
+const COL={pdfs:'drive_pdfs',apps:'applications',bills:'bills',expenses:'expenses',prices:'prices',staff:'staff',cash:'cash'};
+const arr=k=>k==='pdfs'?P:k==='apps'?A:COL[k]?Z[k]:D[k];
+const toast=(m,e)=>{const t=document.createElement('div');t.className='ts'+(e?' e':'');t.textContent=m;$('#toasts').append(t);setTimeout(()=>t.remove(),3200)};
+const log=m=>{const l=JSON.parse(localStorage.ctlog||'[]');l.unshift([Date.now(),m]);localStorage.ctlog=JSON.stringify(l.slice(0,30));db.collection('audit').add({at:new Date(),by:auth.currentUser?.email||'',msg:m}).catch(()=>{})};
+const hex=c=>{if(/^#[0-9a-f]{6}$/i.test(c||''))return c;const m=(c||'').match(/\d+/g);return m&&m.length>=3?'#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join(''):'#9B00D2'};
+const okUrl=u=>!u||/^(https?:\/\/|\/|[\w.-]+\.html)/i.test(u);
+const chip=x=>`<span class="chip" style="background:${esc(hex(x.color))}"><i class="${esc(x.icon||'fas fa-link')}"></i></span>`;
+
+/* ---------- auth ---------- */
+auth.onAuthStateChanged(async u=>{$('#app').hidden=1;$('#login').hidden=0;if(u&&await gate()){$('#login').hidden=1;$('#app').hidden=0;load()}});
+async function gate(){const em=auth.currentUser.email.toLowerCase(),R=db.collection('admins');
+ try{let d=await R.doc(em).get();
+  if(!d.exists){const any=await R.limit(1).get();if(any.empty){await R.doc(em).set({role:'owner',active:true,created:new Date()});d=await R.doc(em).get()}}
+  const me=d.exists&&d.data();
+  if(!me||me.active===false){await auth.signOut();toast('Aapko access nahi diya gaya hai. Owner se sampark karein.',1);return false}
+  ROLE=me.role;PM=me;ADM=ROLE==='owner'?(await R.get()).docs.map(x=>({id:x.id,...x.data()})):[];
+  R.doc(em).set({lastLogin:new Date()},{merge:true})}catch(e){await auth.signOut();toast('Access check nahi ho paya.',1);return false}
+ return true}
+let fails=0,lock=0;
+$('#lf').onsubmit=async e=>{e.preventDefault();if(Date.now()<lock)return toast('Bahut galat koshish. 1 minute baad try karein.',1);try{await auth.signInWithEmailAndPassword($('#em').value,$('#pw').value)}catch(x){if(++fails>=5){lock=Date.now()+60000;fails=0}toast('Login fail: email ya password galat hai.',1)}};
+$('#fg').onclick=async()=>{const m=$('#em').value;if(!m)return toast('Pehle email likhein.',1);try{await auth.sendPasswordResetEmail(m);toast('Reset email bhej diya.')}catch(x){toast('Email nahi bheja ja saka.',1)}};
+
+/* ---------- data ---------- */
+async function load(){
+ try{const d=await REF.get();if(d.exists)D=Object.assign(D,d.data());
+ const s=await db.collection('drive_pdfs').get();P=s.docs.map(x=>({id:x.id,...x.data()}));
+ const a=await db.collection('applications').get();A=a.docs.map(x=>({id:x.id,...x.data()}));for(const k of ['bills','expenses','prices','staff','cash'])Z[k]=(await db.collection(k).get()).docs.map(x=>({id:x.id,...x.data()}))}catch(e){toast('Data load nahi hua: '+e.message,1)}
+ render()}
+async function mut(fn,msg,act='edit'){if(!can(act))return toast('Is action ki permission nahi hai.',1);undo.push(JSON.stringify(D));if(undo.length>25)undo.shift();fn();try{await REF.set(D);log(msg);toast(msg)}catch(e){D=JSON.parse(undo.pop());toast('Save fail: '+e.message,1)}render()}
+$('#un').onclick=async()=>{if(!can('edit'))return toast('Is action ki permission nahi hai.',1);if(!undo.length)return toast('Undo ke liye kuch nahi hai.',1);D=JSON.parse(undo.pop());await REF.set(D);toast('Undo ho gaya.');render()};
+function ask(m){return new Promise(r=>{const M=$('#modal');M.hidden=0;M.innerHTML=`<div class="dlg"><h3>${esc(m)}</h3><div class="row" style="justify-content:flex-end"><button class="btn alt" id="n">Cancel</button><button class="btn bad" id="y">Haan, kar do</button></div></div>`;$('#y').onclick=()=>{M.hidden=1;r(1)};$('#n').onclick=()=>{M.hidden=1;r(0)}})}
+
+/* ---------- render ---------- */
+function render(){if(!see(view))view='dash';
+ $('#nav').innerHTML=`<div class="brand">Click <b>&</b> Connect</div>`+NAV.filter(n=>see(n[0])).map(([k,t,i])=>`<button class="nav ${k===view?'on':''}" data-v="${k}"><i class="fas fa-${i}"></i>${t}${SC[k]?`<em>${arr(k).length}</em>`:''}</button>`).join('')+`<a class="xl" href="https://click-connect-7kac.onrender.com/m-a71c2e2ef4e6e7c08930d761" target="_blank" rel="noopener"><span class="xi"><i class="fas fa-bolt"></i></span><span><b>Doosra Admin</b><small>Naye tab me kholein</small></span><i class="fas fa-arrow-up-right-from-square xa"></i></a><div class="sp"></div><button class="nav" data-v="out"><i class="fas fa-right-from-bracket"></i>Logout</button>`;
+ $('#ttl').textContent=(NAV.find(n=>n[0]===view)||[])[1];
+ $('#q').style.display=SC[view]?'':'none';
+ $('#view').innerHTML=view==='dash'?dash():view==='settings'?sets():view==='preview'?pvw():view==='trash'?bin():view==='bcast'?bcast():view==='kanban'?kan():view==='analytics'?ana():view==='tools'?tools():view==='logs'?logs():list(view);
+ if(view==='settings')loadBk();if(view==='analytics')loadAna();if(view==='logs')loadLogs();if(view==='trash')loadBin();$('#bc').textContent=alerts().length||'';anim()}
+$('#nav').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;if(b.dataset.v==='out')return auth.signOut();go(b.dataset.v)};
+function go(v){const r=()=>{view=v;sel.clear();fl='';$('#q').value='';render()};document.startViewTransition?document.startViewTransition(r):r()}
+$('#q').oninput=render;
+
+function health(){
+ const h=[],c=D.cards,u=x=>x.url&&!okUrl(x.url);
+ D.folders.forEach(f=>{if(!D.subs.some(s=>s.parent===f.name))h.push(`Folder "${f.name}" me koi sub-portal nahi hai`)});
+ D.subs.forEach(s=>{if(!c.some(x=>x.folder===s.parent&&x.sub===s.name)&&!D.sideLinks.some(x=>x.folder===s.parent&&x.sub===s.name))h.push(`Sub-portal "${s.name}" khali hai`)});
+ c.forEach(x=>{if(!x.url&&!(x.links||[]).length)h.push(`Card "${x.title}" me koi link nahi`);if(u(x))h.push(`Card "${x.title}" ka URL galat lagta hai`);if(!D.folders.some(f=>f.name===x.folder))h.push(`Card "${x.title}" ka folder missing hai`)});
+ D.sideLinks.forEach(x=>{if(u(x))h.push(`Side-link "${x.label}" ka URL galat hai`)});
+ return h}
+function dash(){
+ const hs=health(),mx=Math.max(1,...D.folders.map(f=>D.cards.filter(c=>c.folder===f.name).length)),sc=Math.max(0,100-hs.length*8),lg=JSON.parse(localStorage.ctlog||'[]');
+ return `${hero()}${D.notice?`<div class="nt"><i class="fas fa-bell"></i> ${esc(D.notice)}</div>`:''}
+ <div class="stats">${Object.keys(SC).map(k=>`<div class="stat" style="--c:${SC[k].c}" data-v="${k}"><b>${arr(k).length}</b><span>${SC[k].t}</span></div>`).join('')}</div>
+ <div class="box"><div class="row" style="gap:28px"><div class="ring" style="--s:${sc}"><b>${sc}</b></div><div style="flex:1;min-width:220px"><h3>Site health score · folder ke hisaab se cards</h3>${D.folders.length?D.folders.map(f=>{const n=D.cards.filter(c=>c.folder===f.name).length;return `<div class="bar" style="--c:${esc(hex(f.color))}"><small>${esc(f.name)}</small><span style="width:${Math.max(4,n/mx*100)}%"></span><b>${n}</b></div>`}).join(''):'<p class="empty">Folder banate hi chart dikhega.</p>'}</div></div></div>
+ <div class="box"><h3><i class="fas fa-stethoscope"></i> Site health</h3><div class="hl">${hs.length?hs.slice(0,12).map(x=>`<div><i class="fas fa-triangle-exclamation"></i>${esc(x)}</div>`).join('')+(hs.length>12?`<div>+${hs.length-12} aur</div>`:''):'<div class="ok"><i class="fas fa-circle-check"></i>Sab kuch theek hai.</div>'}</div></div>
+ <div class="box"><h3><i class="fas fa-clock-rotate-left"></i> Recent activity</h3>${lg.length?lg.slice(0,8).map(([t,m])=>`<p style="padding:6px 0;border-bottom:1px solid var(--ln)">${esc(m)} <span style="color:var(--mu);float:right">${new Date(t).toLocaleString('en-IN',{dateStyle:'short',timeStyle:'short'})}</span></p>`).join(''):'<p class="empty">Abhi koi activity nahi.</p>'}</div>`}
+
+function list(k){return k==='cards'&&mode==='grid'?grid():list0(k)}
+function list0(k){
+ const s=SC[k],q=$('#q').value.toLowerCase(),isP=!!COL[k];
+ let it=arr(k).map((x,i)=>({x,i})).filter(({x})=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(!fl||x[fk(k)]===fl));
+ const canDrag=!q&&!fl&&!isP;
+ return `<div class="row" style="margin-bottom:14px"><button class="btn" data-a="add" data-k="${k}"><i class="fas fa-plus"></i> Naya add karein</button>${isP?`<button class="btn alt" data-a="csv" data-k="${k}"><i class="fas fa-file-excel"></i> Excel/CSV</button>`:''}${k==='cards'?`<button class="btn alt" data-a="mode"><i class="fas fa-grip"></i> Grid view</button>`:''}
+ ${!isP&&k!=='folders'?`<select id="fsel" style="max-width:200px"><option value="">Sab folders</option>${D.folders.map(f=>`<option ${f.name===fl?'selected':''}>${esc(f.name)}</option>`).join('')}</select>`:''}
+ ${sel.size?`<button class="btn bad" data-a="bulk" data-k="${k}"><i class="fas fa-trash"></i> ${sel.size} delete</button>${isP?'':`<button class="btn alt" data-a="bhid" data-k="${k}"><i class="fas fa-eye-slash"></i> Hide/Show</button>`}`:''}
+ <span style="color:var(--mu);margin-left:auto">${it.length} items${canDrag?' · drag karke order badlein':''}</span></div>
+ <div class="box" style="padding:6px;overflow:auto"><table><thead><tr><th style="width:30px"><input type="checkbox" data-s="all" style="width:auto"></th><th>Name</th><th>${k==='apps'?'Status · Amount':isP?'Link':'Location'}</th><th></th></tr></thead><tbody>
+ ${it.length?it.map(({x,i})=>`<tr data-i="${i}" ${canDrag?'draggable="true"':''} style="${x.hidden?'opacity:.45':''}"><td><input type="checkbox" data-s="${i}" style="width:auto" ${sel.has(i)?'checked':''}></td>
+ <td><div class="row" style="flex-wrap:nowrap">${isP&&!x.icon?`<span class="chip" style="background:${k==='apps'?'#007800':'#0077BE'}"><i class="fas fa-${SC[k].i}"></i></span>`:chip(x)}<div><b>${x.pinned?'<i class="fas fa-star" style="color:#FFA500"></i> ':''}${esc(s.L(x))}</b> ${sched(x)}${k==='cards'&&x.links?.length?`<br><small style="color:var(--mu)">${x.links.length} extra links</small>`:''}</div></div></td>
+ <td>${isP?`${k==='apps'?appCell(x):['bills','expenses','prices','staff','cash'].includes(k)?cell(k,x):`<small style="color:var(--mu)">${esc((x.driveLink||'').slice(0,40))}</small>`}`:`${x[fk(k)]?`<span class="bd">${esc(x[fk(k)])}</span>`:''}${k!=='folders'&&k!=='subs'&&x.sub?`<span class="bd">${esc(x.sub)}</span>`:''}`}</td>
+ <td class="act">${isP?'':`<button data-a="pin" data-k="${k}" data-i="${i}" title="Pin karein"><i class="fas fa-star"></i></button><button data-a="hid" data-k="${k}" data-i="${i}" title="Site par dikhayein/chhupayein"><i class="fas fa-eye${x.hidden?'-slash':''}"></i></button>`}${k==='bills'?`<button data-a="rcpt" data-k="bills" data-i="${i}" title="Receipt print"><i class="fas fa-print"></i></button>`:''}<button data-a="edit" data-k="${k}" data-i="${i}" title="Edit"><i class="fas fa-pen"></i></button>${isP?'':`<button data-a="dup" data-k="${k}" data-i="${i}" title="Duplicate"><i class="fas fa-clone"></i></button>`}<button data-a="del" data-k="${k}" data-i="${i}" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`).join(''):`<tr><td colspan="4" class="empty">Yahan abhi kuch nahi hai. "Naya add karein" dabayein.</td></tr>`}
+ </tbody></table></div>`}
+
+/* ---------- table events ---------- */
+const V=$('#view');
+V.onclick=e=>{
+ const st=e.target.closest('.stat');if(st)return st.dataset.v?go(st.dataset.v):0;const w=e.target.closest('[data-w]');if(w)return $('#pf').style.width=w.dataset.w;
+ const b=e.target.closest('[data-a]');if(!b)return;const{a,k}=b.dataset,i=+b.dataset.i;
+ if(a==='pin'||a==='hid'){const p=a==='pin'?'pinned':'hidden';return mut(()=>{D[k][i][p]=!D[k][i][p]},p==='pinned'?'Pin badal diya':'Visibility badal di')}if(a==='rep')return report();if(a==='rcpt')return receipt(Z.bills[i]);if(a==='csv')return csv(k);if(a==='mode'){mode=mode==='grid'?'table':'grid';return render()}if(a==='bhid'){const ix=[...sel];sel.clear();return mut(()=>ix.forEach(j=>D[k][j].hidden=!D[k][j].hidden),'Visibility badal di')}if(a==='add')form(k);if(a==='edit')form(k,i);if(a==='dup')dup(k,i);if(a==='del')del(k,[i]);if(a==='bulk')del(k,[...sel])};
+V.onchange=e=>{const t=e.target;
+ if(t.id==='fsel'){fl=t.value;render()}if(t.id==='bf')$('#bs').innerHTML='<option value="">Sub-portal</option>'+D.subs.filter(x=>x.parent===t.value).map(x=>`<option>${esc(x.name)}</option>`).join('');
+ if(t.dataset.s){if(t.dataset.s==='all'){const on=t.checked;sel.clear();if(on)document.querySelectorAll('tr[data-i]').forEach(r=>sel.add(+r.dataset.i))}else t.checked?sel.add(+t.dataset.s):sel.delete(+t.dataset.s);render()}};
+V.ondragstart=e=>{const r=e.target.closest('tr[data-i]');if(r)drag=+r.dataset.i};
+V.ondragover=e=>{const r=e.target.closest('tr[data-i]');if(r&&drag>-1){e.preventDefault();document.querySelectorAll('.ov').forEach(x=>x.classList.remove('ov'));r.classList.add('ov')}};
+V.ondrop=e=>{const r=e.target.closest('tr[data-i]');if(!r||drag<0)return;const to=+r.dataset.i,from=drag;drag=-1;if(to===from)return;
+ mut(()=>{const a=D[view],[m]=a.splice(from,1);a.splice(to,0,m)},'Order badal diya')};
+
+async function dup(k,i){mut(()=>{const c=JSON.parse(JSON.stringify(D[k][i])),n=SC[k].f[k==='subs'||k==='folders'?0:2];const key=k==='subs'||k==='folders'?'name':k==='cards'?'title':'label';c[key]+=' (copy)';D[k].splice(i+1,0,c)},'Duplicate ban gaya','add')}
+async function del(k,ix){if(!can('delete'))return toast('Delete ki permission nahi hai.',1);
+ if(!ix.length)return;const set=new Set(ix),a=arr(k),gone=a.filter((_,j)=>set.has(j));
+ let extra='';
+ if(k==='folders'){const n=gone.map(g=>g.name);const c=D.subs.filter(s=>n.includes(s.parent)).length+D.cards.filter(s=>n.includes(s.folder)).length+D.sideLinks.filter(s=>n.includes(s.folder)).length;if(c)extra=` Iske andar ke ${c} items bhi delete honge.`}
+ if(k==='subs'){const c=D.cards.filter(x=>gone.some(g=>g.parent===x.folder&&g.name===x.sub)).length+D.sideLinks.filter(x=>gone.some(g=>g.parent===x.folder&&g.name===x.sub)).length;if(c)extra=` Iske ${c} cards/links bhi delete honge.`}
+ if(!await ask(`${gone.length} item delete karein?${extra}`))return;trashPush(k,gone);
+ sel.clear();
+ if(COL[k]){try{await Promise.all(gone.map(g=>db.collection(COL[k]).doc(g.id).delete()));const nl=arr(k).filter((_,j)=>!set.has(j));if(k==='pdfs')P=nl;else if(k==='apps')A=nl;else Z[k]=nl;log('PDF delete');toast('Delete ho gaya.')}catch(e){toast('Delete fail.',1)}return render()}
+ mut(()=>{
+  if(k==='folders'){const n=gone.map(g=>g.name);D.subs=D.subs.filter(s=>!n.includes(s.parent));D.cards=D.cards.filter(s=>!n.includes(s.folder));D.sideLinks=D.sideLinks.filter(s=>!n.includes(s.folder))}
+  if(k==='subs'){const m=(x)=>gone.some(g=>g.parent===x.folder&&g.name===x.sub);D.cards=D.cards.filter(x=>!m(x));D.sideLinks=D.sideLinks.filter(x=>!m(x))}
+  D[k]=D[k].filter((_,j)=>!set.has(j))},gone.length+' item delete kiye','delete')}
+
+/* ---------- form modal ---------- */
+function form(k,idx=-1){if(!can(idx>=0?'edit':'add'))return toast('Is action ki permission nahi hai.',1);
+ const s=SC[k],it=idx>=0?JSON.parse(JSON.stringify(arr(k)[idx])):{icon:'fas fa-'+s.i,color:s.c,links:[]},M=$('#modal');
+ const folderOpts=v=>`<option value="">Select karein</option>`+D.folders.map(f=>`<option ${f.name===v?'selected':''}>${esc(f.name)}</option>`).join('');
+ const subOpts=(fo,v)=>`<option value="">Select karein</option>`+D.subs.filter(x=>x.parent===fo).map(x=>`<option ${x.name===v?'selected':''}>${esc(x.name)}</option>`).join('');
+ const fld=([n,l,t,r])=>{const v=it[n]??'';let h='';
+  if(t==='text'||t==='url')h=`<input name="${n}" value="${esc(v)}" placeholder="${t==='url'?'https://...':''}">`;
+  if(t==='num'||t==='date')h=`<input type="${t==='num'?'number':'date'}" name="${n}" value="${esc(v)}">`;if(t==='mode')h=`<select name="${n}">${['Cash','UPI','Card'].map(o=>`<option ${(v||'Cash')===o?'selected':''}>${o}</option>`).join('')}</select>`;if(t==='status')h=`<select name="${n}">${['Pending','Processing','Done','Delivered'].map(o=>`<option ${(v||'Pending')===o?'selected':''}>${o}</option>`).join('')}</select>`;
+  if(t==='area')h=`<textarea name="${n}" rows="2">${esc(v)}</textarea>`;
+  if(t==='folder')h=`<select name="${n}">${folderOpts(v)}</select>`;
+  if(t==='sub')h=`<select name="${n}">${subOpts(it.folder,v)}</select>`;
+  if(t==='icon')h=`<input type="hidden" name="${n}" value="${esc(v)}"><input id="isr" placeholder="Icon dhundhein: pdf, user, whatsapp... ya poora class likhein (fas fa-xyz)"><div class="ct"></div><div class="ig"></div>`;
+  if(t==='color')h=`<input type="hidden" name="${n}" value="${esc(hex(v))}"><div class="sw">${BR.map(c=>`<button type="button" data-c="${c}" style="background:${c}" aria-label="${c}"></button>`).join('')}<input type="color" value="${hex(v)}"></div>`;
+  if(t==='links')h=`<div id="lks">${(it.links||[]).map(lk).join('')}</div><button type="button" class="btn alt sm" id="al"><i class="fas fa-plus"></i> Link jodein</button>`;
+  return `<div class="fld"><label>${l}${r?' *':''}</label>${h}</div>`};
+ const lk=l=>`<div class="lk"><input placeholder="Title" class="lt" value="${esc(l?.title)}"><input placeholder="Description" class="ld" value="${esc(l?.desc)}"><input placeholder="URL" class="lu" value="${esc(l?.url)}"><button type="button" class="btn alt sm lx"><i class="fas fa-xmark"></i></button></div>`;
+ M.hidden=0;
+ M.innerHTML=`<form class="dlg" id="ff"><h3>${idx>=0?'Edit':'Naya'} · ${s.t}</h3><div class="pre" id="pv"></div>${s.f.map(fld).join('')}<div class="row" style="justify-content:flex-end"><button type="button" class="btn alt" id="cx">Cancel</button><button class="btn"><i class="fas fa-floppy-disk"></i> Save</button></div></form>`;
+ const f=$('#ff'),g=n=>f.elements[n];
+ const grid=()=>{const q=($('#isr').value||'').toLowerCase().trim(),cur=g('icon').value;f.querySelector('.ct').innerHTML=['Sab',...Object.keys(CAT)].map(c=>`<button type="button" data-ct="${c}" class="btn ${c===ct?'':'alt'} sm">${c}</button>`).join('');let L=(ct==='Sab'?ICONS:CAT[ct]).filter(i=>i.includes(q));if(/^fa[srb]? fa-/.test(q))L=[q];f.querySelector('.ig').innerHTML=L.map(i=>`<button type="button" data-i="${i}" title="${i.split('fa-')[1]}" style="${i===cur?'background:var(--v);color:#fff':''}"><i class="${i}"></i></button>`).join('')||'<p class="empty" style="grid-column:1/-1;padding:14px">Is naam ka icon nahi mila.</p>'};
+ const prev=()=>{const x={icon:g('icon')?.value,color:g('color')?.value};$('#pv').innerHTML=`${chip(x)}<b>${esc(g(s.f[0][0]).value||s.f[0][1])}</b>`};
+ if(g('icon'))grid();prev();
+ f.oninput=e=>{if(e.target.id==='isr')grid();if(e.target.type==='color'){g('color').value=e.target.value}prev()};
+ f.onchange=e=>{if(e.target.name==='service'&&g('amount')&&!g('amount').value){const pr=Z.prices.find(p=>p.service.toLowerCase()===e.target.value.trim().toLowerCase());if(pr){g('amount').value=pr.amount;toast('Rate bhar diya: ₹'+pr.amount)}}if(e.target.name==='folder'&&g('sub'))g('sub').innerHTML=subOpts(e.target.value,'')};
+ f.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.ct){ct=b.dataset.ct;grid()}if(b.dataset.i){g('icon').value=b.dataset.i;prev();grid()}
+  if(b.dataset.c){g('color').value=b.dataset.c;f.querySelector('input[type=color]').value=b.dataset.c;prev()}
+  if(b.id==='al')$('#lks').insertAdjacentHTML('beforeend',lk());
+  if(b.classList.contains('lx'))b.parentElement.remove();
+  if(b.id==='cx')M.hidden=1};
+ f.onsubmit=async e=>{e.preventDefault();
+  const v={};let bad=0;
+  s.f.forEach(([n,l,t,r])=>{if(t==='links'){v.links=[...f.querySelectorAll('.lk')].map(r=>({title:r.querySelector('.lt').value.trim(),desc:r.querySelector('.ld').value.trim(),url:r.querySelector('.lu').value.trim()})).filter(x=>x.title&&x.url);return}
+   const el=g(n);v[n]=(el.value||'').trim();el.classList.remove('err');
+   if(r&&!v[n]||t==='url'&&!okUrl(v[n])){el.classList.add('err');bad=1}});
+  if(bad)return toast('Laal fields theek karein (URL http se shuru hona chahiye).',1);
+  const key=s.f.find(x=>['name','title','label'].includes(x[0]))?.[0];
+  if(key&&!['apps','bills','expenses'].includes(k)&&arr(k).some((x,j)=>j!==idx&&x[key].toLowerCase()===v[key].toLowerCase()&&(k==='folders'||k==='pdfs'||x[fk(k)]===v[fk(k)]&&(x.sub||'')===(v.sub||''))))return toast('Is naam ka item pehle se maujood hai.',1);
+  M.hidden=1;
+  ['amount','discount','paid','salary','present','advance','opening','closing'].forEach(n=>{if(v[n]!==undefined)v[n]=+v[n]||0});if(COL[k]){const L=arr(k);try{if(k==='pdfs')v.portalLink=v.portalLink||'https://epds.bihar.gov.in/SearchByRCID.aspx';v.updatedAt=new Date();if(idx>=0){await db.collection(COL[k]).doc(L[idx].id).update(v);L[idx]={...L[idx],...v}}else{v.createdAt=new Date();const r=await db.collection(COL[k]).add(v);L.push({id:r.id,...v})}toast('Save ho gaya.');log('Save: '+SC[k].L(v))}catch(x){toast('Save fail: '+x.message,1)}return render()}
+  mut(()=>{const old=idx>=0?D[k][idx]:null;
+   if(old&&k==='folders'&&old.name!==v.name){D.subs.forEach(x=>{if(x.parent===old.name)x.parent=v.name});D.cards.concat(D.sideLinks).forEach(x=>{if(x.folder===old.name)x.folder=v.name})}
+   if(old&&k==='subs'&&(old.name!==v.name||old.parent!==v.parent)){D.cards.concat(D.sideLinks).forEach(x=>{if(x.folder===old.parent&&x.sub===old.name){x.sub=v.name;x.folder=v.parent}})}
+   idx>=0?D[k][idx]=v:D[k].push(v)},'Save ho gaya: '+v[key],idx>=0?'edit':'add')}}
+
+/* ---------- settings ---------- */
+function sets(){return `<div class="box"><h3><i class="fas fa-bullhorn"></i> Live notice</h3>${D.notice?`<div class="nt">${esc(D.notice)}</div>`:''}<textarea id="nt" rows="2" placeholder="Site par dikhne wala notice...">${esc(D.notice)}</textarea><div class="row" style="margin-top:10px"><select id="ntp" style="max-width:170px">${[['info','Info'],['warn','Warning'],['urgent','Urgent']].map(([v,l])=>`<option value="${v}" ${D.noticeType===v?'selected':''}>${l}</option>`).join('')}</select><span style="color:var(--mu)">Is date tak dikhayein:</span><input id="ntu" type="date" value="${esc(D.noticeUntil||'')}" style="max-width:170px"></div><div class="row" style="margin-top:10px"><button class="btn" id="sn">Notice update karein</button><button class="btn alt" id="cn">Notice hatayein</button></div></div>
+${team()}
+<div class="box"><h3><i class="fas fa-layer-group"></i> Bulk add cards</h3><div class="row"><select id="bf" style="max-width:220px"><option value="">Main folder</option>${D.folders.map(f=>`<option>${esc(f.name)}</option>`).join('')}</select><select id="bs" style="max-width:220px"><option value="">Sub-portal</option></select></div><textarea id="bt" rows="5" style="margin-top:10px" placeholder="Har line me ek card:
+Title | https://link | Description (optional)"></textarea><button class="btn" id="bi" style="margin-top:10px"><i class="fas fa-bolt"></i> Sab cards banayein</button> <label class="btn alt" style="margin-top:10px"><i class="fas fa-file-csv"></i> CSV load<input type="file" id="cv" accept=".csv,.txt" hidden></label></div>
+<div class="box"><h3><i class="fas fa-database"></i> Backup & restore</h3><div class="row"><button class="btn" id="sb"><i class="fas fa-camera"></i> Cloud snapshot lein</button><button class="btn alt" id="ex"><i class="fas fa-download"></i> JSON download</button><label class="btn alt"><i class="fas fa-upload"></i> JSON import<input type="file" id="im" accept=".json" hidden></label></div><div id="bk" class="hl" style="margin-top:14px"></div></div>
+<div class="box"><h3><i class="fas fa-palette"></i> Appearance & shortcuts</h3><button class="btn alt" id="th"><i class="fas fa-moon"></i> Dark / Light badlein</button><p style="color:var(--mu);margin-top:12px">/ search · Ctrl+Z undo · Esc band karein</p></div>`}
+V.addEventListener('click',async e=>{const me=auth.currentUser.email.toLowerCase(),rm=e.target.closest('[data-rm]');
+ const wa=e.target.closest('[data-wa]');if(wa)return window.open('https://wa.me/91'+wa.dataset.wa+'?text='+encodeURIComponent($('#bm').value.replace(/\{naam\}/g,wa.dataset.n)),'_blank');
+ const rt=e.target.closest('[data-tr]');if(rt){if(!can('add'))return toast('Is action ki permission nahi hai.',1);const d=await db.collection('trash').doc(rt.dataset.tr).get(),t=d.data(),it=JSON.parse(t.data);delete it.id;if(COL[t.kind]){const r=await db.collection(COL[t.kind]).add(it);arr(t.kind).push({id:r.id,...it})}else await mut(()=>D[t.kind].push(it),'Restore ho gaya: '+t.label,'add');await d.ref.delete();loadBin();return}
+ const rd=e.target.closest('[data-td]');if(rd){await db.collection('trash').doc(rd.dataset.td).delete();loadBin();return}
+ const bl=e.target.closest('[data-bl]');if(bl){const u=ADM.find(a=>a.id===bl.dataset.bl);u.active=u.active===false;await db.collection('admins').doc(u.id).set({active:u.active},{merge:true});toast(u.active?'Unblock ho gaya.':'Block ho gaya.');return render()}
+ const rs=e.target.closest('[data-rs]');if(rs){try{await auth.sendPasswordResetEmail(rs.dataset.rs);toast('Reset email bhej diya.')}catch(x){toast('Email nahi gaya.',1)}return}
+ if(rm){if(rm.dataset.rm===me)return toast('Apne aap ko hata nahi sakte.',1);await db.collection('admins').doc(rm.dataset.rm).delete();ADM=ADM.filter(a=>a.id!==rm.dataset.rm);return render()}
+ const id=e.target.closest('button,label')?.id;if(!id)return;
+ if(id==='bi'){const fo=$('#bf').value,su=$('#bs').value,ls=$('#bt').value.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(a=>a[0]);if(!fo||!su||!ls.length)return toast('Folder, sub-portal aur kam se kam ek line chahiye.',1);if(ls.some(a=>!a[1]||!okUrl(a[1])))return toast('Har line me valid URL chahiye.',1);mut(()=>ls.forEach(a=>D.cards.push({folder:fo,sub:su,title:a[0],url:a[1],desc:a[2]||'',icon:'fas fa-link',color:'#9B00D2',links:[],imageUrl:''})),ls.length+' cards ban gaye','add')}
+ if(id==='lc')chk();
+ if(id==='ar'){const em=$('#ae').value.trim().toLowerCase(),pw=$('#ap').value,role=$('#arl').value;if(!em||pw.length<6)return toast('Email aur 6+ character ka password chahiye.',1);
+  try{const sa=firebase.apps.find(x=>x.name==='sec')||firebase.initializeApp(firebase.app().options,'sec');try{await sa.auth().createUserWithEmailAndPassword(em,pw)}catch(x){if(x.code!=='auth/email-already-in-use')throw x}await sa.auth().signOut();
+  const pre=role==='editor'?{sec:SECS.slice(0,10).map(a=>a[0]),act:['add','edit']}:role==='viewer'?{sec:SECS.map(a=>a[0]),act:[]}:{};
+  const d={role,active:true,created:new Date(),...pre};await db.collection('admins').doc(em).set(d);ADM=ADM.filter(a=>a.id!==em).concat({id:em,...d});toast('Account ban gaya. Email aur password us vyakti ko bhej dein.');log('Naya user: '+em);render()}catch(x){toast('Account nahi bana: '+x.message,1)}}
+ if(id==='sn')mut(()=>{D.notice=$('#nt').value.trim();D.noticeType=$('#ntp').value;D.noticeUntil=$('#ntu').value},'Notice update hua');
+ if(id==='cn')mut(()=>D.notice='','Notice hata diya');
+ if(id==='th')toggleTheme();
+ if(id==='ex'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({config:D,pdfs:P},null,1)],{type:'application/json'}));a.download='click-connect-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
+ if(id==='sb'){await snap();toast('Snapshot save ho gaya.');loadBk()}
+ const r=e.target.closest('[data-r]');if(r){const d=await db.collection('backups').doc(r.dataset.r).get();if(await ask('Is snapshot se data restore karein? Abhi ka data pehle snapshot ho jayega.')){await snap();mut(()=>D=JSON.parse(d.data().data),'Snapshot restore hua')}}});
+V.addEventListener('change',async e=>{if(e.target.id==='bf2'){$('#bl2').innerHTML=bcl(e.target.value);return}const pm=e.target.dataset.pm;if(pm){const[t,k]=pm.split(':'),u=ADM.find(a=>a.id===e.target.dataset.u),l=new Set(u[t]||[]);e.target.checked?l.add(k):l.delete(k);u[t]=[...l];await db.collection('admins').doc(u.id).set({[t]:u[t]},{merge:true});toast('Access update hua.');log('Access badla: '+u.id);return}if(e.target.id==='cv'){const t=await e.target.files[0].text();$('#bt').value=t.split('\n').map(l=>l.split(',').map(x=>x.trim().replace(/^"|"$/g,'')).join(' | ')).join('\n');return}if(e.target.id!=='im')return;try{const j=JSON.parse(await e.target.files[0].text());if(!j.config||!Array.isArray(j.config.cards))throw 0;if(await ask('Import se abhi ka config replace hoga. Pehle snapshot le liya jayega.')){await snap();mut(()=>D=Object.assign({folders:[],subs:[],sideLinks:[],cards:[],notice:''},j.config),'Backup import hua')}}catch(x){toast('Ye valid backup file nahi hai.',1)}});
+const snap=()=>db.collection('backups').add({at:firebase.firestore.FieldValue.serverTimestamp(),data:JSON.stringify(D)});
+async function loadBk(){const el=$('#bk');if(!el)return;try{const s=await db.collection('backups').orderBy('at','desc').limit(5).get();el.innerHTML=s.empty?'<p class="empty">Abhi koi snapshot nahi.</p>':s.docs.map(d=>`<div class="row" style="background:var(--bg)"><i class="fas fa-clock"></i>${d.data().at?.toDate().toLocaleString('en-IN')||'...'}<button class="btn alt sm" style="margin-left:auto" data-r="${d.id}">Restore</button></div>`).join('')}catch(x){el.innerHTML=''}}
+
+const pvw=()=>`<div class="row" style="margin-bottom:12px"><button class="btn alt sm" data-w="100%"><i class="fas fa-desktop"></i> Desktop</button><button class="btn alt sm" data-w="420px"><i class="fas fa-mobile-alt"></i> Mobile</button><a class="btn alt sm" href="index.html" target="_blank"><i class="fas fa-up-right-from-square"></i> Naye tab me</a></div><div style="text-align:center"><iframe id="pf" src="index.html" style="width:100%;height:76vh;border:1px solid var(--ln);border-radius:16px;background:#fff;transition:width .3s"></iframe></div>`;
+function setTheme(t){const d=document.documentElement;d.classList.add('tt');d.dataset.t=t;localStorage.ctt=t;document.querySelectorAll('.thb').forEach(b=>b.innerHTML=`<i class="fas fa-${t==='dark'?'sun':'moon'}"></i>`);setTimeout(()=>d.classList.remove('tt'),520)}
+function toggleTheme(){setTheme(document.documentElement.dataset.t==='dark'?'light':'dark')}
+function pal(){const M=$('#modal');M.hidden=0;M.innerHTML='<div class="dlg"><input id="pi" placeholder="Kuch bhi dhundhein: card, folder, setting..."><div id="pr" class="hl"></div></div>';
+ const all=[...NAV.map(n=>({l:n[1]+' kholein',i:n[2],f:()=>go(n[0])})),...Object.keys(SC).flatMap(k=>arr(k).map((x,i)=>({l:SC[k].L(x),s:SC[k].t,i:SC[k].i,f:()=>{go(k);form(k,i)}}))),{l:'Naya card banayein',i:'plus',f:()=>{go('cards');form('cards')}},{l:'Dark / Light mode',i:'moon',f:toggleTheme},{l:'Undo',i:'rotate-left',f:()=>$('#un').click()}];
+ const show=()=>{const q=$('#pi').value.toLowerCase();$('#pr').r=all.filter(a=>(a.l+(a.s||'')).toLowerCase().includes(q)).slice(0,9);$('#pr').innerHTML=$('#pr').r.map((a,j)=>`<div data-j="${j}" style="cursor:pointer;background:var(--bg)"><i class="fas fa-${a.i}"></i>${esc(a.l)}<small style="margin-left:auto;color:var(--mu)">${esc(a.s||'')}</small></div>`).join('')};
+ const run=j=>{const a=$('#pr').r[j];if(a){M.hidden=1;a.f()}};
+ show();$('#pi').focus();$('#pi').oninput=show;$('#pi').onkeydown=e=>{if(e.key==='Enter')run(0)};$('#pr').onclick=e=>{const d=e.target.closest('[data-j]');if(d)run(+d.dataset.j)}}
+$('#kb').onclick=pal;
+const TD=()=>new Date().toISOString().slice(0,10);
+const sched=x=>x.showUntil&&TD()>x.showUntil?'<span class="bd" style="background:#dd603e22;color:var(--r)">Expired</span>':x.showFrom&&TD()<x.showFrom?'<span class="bd">Scheduled</span>':'';
+const STC={Pending:'#DD603E',Processing:'#9B00D2',Done:'#007800',Delivered:'#0077BE'};
+const appCell=x=>{const st=x.status||'Pending',ph=(x.phone||'').replace(/\D/g,'').slice(-10);return `<span class="bd" style="background:${STC[st]}22;color:${STC[st]}">${esc(st)}</span> ₹${+x.amount||0} ${ph?`<a href="https://wa.me/91${ph}?text=${encodeURIComponent('Namaste '+x.customer+', aapka '+x.service+' ka kaam: '+st+'. - Click & Connect')}" target="_blank" title="WhatsApp bhejein"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>`:''}`};
+function grid(){const q=$('#q').value.toLowerCase();return `<div class="row" style="margin-bottom:14px"><button class="btn" data-a="add" data-k="cards"><i class="fas fa-plus"></i> Naya add karein</button><button class="btn alt" data-a="mode"><i class="fas fa-table"></i> Table view</button></div><div class="gr">${D.cards.map((x,i)=>({x,i})).filter(({x})=>!q||JSON.stringify(x).toLowerCase().includes(q)).map(({x,i})=>`<div class="gc" style="--c:${esc(hex(x.color))};opacity:${x.hidden?.45:1}">${x.imageUrl?`<img src="${esc(x.imageUrl)}" alt="">`:`<div class="gi">${chip(x)}</div>`}<b>${x.pinned?'⭐ ':''}${esc(x.title)}</b><small>${esc(x.folder)} › ${esc(x.sub)}</small>${sched(x)}<div class="act"><button data-a="pin" data-k="cards" data-i="${i}"><i class="fas fa-star"></i></button><button data-a="edit" data-k="cards" data-i="${i}"><i class="fas fa-pen"></i></button><button data-a="dup" data-k="cards" data-i="${i}"><i class="fas fa-clone"></i></button><button data-a="del" data-k="cards" data-i="${i}"><i class="fas fa-trash"></i></button></div></div>`).join('')}</div>`}
+const ana=()=>{const td=TD(),bd=Z.bills,inc=f=>bd.filter(f).reduce((t,x)=>t+(+x.paid||0),0),ex=f=>Z.expenses.filter(f).reduce((t,x)=>t+(+x.amount||0),0),due=bd.reduce((t,x)=>t+Math.max(0,(+x.amount||0)-(+x.discount||0)-(+x.paid||0)),0),mo=d=>(d||'').slice(0,7)===td.slice(0,7),rv=f=>A.filter(f).reduce((t,x)=>t+(+x.amount||0),0);return `<div class="stats"><div class="stat" style="--c:#007800"><b>₹${rv(x=>x.date===td)}</b><span>Aaj ki kamai</span></div><div class="stat" style="--c:#9B00D2"><b>₹${rv(x=>(x.date||'').slice(0,7)===td.slice(0,7))}</b><span>Is mahine ki kamai</span></div><div class="stat" style="--c:#DD603E"><b>${A.filter(x=>!['Done','Delivered'].includes(x.status||'Pending')).length}</b><span>Pending kaam</span></div></div><div class="stats"><div class="stat" style="--c:#007800"><b>₹${inc(x=>x.date===td)}</b><span>Aaj ki jama (bills)</span></div><div class="stat" style="--c:#DD603E"><b>₹${ex(x=>x.date===td)}</b><span>Aaj ka kharch</span></div><div class="stat" style="--c:#9B00D2"><b>₹${inc(x=>mo(x.date))+rv(x=>mo(x.date))-ex(x=>mo(x.date))}</b><span>Mahine ka munafa</span></div><div class="stat" style="--c:#FE28AF"><b>₹${due}</b><span>Total udhaar baaki</span></div></div><div class="box"><h3>Staff-wise jama (is mahine)</h3>${sb()}<button class="btn alt sm" data-a="rep" style="margin-top:8px"><i class="fas fa-print"></i> Aaj ki report print</button></div><div class="box"><h3>Sabse zyada click hue cards</h3><div id="an">Loading...</div></div><div class="box"><h3>Jin par abhi tak click nahi hua</h3><div id="an2" class="hl"></div></div>`};
+async function loadAna(){try{const r=await db.collection('clicks').get(),m={};r.docs.forEach(d=>m[d.data().title]=d.data().count||0);const t=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,10),mx=Math.max(1,...t.map(a=>a[1]));$('#an').innerHTML=t.length?t.map(([n,c])=>`<div class="bar" style="--c:#9B00D2"><small>${esc(n)}</small><span style="width:${Math.max(4,c/mx*100)}%"></span><b>${c}</b></div>`).join(''):'<p class="empty">Abhi click data nahi hai. Index page me click-counter jodein.</p>';const u=D.cards.filter(c=>!m[c.title]);$('#an2').innerHTML=u.length?u.slice(0,15).map(c=>`<div>${esc(c.title)}</div>`).join(''):'<div class="ok">Sab cards use ho rahe hain.</div>'}catch(e){$('#an').textContent='Clicks load nahi hue.'}}
+const tools=()=>`<div class="box"><h3><i class="fas fa-link-slash"></i> Link checker</h3><p style="color:var(--mu);margin-bottom:12px">Saare card aur side-link URLs check hote hain. Ye band ya unreachable websites pakadta hai; 404 page nahi.</p><button class="btn" id="lc"><i class="fas fa-play"></i> Check shuru karein</button><div id="lo" class="hl" style="margin-top:14px"></div></div>`;
+async function chk(){const L=[...D.cards.map(c=>[c.url,c.title]),...D.cards.flatMap(c=>(c.links||[]).map(l=>[l.url,c.title+' › '+l.title])),...D.sideLinks.map(l=>[l.url,l.label])].filter(a=>/^https?:/.test(a[0])),bad=[],o=$('#lo');
+ for(let i=0;i<L.length;i+=6){o.textContent=`Check ho raha hai ${i}/${L.length}...`;await Promise.all(L.slice(i,i+6).map(async([u,n])=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),8000);try{await fetch(u,{mode:'no-cors',signal:c.signal})}catch(e){bad.push([u,n])}clearTimeout(t)}))}
+ o.innerHTML=bad.length?bad.map(([u,n])=>`<div><i class="fas fa-link-slash"></i><b>${esc(n)}</b> <small>${esc(u)}</small></div>`).join(''):'<div class="ok">Sab links khul rahe hain.</div>';toast(bad.length?bad.length+' link kharab mile':'Sab links theek hain',bad.length)}
+const logs=()=>`<div class="box"><div id="lg" class="hl">Loading...</div></div>`;
+async function loadLogs(){try{const r=await db.collection('audit').orderBy('at','desc').limit(60).get();$('#lg').innerHTML=r.empty?'<p class="empty">Abhi koi record nahi.</p>':r.docs.map(d=>{const x=d.data();return `<div style="background:var(--bg)"><b>${esc((x.by||'').split('@')[0])}</b>${esc(x.msg)}<small style="margin-left:auto;color:var(--mu)">${x.at?.toDate().toLocaleString('en-IN',{dateStyle:'short',timeStyle:'short'})}</small></div>`}).join('')}catch(e){$('#lg').textContent='Log load nahi hua.'}}
+let idle;const rst=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(auth.currentUser){toast('Inactive rehne se logout ho gaya.');auth.signOut()}},15*60*1000)};['click','keydown','mousemove'].forEach(ev=>document.addEventListener(ev,rst));rst();
+const SECS=[['folders','Main Folders'],['subs','Sub-Portals'],['sideLinks','Side-Links'],['cards','Cards'],['pdfs','PDFs'],['apps','Customers'],['bills','Bills'],['expenses','Expenses'],['prices','Price List'],['kanban','Kanban'],['staff','Staff'],['cash','Cash Closing'],['bcast','Broadcast'],['trash','Recycle Bin'],['analytics','Analytics'],['tools','Link Checker'],['logs','Audit Log'],['preview','Preview']],ACTS=[['add','Add'],['edit','Edit'],['delete','Delete']];
+const team=()=>ROLE!=='owner'?'':`<div class="box"><h3><i class="fas fa-user-shield"></i> Team access</h3><p style="color:var(--mu);margin-bottom:12px">Sirf yahan jude hue log hi login kar sakte hain. Account banayein aur chunein ki woh kya dekh aur kar sakta hai.</p>
+<div class="row"><input id="ae" placeholder="Email" style="max-width:230px"><input id="ap" placeholder="Temporary password (6+)" style="max-width:210px"><select id="arl" style="max-width:130px"><option>editor</option><option>viewer</option><option>owner</option></select><button class="btn" id="ar"><i class="fas fa-user-plus"></i> Account banayein</button></div>
+<div style="margin-top:14px;display:grid;gap:10px">${ADM.map(tm).join('')}</div></div>`;
+const tm=a=>{const own=a.role==='owner',off=a.active===false,cb=(t,k,l)=>`<label><input type="checkbox" style="width:auto" data-pm="${t}:${k}" data-u="${esc(a.id)}" ${(a[t]||[]).includes(k)?'checked':''}> ${l}</label>`;return `<div class="gc" style="--c:${off?'#DD603E':'#007800'}"><div class="row"><b>${esc(a.id)}</b><span class="bd">${esc(a.role)}</span>${off?'<span class="bd" style="color:var(--r)">Blocked</span>':''}<small style="margin-left:auto">${a.lastLogin?.toDate?'Last login: '+a.lastLogin.toDate().toLocaleString('en-IN',{dateStyle:'short',timeStyle:'short'}):'Abhi tak login nahi'}</small></div>${own?'<small>Owner ko poora access hai.</small>':`<div class="row">${SECS.map(([k,l])=>cb('sec',k,l)).join('')}</div><div class="row">${ACTS.map(([k,l])=>cb('act',k,l)).join('')}</div>`}<div class="row"><button class="btn alt sm" data-rs="${esc(a.id)}"><i class="fas fa-key"></i> Password reset email</button>${own?'':`<button class="btn alt sm" data-bl="${esc(a.id)}">${off?'Unblock karein':'Block karein'}</button><button class="btn alt sm" data-rm="${esc(a.id)}"><i class="fas fa-trash"></i> Access hatayein</button>`}</div></div>`};
+const hero=()=>{const h=new Date().getHours(),g=h<12?'Suprabhat':h<17?'Namaste':'Shubh sandhya',n=(auth.currentUser?.email||'').split('@')[0];return `<div class="hero"><div><small>${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</small><h1>${g}, ${esc(n)} 👋</h1><p>Aaj ka poora cafe ek nazar me.</p></div><div class="row" style="position:relative;z-index:1">${[['bills','receipt','Naya Bill'],['apps','address-book','Naya Customer'],['cards','th-large','Naya Card'],['expenses','wallet','Kharch']].map(([k,i,l])=>`<button class="btn" data-a="add" data-k="${k}"><i class="fas fa-${i}"></i> ${l}</button>`).join('')}</div></div>`};
+const cell=(k,x)=>{if(k==='staff'){const pay=Math.max(0,Math.round((+x.salary||0)/30*(+x.present||0))-(+x.advance||0));return `${esc(x.role||'')} · ${+x.present||0} din · <b>Dena baaki ₹${pay}</b>`}
+ if(k==='cash'){const e=(+x.opening||0)+Z.bills.filter(b=>b.date===x.date&&(b.mode||'Cash')==='Cash').reduce((t,b)=>t+(+b.paid||0),0)-Z.expenses.filter(b=>b.date===x.date).reduce((t,b)=>t+(+b.amount||0),0),d=(+x.closing||0)-e;return `Expected ₹${e} · Actual ₹${+x.closing||0} <span class="bd" style="background:${d===0?'#00780022':'#dd603e22'};color:${d===0?'var(--g)':'var(--r)'}">${d===0?'Barabar':d>0?'Zyada ₹'+d:'Kam ₹'+(-d)}</span>`}
+ if(k==='prices')return `<b>₹${+x.amount||0}</b>`;if(k==='expenses')return `₹${+x.amount||0} <span class="bd">${esc(x.category||'Other')}</span> <small style="color:var(--mu)">${esc(x.date||'')}</small>`;const t=(+x.amount||0)-(+x.discount||0),d=t-(+x.paid||0);return `₹${t} · jama ₹${+x.paid||0} ${d>0?`<span class="bd" style="background:#dd603e22;color:var(--r)">Baaki ₹${d}</span>`:'<span class="bd" style="background:#00780022;color:var(--g)">Clear</span>'} <small>${esc(x.mode||'')}</small> ${d>0&&(x.phone||'').replace(/\D/g,'').length>=10?`<a href="https://wa.me/91${x.phone.replace(/\D/g,'').slice(-10)}?text=${encodeURIComponent('Namaste '+x.customer+', aapka ₹'+d+' baaki hai ('+x.service+'). Kripya jama kar dein. - Click & Connect')}" target="_blank" title="Udhaar yaad dilayein"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>`:''}`};
+function receipt(b){const w=window.open('','_blank','width=380,height=560'),t=(+b.amount||0)-(+b.discount||0),d=t-(+b.paid||0);if(!w)return toast('Popup allow karein.',1);w.document.write(`<body style="font-family:monospace;padding:14px"><h2 style="text-align:center">Click & Connect</h2><p style="text-align:center">Cyber Cafe</p><hr><p>Customer: ${esc(b.customer)}<br>Service: ${esc(b.service)}<br>Date: ${esc(b.date||TD())}</p><hr><p>Total: ₹${b.amount}<br>Discount: ₹${b.discount||0}<br>Payable: ₹${t}<br>Jama (${esc(b.mode||'Cash')}): ₹${b.paid||0}<br><b>Baaki: ₹${Math.max(0,d)}</b></p><hr><p style="text-align:center">Dhanyawad!</p></body>`);w.document.close();w.print()}
+function csv(k){const f=SC[k].f.filter(x=>!['icon','color'].includes(x[2])),q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',t=[f.map(x=>q(x[1])).join(','),...arr(k).map(r=>f.map(x=>q(r[x[0]])).join(','))].join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv'}));a.download=k+'-'+TD()+'.csv';a.click()}
+const kan=()=>`<div class="kb">${['Pending','Processing','Done','Delivered'].map(s=>`<div class="kc" data-col="${s}" style="--c:${STC[s]}"><h3>${s} <em>${A.filter(x=>(x.status||'Pending')===s).length}</em></h3>${A.map((x,i)=>({x,i})).filter(({x})=>(x.status||'Pending')===s).map(({x,i})=>`<div class="kk" draggable="true" data-ki="${i}"><b>${esc(x.customer)}</b><small>${esc(x.service)} · ₹${+x.amount||0}</small></div>`).join('')||'<p class="empty" style="padding:14px">Khali</p>'}</div>`).join('')}</div>`;
+V.addEventListener('dragstart',e=>{const c=e.target.closest('.kk');if(c)kd=+c.dataset.ki});
+V.addEventListener('dragover',e=>{if(e.target.closest('.kc')&&kd>-1)e.preventDefault()});
+V.addEventListener('drop',async e=>{const c=e.target.closest('.kc');if(!c||kd<0)return;const x=A[kd];kd=-1;if(!can('edit'))return toast('Is action ki permission nahi hai.',1);x.status=c.dataset.col;await db.collection('applications').doc(x.id).update({status:x.status});toast('Status: '+x.status);render()});
+const alerts=()=>{const o=[],p=A.filter(x=>!['Done','Delivered'].includes(x.status||'Pending')).length,u=Z.bills.filter(x=>(+x.amount||0)-(+x.discount||0)-(+x.paid||0)>0).length,e=D.cards.filter(x=>x.showUntil&&TD()>x.showUntil).length;if(p)o.push(['clock',p+' customer ka kaam pending hai']);if(u)o.push(['rupee-sign',u+' bills me udhaar baaki hai']);if(e)o.push(['calendar-xmark',e+' cards ki last date nikal chuki hai']);health().slice(0,5).forEach(h=>o.push(['triangle-exclamation',h]));return o};
+$('#bell').onclick=()=>{const M=$('#modal'),a=alerts();M.hidden=0;M.innerHTML=`<div class="dlg"><h3>Notifications</h3><div class="hl">${a.length?a.map(([i,t])=>`<div><i class="fas fa-${i}"></i>${esc(t)}</div>`).join(''):'<div class="ok">Sab theek hai!</div>'}</div><button class="btn alt" onclick="$('#modal').hidden=1">Band karein</button></div>`};
+function anim(){document.querySelectorAll('tbody tr,.gc,.stat,.kk').forEach((e,i)=>e.style.animationDelay=Math.min(i,16)*40+'ms');document.querySelectorAll('.stat b').forEach(b=>{const m=b.textContent.match(/^(\D*)(\d+)$/);if(!m)return;const n=+m[2],t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/800);b.textContent=m[1]+Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}
+const trashPush=(k,g)=>g.forEach(x=>db.collection('trash').add({kind:k,data:JSON.stringify(x),label:SC[k].L(x),at:new Date(),by:auth.currentUser.email}).catch(()=>{}));
+const bin=()=>`<div class="box"><h3><i class="fas fa-trash-restore"></i> Recycle Bin</h3><p style="color:var(--mu);margin-bottom:10px">Delete kiye item yahan aate hain. Folder ya sub-portal restore karne par uske andar ke cards wapas nahi aate.</p><div id="tb" class="hl">Loading...</div></div>`;
+async function loadBin(){try{const r=await db.collection('trash').orderBy('at','desc').limit(50).get();$('#tb').innerHTML=r.empty?'<p class="empty">Recycle bin khali hai.</p>':r.docs.map(d=>{const x=d.data();return `<div style="background:var(--bg)"><span class="bd">${esc(SC[x.kind]?.t||x.kind)}</span><b>${esc(x.label)}</b><small style="color:var(--mu)">${x.at?.toDate().toLocaleDateString('en-IN')}</small><span style="margin-left:auto"><button class="btn sm" data-tr="${d.id}">Restore</button> <button class="btn alt sm" data-td="${d.id}">Hamesha ke liye</button></span></div>`}).join('')}catch(e){$('#tb').textContent='Bin load nahi hua.'}}
+const bcl=st=>{const m={};[...A.filter(x=>!st||(x.status||'Pending')===st),...(st?[]:Z.bills)].forEach(x=>{const ph=(x.phone||'').replace(/\D/g,'').slice(-10);if(ph.length===10)m[ph]=x.customer});const e=Object.entries(m);return e.length?e.map(([ph,n])=>`<div style="background:var(--bg)"><i class="fas fa-user"></i><b>${esc(n)}</b><small style="color:var(--mu)">${ph}</small><button class="btn sm" style="margin-left:auto" data-wa="${ph}" data-n="${esc(n)}"><i class="fab fa-whatsapp"></i> Send</button></div>`).join(''):'<p class="empty">Phone number wale customers nahi mile.</p>'};
+const bcast=()=>`<div class="box"><h3><i class="fab fa-whatsapp"></i> WhatsApp broadcast</h3><p style="color:var(--mu);margin-bottom:10px">Message me {naam} likhne par har customer ka naam lag jayega. Har customer ke saamne Send dabayein.</p><textarea id="bm" rows="3">Namaste {naam}, Click & Connect me aapka swagat hai. Naye offers ke liye sampark karein.</textarea><div class="row" style="margin:10px 0"><select id="bf2" style="max-width:200px"><option value="">Sab customers</option>${['Pending','Processing','Done','Delivered'].map(s=>`<option>${s}</option>`).join('')}</select></div><div class="hl" id="bl2">${bcl('')}</div></div>`;
+const sb=()=>{const m={},mo=TD().slice(0,7);Z.bills.filter(x=>(x.date||'').slice(0,7)===mo).forEach(x=>{const n=x.by||'Unknown';m[n]=(m[n]||0)+(+x.paid||0)});const e=Object.entries(m).sort((a,b)=>b[1]-a[1]),mx=Math.max(1,...e.map(a=>a[1]));return e.length?e.map(([n,v])=>`<div class="bar" style="--c:#0077BE"><small>${esc(n)}</small><span style="width:${Math.max(4,v/mx*100)}%"></span><b>₹${v}</b></div>`).join(''):'<p class="empty">Bill me "kisne banaya" bharte hi yahan dikhega.</p>'};
+function report(){const td=TD(),w=window.open('','_blank','width=420,height=640');if(!w)return toast('Popup allow karein.',1);const S=(a,f,g)=>a.filter(f).reduce((t,x)=>t+(+x[g]||0),0),i1=S(Z.bills,x=>x.date===td,'paid'),i2=S(A,x=>x.date===td,'amount'),ex=S(Z.expenses,x=>x.date===td,'amount'),du=Z.bills.reduce((t,x)=>t+Math.max(0,(+x.amount||0)-(+x.discount||0)-(+x.paid||0)),0);w.document.write(`<body style="font-family:sans-serif;padding:20px"><h2>Click & Connect: Daily Report</h2><p>${td}</p><hr><p>Bills se jama: <b>₹${i1}</b></p><p>Customers se: <b>₹${i2}</b></p><p>Kharch: <b>₹${ex}</b></p><h3>Aaj ka net: ₹${i1+i2-ex}</h3><p>Total udhaar baaki: ₹${du}</p></body>`);w.document.close();w.print()}
+$('#fab').onclick=()=>{const M=$('#modal');M.hidden=0;M.innerHTML=`<div class="dlg"><h3>Quick add</h3><div class="row">${[['bills','receipt','Naya Bill'],['apps','address-book','Customer'],['expenses','wallet','Kharch'],['cards','th-large','Card'],['staff','user-tie','Staff'],['cash','cash-register','Cash closing']].map(([k,i,l])=>`<button class="btn" data-q="${k}"><i class="fas fa-${i}"></i> ${l}</button>`).join('')}</div></div>`;M.onclick=e=>{const b=e.target.closest('[data-q]');if(b){M.hidden=1;form(b.dataset.q)}}};
+/* ---------- global keys ---------- */
+setTheme(localStorage.ctt||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));document.querySelectorAll('.thb').forEach(b=>b.onclick=toggleTheme);
+document.addEventListener('keydown',e=>{const t=e.target.tagName,typing=/INPUT|TEXTAREA|SELECT/.test(t);
+ if(e.key==='Escape')$('#modal').hidden=1;if(e.key==='k'&&(e.ctrlKey||e.metaKey)){e.preventDefault();pal()}
+ if(e.key==='/'&&!typing&&SC[view]){e.preventDefault();$('#q').focus()}
+ if(e.key==='z'&&(e.ctrlKey||e.metaKey)&&!typing){e.preventDefault();$('#un').click()}});
+</script>
+</body>
+</html>
