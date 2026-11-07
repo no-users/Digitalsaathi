@@ -139,6 +139,7 @@ input,select,textarea{transition:border-color .25s,box-shadow .25s,background .3
 #login form{position:relative;z-index:1;animation:pop .7s var(--e) both;box-shadow:0 30px 70px #00000055}
 .tg{position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;background:#ffffff26;color:#fff;border:1px solid #ffffff44;backdrop-filter:blur(8px);z-index:2;cursor:pointer}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.4s;animation-timing-function:var(--e)}
+#app[hidden]~#fab,#app[hidden]~#bell{display:none!important}
 #fab{position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;font-size:26px;justify-content:center;padding:0;z-index:40;background:linear-gradient(135deg,var(--p),var(--v));box-shadow:0 12px 28px #fe28af66}#fab:hover{transform:rotate(90deg) scale(1.08)}#toasts{bottom:92px}
 .dlg{position:relative}.dlg h3{padding-right:42px}
 .xc{position:sticky;top:0;justify-self:end;width:36px;height:36px;margin:-8px -8px -50px 0;border-radius:50%;background:var(--bg);color:var(--tx);display:grid;place-items:center;z-index:6;border:1px solid var(--ln);transition:transform .3s var(--e),background .2s,color .2s}
@@ -221,7 +222,7 @@ const SC={
 const NAV=[['dash','Dashboard','chart-pie'],...Object.keys(SC).map(k=>[k,SC[k].t,SC[k].i]),['kanban','Kanban Board','table-columns'],['bcast','WhatsApp Broadcast','paper-plane'],['trash','Recycle Bin','trash-restore'],['analytics','Analytics & Kamai','chart-line'],['tools','Link Checker','link-slash'],['logs','Audit Log','list-check'],['preview','Live Preview','eye'],['settings','Settings','cog']];
 const fk=k=>k==='subs'?'parent':'folder';
 let D={folders:[],subs:[],sideLinks:[],cards:[],notice:''},P=[],A=[],Z={bills:[],expenses:[],prices:[],staff:[],cash:[]},kd=-1,srt=0,ROLE='viewer',PM={},ADM=[],mode='table',view='dash',sel=new Set(),fl='',undo=[],drag=-1;
-const can=a=>ROLE==='owner'||(PM.act||[]).includes(a);
+const can=a=>!!auth.currentUser&&(ROLE==='owner'||(PM.act||[]).includes(a));
 const see=v=>v==='dash'||(v==='settings'?ROLE==='owner':ROLE==='owner'||(PM.sec||[]).includes(v));
 const COL={pdfs:'drive_pdfs',apps:'applications',bills:'bills',expenses:'expenses',prices:'prices',staff:'staff',cash:'cash'};
 const arr=k=>k==='pdfs'?P:k==='apps'?A:COL[k]?Z[k]:D[k];
@@ -236,7 +237,7 @@ const spl=$('#splash'),T0=performance.now();
 const setSp=t=>{spl.classList.remove('out');$('#spt').textContent=t};
 const hideSp=()=>setTimeout(()=>spl.classList.add('out'),Math.max(0,800-(performance.now()-T0)));
 setTimeout(hideSp,12000);
-auth.onAuthStateChanged(async u=>{$('#app').hidden=1;$('#login').hidden=0;if(u){setSp('Access check ho raha hai...');if(await gate()){setSp('Data load ho raha hai...');await load();$('#login').hidden=1;$('#app').hidden=0}}hideSp()});
+auth.onAuthStateChanged(async u=>{$('#app').hidden=1;$('#login').hidden=0;if(!u){closeM();D={folders:[],subs:[],sideLinks:[],cards:[],notice:''};P=[];A=[];Z={bills:[],expenses:[],prices:[],staff:[],cash:[]};ADM=[];PM={};ROLE='viewer';undo=[];view='dash';sel.clear()}if(u){setSp('Access check ho raha hai...');if(await gate()){setSp('Data load ho raha hai...');await load();$('#login').hidden=1;$('#app').hidden=0}}hideSp()});
 async function gate(){const em=auth.currentUser.email.toLowerCase(),R=db.collection('admins');
  try{let d=await R.doc(em).get();
   if(!d.exists){const any=await R.limit(1).get();if(any.empty){await R.doc(em).set({role:'owner',active:true,created:new Date()});d=await R.doc(em).get()}}
@@ -413,7 +414,7 @@ async function loadBk(){const el=$('#bk');if(!el)return;try{const s=await db.col
 const pvw=()=>`<div class="row" style="margin-bottom:12px"><button class="btn alt sm" data-w="100%"><i class="fas fa-desktop"></i> Desktop</button><button class="btn alt sm" data-w="420px"><i class="fas fa-mobile-alt"></i> Mobile</button><a class="btn alt sm" href="index.html" target="_blank"><i class="fas fa-up-right-from-square"></i> Naye tab me</a></div><div style="text-align:center"><iframe id="pf" src="index.html" style="width:100%;height:76vh;border:1px solid var(--ln);border-radius:16px;background:#fff;transition:width .3s"></iframe></div>`;
 function setTheme(t){const d=document.documentElement;d.classList.add('tt');d.dataset.t=t;localStorage.ctt=t;document.querySelectorAll('.thb').forEach(b=>b.innerHTML=`<i class="fas fa-${t==='dark'?'sun':'moon'}"></i>`);setTimeout(()=>d.classList.remove('tt'),520)}
 function toggleTheme(){setTheme(document.documentElement.dataset.t==='dark'?'light':'dark')}
-function pal(){const M=$('#modal');M.hidden=0;M.innerHTML='<div class="dlg"><input id="pi" placeholder="Kuch bhi dhundhein: card, folder, setting..."><div id="pr" class="hl"></div></div>';
+function pal(){if(!auth.currentUser)return;const M=$('#modal');M.hidden=0;M.innerHTML='<div class="dlg"><input id="pi" placeholder="Kuch bhi dhundhein: card, folder, setting..."><div id="pr" class="hl"></div></div>';
  const all=[...NAV.map(n=>({l:n[1]+' kholein',i:n[2],f:()=>go(n[0])})),...Object.keys(SC).flatMap(k=>arr(k).map((x,i)=>({l:SC[k].L(x),s:SC[k].t,i:SC[k].i,f:()=>{go(k);form(k,i)}}))),{l:'Naya card banayein',i:'plus',f:()=>{go('cards');form('cards')}},{l:'Dark / Light mode',i:'moon',f:toggleTheme},{l:'Undo',i:'rotate-left',f:()=>$('#un').click()}];
  const show=()=>{const q=$('#pi').value.toLowerCase();$('#pr').r=all.filter(a=>(a.l+(a.s||'')).toLowerCase().includes(q)).slice(0,9);$('#pr').innerHTML=$('#pr').r.map((a,j)=>`<div data-j="${j}" style="cursor:pointer;background:var(--bg)"><i class="fas fa-${a.i}"></i>${esc(a.l)}<small style="margin-left:auto;color:var(--mu)">${esc(a.s||'')}</small></div>`).join('')};
  const run=j=>{const a=$('#pr').r[j];if(a){M.hidden=1;a.f()}};
