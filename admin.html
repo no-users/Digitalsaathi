@@ -252,11 +252,16 @@ $('#fg').onclick=async()=>{const m=$('#em').value;if(!m)return toast('Pehle emai
 
 /* ---------- data ---------- */
 async function load(){
- try{const d=await REF.get();if(d.exists)D=Object.assign(D,d.data());
+ try{const d=await REF.get();if(d.exists)D=Object.assign(D,d.data());sync();
  const s=await db.collection('drive_pdfs').get();P=s.docs.map(x=>({id:x.id,...x.data()}));
  const a=await db.collection('applications').get();A=a.docs.map(x=>({id:x.id,...x.data()}));for(const k of ['bills','expenses','prices','staff','cash'])Z[k]=(await db.collection(k).get()).docs.map(x=>({id:x.id,...x.data()}))}catch(e){toast('Data load nahi hua: '+e.message,1)}
  render()}
-async function mut(fn,msg,act='edit'){if(!can(act))return toast('Is action ki permission nahi hai.',1);undo.push(JSON.stringify(D));if(undo.length>25)undo.shift();fn();try{await REF.set(D);log(msg);toast(msg)}catch(e){D=JSON.parse(undo.pop());toast('Save fail: '+e.message,1)}render()}
+const uid=()=>Math.random().toString(36).slice(2,10);
+function sync(){const nz=a=>String(a||'').trim().toLowerCase();
+ D.folders.forEach(f=>{if(!f.id)f.id=uid()});
+ D.subs.forEach(x=>{if(!x.id)x.id=uid();if(!x.fid){const f=D.folders.find(f=>nz(f.name)===nz(x.parent));if(f)x.fid=f.id}const f=D.folders.find(f=>f.id===x.fid);if(f)x.parent=f.name});
+ D.cards.concat(D.sideLinks).forEach(x=>{if(!x.sid){const u=D.subs.find(u=>nz(u.parent)===nz(x.folder)&&nz(u.name)===nz(x.sub));if(u)x.sid=u.id}const u=D.subs.find(u=>u.id===x.sid);if(u){x.sub=u.name;x.folder=u.parent;x.fid=u.fid}else{if(!x.fid){const f=D.folders.find(f=>nz(f.name)===nz(x.folder));if(f)x.fid=f.id}const f=D.folders.find(f=>f.id===x.fid);if(f)x.folder=f.name}})}
+async function mut(fn,msg,act='edit'){if(!can(act))return toast('Is action ki permission nahi hai.',1);undo.push(JSON.stringify(D));if(undo.length>25)undo.shift();fn();sync();try{await REF.set(D);log(msg);toast(msg)}catch(e){D=JSON.parse(undo.pop());toast('Save fail: '+e.message,1)}render()}
 $('#un').onclick=async()=>{if(!can('edit'))return toast('Is action ki permission nahi hai.',1);if(!undo.length)return toast('Undo ke liye kuch nahi hai.',1);D=JSON.parse(undo.pop());await REF.set(D);toast('Undo ho gaya.');render()};
 function ask(m){return new Promise(r=>{const M=$('#modal');M.hidden=0;M.innerHTML=`<div class="dlg"><h3>${esc(m)}</h3><div class="row" style="justify-content:flex-end"><button class="btn alt" id="n">Cancel</button><button class="btn bad" id="y">Haan, kar do</button></div></div>`;askR=r;$('#y').onclick=()=>{askR=null;M.hidden=1;r(1)};$('#n').onclick=()=>{askR=null;M.hidden=1;r(0)}})}
 
@@ -319,7 +324,7 @@ V.ondragover=e=>{const r=e.target.closest('tr[data-i]');if(r&&drag>-1){e.prevent
 V.ondrop=e=>{const r=e.target.closest('tr[data-i]');if(!r||drag<0)return;const to=+r.dataset.i,from=drag;drag=-1;if(to===from)return;
  mut(()=>{const a=D[view],[m]=a.splice(from,1);a.splice(to,0,m)},'Order badal diya')};
 
-async function dup(k,i){mut(()=>{const c=JSON.parse(JSON.stringify(D[k][i])),n=SC[k].f[k==='subs'||k==='folders'?0:2];const key=k==='subs'||k==='folders'?'name':k==='cards'?'title':'label';c[key]+=' (copy)';D[k].splice(i+1,0,c)},'Duplicate ban gaya','add')}
+async function dup(k,i){mut(()=>{const c=JSON.parse(JSON.stringify(D[k][i])),n=SC[k].f[k==='subs'||k==='folders'?0:2];const key=k==='subs'||k==='folders'?'name':k==='cards'?'title':'label';c[key]+=' (copy)';delete c.id;D[k].splice(i+1,0,c)},'Duplicate ban gaya','add')}
 async function del(k,ix){if(!can('delete'))return toast('Delete ki permission nahi hai.',1);
  if(!ix.length)return;const set=new Set(ix),a=arr(k),gone=a.filter((_,j)=>set.has(j));
  let extra='';
@@ -376,8 +381,7 @@ function form(k,idx=-1){if(!can(idx>=0?'edit':'add'))return toast('Is action ki 
   M.hidden=1;
   ['amount','discount','paid','salary','present','advance','opening','closing'].forEach(n=>{if(v[n]!==undefined)v[n]=+v[n]||0});localStorage.removeItem('ctd_'+k);if(COL[k]){const L=arr(k);try{if(k==='pdfs')v.portalLink=v.portalLink||'https://epds.bihar.gov.in/SearchByRCID.aspx';v.updatedAt=new Date();if(idx>=0){await db.collection(COL[k]).doc(L[idx].id).update(v);L[idx]={...L[idx],...v}}else{v.createdAt=new Date();const r=await db.collection(COL[k]).add(v);L.push({id:r.id,...v})}toast('Save ho gaya.');log('Save: '+SC[k].L(v))}catch(x){toast('Save fail: '+x.message,1)}return render()}
   mut(()=>{const old=idx>=0?D[k][idx]:null;
-   if(old&&k==='folders'&&old.name!==v.name){D.subs.forEach(x=>{if(x.parent===old.name)x.parent=v.name});D.cards.concat(D.sideLinks).forEach(x=>{if(x.folder===old.name)x.folder=v.name})}
-   if(old&&k==='subs'&&(old.name!==v.name||old.parent!==v.parent)){D.cards.concat(D.sideLinks).forEach(x=>{if(x.folder===old.parent&&x.sub===old.name){x.sub=v.name;x.folder=v.parent}})}
+   if(old)for(const q of Object.keys(old))if(!(q in v)&&q!=='links'&&!(k==='subs'&&q==='fid')&&!(['cards','sideLinks'].includes(k)&&(q==='sid'||q==='fid')))v[q]=old[q];
    idx>=0?D[k][idx]=v:D[k].push(v)},'Save ho gaya: '+v[key],idx>=0?'edit':'add')}}
 
 /* ---------- settings ---------- */
