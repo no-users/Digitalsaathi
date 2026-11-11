@@ -1,0 +1,264 @@
+/* ===========================================================
+   CLICK & CONNECT — Shared UI kit  (cc-ui.css)
+   Used by: auth-login.html, profile.html
+   Needs  : palette.css loaded BEFORE this file.
+   Contains: extra tokens, dark tokens, buttons, toasts,
+             popups (centered on desktop / bottom-sheet on phone),
+             animated logo, skeleton.
+   =========================================================== */
+
+:root {
+    /* extra tokens (palette.css stays untouched) */
+    --cc-grad:        linear-gradient(135deg, #9B00D2 0%, #FE28AF 100%);
+    --cc-grad-warm:   linear-gradient(135deg, #FE28AF 0%, #DD603E 100%);
+    --cc-grad-cool:   linear-gradient(135deg, #007800 0%, #2FB24A 100%);
+    --cc-surface-2:   #F7F4FB;
+    --cc-ink-2:       #3B3B46;
+    --cc-logo-ink:    #1A1A2E;
+    --cc-radius-xl:   28px;
+    --cc-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+    --cc-shadow-sm:   0 2px 10px rgba(26, 26, 46, 0.05);
+    --cc-shadow-md:   0 14px 34px rgba(155, 0, 210, 0.09);
+    --cc-shadow-lg:   0 28px 64px rgba(26, 26, 46, 0.18);
+    --cc-safe-top:    env(safe-area-inset-top, 0px);
+    --cc-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ---------- Dark tokens (only on pages that load this file) ---------- */
+body.dark {
+    --cc-white:       #16161F;
+    --cc-offwhite:    #0E0E15;
+    --cc-surface-2:   #1D1D29;
+    --cc-ink:         #F3F3F8;
+    --cc-ink-2:       #D7D7E2;
+    --cc-muted:       #9C9CB0;
+    --cc-border:      #2A2A39;
+    --cc-green:       #4ADE80;
+    --cc-purple:      #C77DFF;
+    --cc-pink:        #FF5CC2;
+    --cc-rust:        #FF8A6B;
+    --cc-green-soft:  rgba(47, 178, 74, 0.16);
+    --cc-pink-soft:   rgba(254, 40, 175, 0.16);
+    --cc-purple-soft: rgba(176, 70, 230, 0.20);
+    --cc-rust-soft:   rgba(221, 96, 62, 0.18);
+    --cc-logo-ink:    #F3F3F8;
+    --cc-shadow:      0 10px 28px rgba(0, 0, 0, 0.35);
+    --cc-shadow-sm:   0 2px 10px rgba(0, 0, 0, 0.3);
+    --cc-shadow-md:   0 14px 34px rgba(0, 0, 0, 0.4);
+    --cc-shadow-lg:   0 28px 64px rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+}
+
+body { --cc-surface: var(--cc-white); }          /* resolved on <body> so dark mode can override --cc-white */
+body.dark { --cc-surface: #16161F; }
+
+html.cc-lock, html.cc-lock body { overflow: hidden; }
+
+.cc-sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ===========================================================
+   Buttons
+   =========================================================== */
+.cc-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 46px; padding: 0 20px; border: 0; border-radius: 14px;
+    font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1;
+    cursor: pointer; white-space: nowrap; text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .18s var(--cc-ease), box-shadow .25s var(--cc-ease), background .2s, opacity .2s, color .2s;
+}
+.cc-btn:active { transform: scale(.97); }
+.cc-btn[disabled], .cc-btn.is-disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none !important; }
+.cc-btn-sm { height: 38px; padding: 0 14px; font-size: 13px; border-radius: 12px; }
+.cc-btn-lg { height: 54px; font-size: 15px; border-radius: 16px; font-weight: 700; }
+.cc-btn-block { width: 100%; }
+
+.cc-btn-primary { background: var(--cc-grad); color: #fff; box-shadow: 0 10px 22px rgba(155, 0, 210, .22); position: relative; overflow: hidden; }
+.cc-btn-primary::after {
+    content: ""; position: absolute; top: 0; left: -80%; width: 55%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-18deg); transition: left .7s var(--cc-ease);
+}
+.cc-btn-primary:hover:not([disabled])::after { left: 130%; }
+.cc-btn-primary:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 16px 30px rgba(254, 40, 175, .28); }
+.cc-btn-soft   { background: var(--cc-purple-soft); color: var(--cc-purple); }
+.cc-btn-soft:hover:not([disabled]) { background: var(--cc-purple); color: #fff; }
+.cc-btn-ghost  { background: transparent; color: var(--cc-ink); box-shadow: inset 0 0 0 1.5px var(--cc-border); }
+.cc-btn-ghost:hover:not([disabled]) { box-shadow: inset 0 0 0 1.5px var(--cc-purple); color: var(--cc-purple); }
+.cc-btn-danger { background: var(--cc-rust); color: #fff; box-shadow: 0 10px 22px rgba(221, 96, 62, .25); }
+.cc-btn-danger:hover:not([disabled]) { transform: translateY(-2px); background: #cc5133; }
+.cc-btn-danger-soft { background: var(--cc-rust-soft); color: var(--cc-rust); }
+.cc-btn-danger-soft:hover:not([disabled]) { background: var(--cc-rust); color: #fff; }
+.cc-btn-success { background: var(--cc-grad-cool) !important; color: #fff; box-shadow: 0 10px 22px rgba(0,120,0,.25); }
+
+.cc-spin {
+    width: 16px; height: 16px; border-radius: 50%; display: inline-block; flex: none;
+    border: 2.5px solid currentColor; border-right-color: transparent;
+    animation: ccSpin .7s linear infinite;
+}
+@keyframes ccSpin { to { transform: rotate(360deg); } }
+
+/* ===========================================================
+   Toasts
+   =========================================================== */
+.cc-toast-stack {
+    position: fixed; z-index: 100000; left: 50%; transform: translateX(-50%);
+    top: calc(var(--cc-safe-top) + 14px);
+    width: min(92vw, 420px);
+    display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+}
+.cc-toast {
+    position: relative; overflow: hidden; pointer-events: auto;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--cc-surface); color: var(--cc-ink);
+    border: 1px solid var(--cc-border); border-radius: 18px;
+    padding: 12px 14px; box-shadow: var(--cc-shadow-lg);
+    opacity: 0; transform: translateY(-18px) scale(.97);
+    transition: opacity .35s var(--cc-ease), transform .45s var(--cc-spring);
+}
+.cc-toast.show { opacity: 1; transform: translateY(0) scale(1); }
+.cc-toast-ico {
+    width: 36px; height: 36px; border-radius: 12px; flex: none;
+    display: grid; place-items: center; font-size: 15px;
+    background: var(--cc-purple-soft); color: var(--cc-purple);
+}
+.cc-toast.success .cc-toast-ico { background: var(--cc-green-soft); color: var(--cc-green); }
+.cc-toast.error   .cc-toast-ico { background: var(--cc-rust-soft);  color: var(--cc-rust); }
+.cc-toast.warn    .cc-toast-ico { background: var(--cc-pink-soft);  color: var(--cc-pink); }
+.cc-toast-txt { flex: 1; min-width: 0; font-size: 13px; line-height: 1.45; font-weight: 500; }
+.cc-toast-txt b { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 1px; }
+.cc-toast-x { border: 0; background: none; color: var(--cc-muted); cursor: pointer; padding: 6px; font-size: 12px; border-radius: 8px; }
+.cc-toast-x:hover { color: var(--cc-ink); background: var(--cc-surface-2); }
+.cc-toast::after {
+    content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%;
+    background: var(--cc-purple); opacity: .55; transform-origin: left;
+    animation: ccToastBar var(--cc-toast-ms, 3600ms) linear forwards;
+}
+.cc-toast.success::after { background: var(--cc-green); }
+.cc-toast.error::after   { background: var(--cc-rust); }
+.cc-toast.warn::after    { background: var(--cc-pink); }
+@keyframes ccToastBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* ===========================================================
+   Popups — centered dialog on desktop, bottom-sheet on phones
+   =========================================================== */
+.cc-dlg-backdrop {
+    position: fixed; inset: 0; z-index: 99990;
+    display: none; align-items: center; justify-content: center;
+    padding: 16px; background: rgba(20, 12, 32, .46);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    opacity: 0; transition: opacity .28s var(--cc-ease);
+}
+.cc-dlg-backdrop.is-open { display: flex; }
+.cc-dlg-backdrop.is-shown { opacity: 1; }
+
+.cc-dlg {
+    position: relative; width: min(430px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto;
+    background: var(--cc-surface); color: var(--cc-ink);
+    border-radius: 28px; padding: 28px 26px 24px;
+    box-shadow: var(--cc-shadow-lg); border: 1px solid var(--cc-border);
+    text-align: center;
+    transform: translateY(18px) scale(.94); opacity: 0;
+    transition: transform .5s var(--cc-spring), opacity .3s var(--cc-ease);
+    overscroll-behavior: contain;
+}
+.cc-dlg-backdrop.is-shown .cc-dlg { transform: none; opacity: 1; }
+.cc-dlg.is-left { text-align: left; }
+.cc-dlg-wide { width: min(520px, 100%); }
+
+.cc-dlg-handle { display: none; width: 44px; height: 5px; border-radius: 6px; background: var(--cc-border); margin: -10px auto 16px; touch-action: none; }
+.cc-dlg-close {
+    position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 12px;
+    border: 0; background: var(--cc-surface-2); color: var(--cc-muted); cursor: pointer; font-size: 13px;
+    transition: all .2s var(--cc-ease);
+}
+.cc-dlg-close:hover { background: var(--cc-rust-soft); color: var(--cc-rust); transform: rotate(90deg); }
+
+.cc-dlg-icon {
+    width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 22px;
+    display: grid; place-items: center; font-size: 26px; position: relative;
+    background: var(--cc-purple-soft); color: var(--cc-purple);
+}
+.cc-dlg-icon::before {
+    content: ""; position: absolute; inset: -7px; border-radius: 26px; border: 2px solid currentColor; opacity: .14;
+    animation: ccHalo 2.4s ease-in-out infinite;
+}
+@keyframes ccHalo { 0%,100% { transform: scale(1); opacity: .14; } 50% { transform: scale(1.1); opacity: .04; } }
+.cc-dlg.tone-danger  .cc-dlg-icon { background: var(--cc-rust-soft);  color: var(--cc-rust); }
+.cc-dlg.tone-success .cc-dlg-icon { background: var(--cc-green-soft); color: var(--cc-green); }
+.cc-dlg.tone-warn    .cc-dlg-icon { background: var(--cc-pink-soft);  color: var(--cc-pink); }
+
+.cc-dlg-title { margin: 0 0 6px; font-size: 19px; font-weight: 700; line-height: 1.3; }
+.cc-dlg-desc  { margin: 0 0 20px; font-size: 13.5px; line-height: 1.6; color: var(--cc-muted); }
+.cc-dlg-body  { margin: 0 0 18px; text-align: left; }
+.cc-dlg-actions { display: flex; gap: 10px; }
+.cc-dlg-actions .cc-btn { flex: 1; height: 50px; border-radius: 15px; }
+.cc-dlg-actions.stack { flex-direction: column; }
+
+.cc-dlg-field { text-align: left; margin-bottom: 18px; }
+.cc-dlg-field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 7px; color: var(--cc-ink-2); }
+.cc-dlg-field input {
+    width: 100%; height: 50px; padding: 0 16px; border-radius: 14px;
+    border: 1.5px solid var(--cc-border); background: var(--cc-surface); color: var(--cc-ink);
+    font: 500 16px 'Poppins', sans-serif; transition: border-color .2s, box-shadow .2s;
+}
+.cc-dlg-field input:focus { outline: none; border-color: var(--cc-purple); box-shadow: 0 0 0 4px var(--cc-purple-soft); }
+.cc-dlg-field .cc-dlg-err { display: none; margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--cc-rust); }
+.cc-dlg-field.has-err input { border-color: var(--cc-rust); }
+.cc-dlg-field.has-err .cc-dlg-err { display: block; animation: ccShake .4s; }
+@keyframes ccShake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+
+@media (max-width: 600px) {
+    .cc-dlg-backdrop { align-items: flex-end; padding: 0; }
+    .cc-dlg {
+        width: 100%; border-radius: 28px 28px 0 0; max-height: 92dvh;
+        padding: 22px 22px calc(22px + var(--cc-safe-bottom));
+        transform: translateY(100%); opacity: 1; border-bottom: 0;
+        transition: transform .45s var(--cc-ease);
+    }
+    .cc-dlg-handle { display: block; }
+    .cc-dlg-close { top: 12px; }
+    .cc-toast-stack { width: calc(100vw - 24px); }
+}
+
+/* ===========================================================
+   Animated logo mark  (inline <svg class="cc-mark">)
+   =========================================================== */
+.cc-mark { width: 44px; height: 44px; overflow: visible; display: block; flex: none; }
+.cc-mark .mk-arc { stroke-dasharray: 100; stroke-dashoffset: 100; animation: mkDraw 1.15s .1s var(--cc-ease) forwards; }
+.cc-mark .mk-dots { opacity: 0; animation: mkFade .5s .85s ease forwards; }
+.cc-mark .mk-cursor {
+    fill: var(--cc-logo-ink); transform-box: fill-box; transform-origin: 0 0;
+    opacity: 0; animation: mkCursor .7s .55s var(--cc-spring) forwards;
+}
+.cc-mark .mk-n1, .cc-mark .mk-n2 { transform-box: fill-box; transform-origin: center; opacity: 0; }
+.cc-mark .mk-n1 { animation: mkPop .5s .95s var(--cc-spring) forwards, mkPulse 2.8s 1.6s ease-in-out infinite; }
+.cc-mark .mk-n2 { animation: mkPop .5s 1.1s var(--cc-spring) forwards, mkPulse 2.8s 2.2s ease-in-out infinite; }
+@keyframes mkDraw   { to { stroke-dashoffset: 0; } }
+@keyframes mkFade   { to { opacity: 1; } }
+@keyframes mkCursor { 0% { opacity: 0; transform: translate(-6px,-6px) scale(.2); } 100% { opacity: 1; transform: none; } }
+@keyframes mkPop    { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes mkPulse  { 0%,100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+
+.cc-wordmark { display: flex; flex-direction: column; line-height: 1.05; }
+.cc-wordmark b { font-weight: 700; font-size: 22px; letter-spacing: -.5px; color: var(--cc-logo-ink); white-space: nowrap; }
+.cc-wordmark b span { background: var(--cc-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cc-wordmark small { margin-top: 5px; font-size: 9.5px; font-weight: 600; letter-spacing: .32em; color: var(--cc-muted); text-transform: uppercase; }
+
+/* ===========================================================
+   Skeleton + misc
+   =========================================================== */
+.cc-skel {
+    background: linear-gradient(90deg, var(--cc-surface-2) 25%, var(--cc-border) 37%, var(--cc-surface-2) 63%);
+    background-size: 400% 100%; animation: ccShimmer 1.4s ease infinite; border-radius: 10px; color: transparent !important;
+}
+@keyframes ccShimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    .cc-mark .mk-arc { stroke-dashoffset: 0; }
+    .cc-mark .mk-dots, .cc-mark .mk-cursor, .cc-mark .mk-n1, .cc-mark .mk-n2 { opacity: 1; }
+}

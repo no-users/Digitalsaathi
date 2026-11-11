@@ -1,0 +1,65 @@
+/* ===========================================================
+   CLICK & CONNECT — Shared Brand Palette / Design Tokens
+   Include this BEFORE any page-specific stylesheet on every
+   page (index.html, login.html, admin.html, bill.html,
+   profile.html, etc). All pages should draw colors from here
+   so the whole site stays one consistent system.
+   =========================================================== */
+
+:root {
+    /* --- Brand colors (5-color palette) --- */
+    --cc-green:  #007800;
+    --cc-pink:   #FE28AF;
+    --cc-purple: #9B00D2;
+    --cc-rust:   #DD603E;
+    --cc-offwhite: #FDFFF0;
+
+    /* --- Base --- */
+    --cc-white:  #FFFFFF;
+    --cc-ink:    #1A1A2E;
+    --cc-muted:  #6B7280;
+    --cc-border: #E7E5DC;
+    --cc-shadow: 0 20px 60px rgba(26, 26, 46, 0.14);
+    --cc-shadow-sm: 0 6px 18px rgba(26, 26, 46, 0.08);
+
+    /* --- Soft tints (14% mixes, for badges / alerts / hovers) --- */
+    --cc-green-soft:  rgba(0, 120, 0, 0.12);
+    --cc-pink-soft:   rgba(254, 40, 175, 0.12);
+    --cc-purple-soft: rgba(155, 0, 210, 0.12);
+    --cc-rust-soft:   rgba(221, 96, 62, 0.12);
+
+    /* --- Radii / motion (shared rhythm across pages) --- */
+    --cc-radius-lg: 24px;
+    --cc-radius-md: 14px;
+    --cc-radius-sm: 10px;
+    --cc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Dark theme (toggle with data-theme="dark" on <html>) ----------
+   Brand accent colors (--cc-green/pink/purple/rust) stay the same in dark
+   mode — only base/surface tokens flip so every page keeps its identity. */
+:root[data-cc-theme="dark"] {
+    --cc-white:  #1E1E32;
+    --cc-offwhite: #15151F;
+    --cc-ink:    #F1F0EA;
+    --cc-muted:  #9795AA;
+    --cc-border: #33334A;
+    --cc-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    --cc-shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.3);
+
+    --cc-green-soft:  rgba(0, 168, 0, 0.18);
+    --cc-pink-soft:   rgba(254, 40, 175, 0.18);
+    --cc-purple-soft: rgba(180, 60, 220, 0.22);
+    --cc-rust-soft:   rgba(221, 96, 62, 0.2);
+}
+
+/* Utility classes other pages can reuse without redefining colors */
+.cc-text-green  { color: var(--cc-green); }
+.cc-text-pink   { color: var(--cc-pink); }
+.cc-text-purple { color: var(--cc-purple); }
+.cc-text-rust   { color: var(--cc-rust); }
+
+.cc-bg-green  { background: var(--cc-green); }
+.cc-bg-pink   { background: var(--cc-pink); }
+.cc-bg-purple { background: var(--cc-purple); }
+.cc-bg-rust   { background: var(--cc-rust); }
