@@ -1,5 +1,5 @@
 // Click & Connect — service worker (offline-friendly, always tries fresh files first)
-const CACHE = 'click-connect-v7';
+const CACHE = 'click-connect-v8';
 const FILES = ['index.html', 'css/dash-style.css', 'js/dash-engine.js', 'css/palette.css', 'css/cc-updates.css', 'js/cc-updates.js', 'manifest.json'];
 
 self.addEventListener('install', (e) => {
