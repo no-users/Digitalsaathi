@@ -53,14 +53,75 @@ updateClock();
 
 
 // 1. REAL-TIME FIREBASE SYNC
-db.collection('data').doc('matrix_config').onSnapshot((doc) => {
-    if (doc.exists) {
-        renderUI(doc.data());
+function ccEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function ccToday() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+
+// Firebase ki dikkat ko screen par saaf dikhane wala banner (pehle sirf chhota toast aata tha)
+function ccSyncBanner(msg, tone) {
+    let b = document.getElementById('ccSyncErr');
+    if (!msg) { if (b) b.remove(); return; }
+    if (!b) {
+        b = document.createElement('div'); b.id = 'ccSyncErr';
+        b.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:99998;max-width:min(560px,94vw);padding:12px 16px;border-radius:14px;font:600 13px/1.5 Poppins,sans-serif;color:#fff;box-shadow:0 12px 32px #0004;cursor:pointer';
+        b.title = 'Band karne ke liye tap karein'; b.onclick = () => b.remove();
+        document.body.appendChild(b);
     }
-});
+    b.style.background = tone === 'warn' ? '#c77700' : '#c0392b';
+    b.textContent = msg;
+}
+
+function ccStartSync() {
+    db.collection('data').doc('matrix_config').onSnapshot((doc) => {
+        const fromCache = !!(doc.metadata && doc.metadata.fromCache);
+        const project = (window.firebase && firebase.app().options.projectId) || '?';
+        if (doc.exists) {
+            const dd = doc.data();
+            window.ccData = { project, fromCache, rev: dd._rev || 0, at: dd._at || '', by: dd._by || '',
+                counts: { folders: (dd.folders || []).length, subs: (dd.subs || []).length, sideLinks: (dd.sideLinks || []).length, cards: (dd.cards || []).length } };
+            try { localStorage.ccCfg = JSON.stringify(dd); } catch (e) {}
+            ccSyncBanner(fromCache ? 'Abhi purana (cache) data dikh raha hai. Internet check karein.' : '', 'warn');
+            renderUI(dd);
+        } else {
+            // Server par document hi nahi hai: purana cache dikhana galat hoga (admin se mismatch ki wajah yahi thi)
+            window.ccData = { project, fromCache, rev: 0, at: '', by: '', error: 'data/matrix_config document nahi mila', counts: { folders: 0, subs: 0, sideLinks: 0, cards: 0 } };
+            try { localStorage.removeItem('ccCfg'); } catch (e) {}
+            renderUI({ folders: [], subs: [], sideLinks: [], cards: [], notice: '' });
+            ccSyncBanner('Firebase project "' + project + '" me data/matrix_config abhi bana hi nahi hai. Admin panel (usi project se) me ek folder save karke dekhein.', 'warn');
+        }
+    }, (err) => {
+        console.error('Firestore data/matrix_config:', err);
+        const hint = window.ccFbHint ? window.ccFbHint(err) : (err.code || err.message);
+        window.ccData = Object.assign(window.ccData || {}, { error: err.code || err.message });
+        try { const cc = JSON.parse(localStorage.ccCfg || 'null'); if (cc) renderUI(cc); } catch (e) {}
+        ccSyncBanner('Live data nahi aa raha: ' + hint + ' (Abhi aakhri saved data dikh raha hai.)');
+        const nb = document.getElementById('liveNoticeBoardHeadlineText'); if (nb && /^Loading/.test(nb.innerText)) nb.innerText = 'Data load nahi ho paya (Firebase permission/connection).';
+    });
+}
+// Login ready hone ke baad hi Firestore se padhein (warna rules 'permission-denied' dete hain)
+(window.ccAuthReady || Promise.resolve(window.auth && window.auth.currentUser)).then((u) => { if (u) ccStartSync(); });
+// Server bahut der tak na bole to hi cache dikhayein
+try { const cc = JSON.parse(localStorage.ccCfg || 'null'); if (cc) setTimeout(() => { if (!window.ccData) { renderUI(cc); ccSyncBanner('Server se data abhi nahi aaya, purana saved data dikh raha hai.', 'warn'); } }, 6000); } catch (e) {}
 
 // 2. RENDER LOGIC
+// Admin ke Hide / Pin / Schedule ko dashboard par lagu karta hai
+function ccPrepConfig(config) {
+    const t = ccToday();
+    const ok = x => !x.hidden && (!x.showFrom || t >= x.showFrom) && (!x.showUntil || t <= x.showUntil);
+    const pin = arr => (arr || []).slice().sort((p, q) => (q.pinned ? 1 : 0) - (p.pinned ? 1 : 0));
+    const c = Object.assign({}, config);
+    const hideF = new Set((config.folders || []).filter(x => !ok(x)).map(x => x.name));
+    const hideS = new Set((config.subs || []).filter(x => !ok(x)).map(x => x.parent + '|' + x.name));
+    c.folders = pin((config.folders || []).filter(ok));
+    c.subs = pin((config.subs || []).filter(x => ok(x) && !hideF.has(x.parent)));
+    const vis = x => ok(x) && !hideF.has(x.folder) && !hideS.has(x.folder + '|' + x.sub);
+    c.sideLinks = pin((config.sideLinks || []).filter(vis));
+    c.cards = pin((config.cards || []).filter(vis));
+    if (c.noticeUntil && t > c.noticeUntil) c.notice = '';
+    return c;
+}
+
 function renderUI(config) {
+    config = ccPrepConfig(config);
     const sidebarMenu = document.getElementById('masterLiveSidebarMenu');
     const gridContainer = document.getElementById('toolsDisplayGrid');
     const noticeBoard = document.getElementById('liveNoticeBoardHeadlineText');
@@ -72,7 +133,7 @@ function renderUI(config) {
     gridContainer.innerHTML = '';
     if (noResults) gridContainer.appendChild(noResults); 
     
-    if (noticeBoard && config.notice) noticeBoard.innerText = config.notice;
+    if (noticeBoard) noticeBoard.innerText = config.notice || 'Abhi koi naya notice nahi hai.';
 
     const applyColor = (color) => color || "#4f46e5";
 
@@ -104,8 +165,8 @@ function renderUI(config) {
             li.innerHTML = `
                 <div class="menu-link">
                     <div class="menu-link-content">
-                        <i class="${mainFolder.icon}" style="color: ${folderColor};"></i> 
-                        <span>${mainFolder.name}</span>
+                        <i class="${ccEsc(mainFolder.icon || 'fas fa-folder')}" style="color: ${folderColor};"></i> 
+                        <span>${ccEsc(mainFolder.name)}</span>
                         ${folderBadge}
                     </div>
                     <i class="fas fa-chevron-down chevron-icon"></i>
@@ -114,7 +175,7 @@ function renderUI(config) {
             `;
             sidebarMenu.appendChild(li);
 
-            const subContainer = document.getElementById(`container-${safeFolderName}`);
+            const subContainer = li.querySelector('.submenu-container');
             if (config.subs) {
                 config.subs.filter(s => s.parent === mainFolder.name).forEach(subPortal => {
                     const subId = `subPortal-${subPortal.name.replace(/\s+/g, '')}`;
@@ -126,9 +187,10 @@ function renderUI(config) {
                     subDiv.className = "submenu-link-toggle";
                     subDiv.setAttribute('data-target', subId);
                     subDiv.setAttribute('data-filter', subPortal.name.toLowerCase());
+                    subDiv.setAttribute('data-parent', String(mainFolder.name).toLowerCase().trim());
                     subDiv.innerHTML = `
                         <span class="menu-link-content">
-                            <i class="${subPortal.icon}" style="color: ${subColor};"></i> <span class="cc-sub-name">${subPortal.name}</span>
+                            <i class="${ccEsc(subPortal.icon || 'fas fa-folder-open')}" style="color: ${subColor};"></i> <span class="cc-sub-name">${ccEsc(subPortal.name)}</span>
                             ${subBadge}
                         </span>
                         <i class="fas fa-chevron-down nested-chevron"></i>
@@ -146,7 +208,7 @@ function renderUI(config) {
                             dlAnchor.target = "_blank";
                             dlAnchor.className = "nested-submenu-link";
                             const dlColor = applyColor(dl.color);
-                            dlAnchor.innerHTML = `<i class="${dl.icon}" style="color: ${dlColor};"></i> ${dl.label || dl.title}`;
+                            dlAnchor.innerHTML = `<i class="${ccEsc(dl.icon || 'fas fa-link')}" style="color: ${dlColor};"></i> ${ccEsc(dl.label || dl.title)}`;
                             nestedContainer.appendChild(dlAnchor);
                         });
                     }
@@ -164,7 +226,8 @@ function renderUI(config) {
             
             const anchor = document.createElement('div'); 
             anchor.className = `service-card-block tool-card-item`;
-            anchor.setAttribute('data-sub', card.sub?.toLowerCase() || '');
+            anchor.setAttribute('data-sub', (card.sub || '').toLowerCase().trim());
+            anchor.setAttribute('data-folder', (card.folder || '').toLowerCase().trim());
             anchor.setAttribute('data-name', (card.title || card.name || '').toLowerCase());
             anchor.style.cursor = "pointer";
             
@@ -187,11 +250,11 @@ function renderUI(config) {
             // Card HTML
             anchor.innerHTML = `
                 <div class="square-icon-box" style="background-color: ${card.color || '#4f46e5'};">
-                    <i class="${card.icon || 'fas fa-link'}"></i>
+                    <i class="${ccEsc(card.icon || 'fas fa-link')}"></i>
                 </div>
                 <div class="service-meta-text">
-                    <h4>${card.title || card.name || 'Untitled'}</h4>
-                    <p>${card.desc || card.description || ''}</p>
+                    <h4>${ccEsc(card.title || card.name || 'Untitled')}</h4>
+                    <p>${ccEsc(card.desc || card.description || '')}</p>
                 </div>
             `;
 
@@ -254,6 +317,7 @@ document.getElementById('masterLiveSidebarMenu').addEventListener('click', funct
         e.stopPropagation(); // Parent tak click na jaye
         
         const filterVal = subToggle.getAttribute('data-filter').toLowerCase().trim();
+        const parentVal = (subToggle.getAttribute('data-parent') || '').toLowerCase().trim();
         const subName = subToggle.querySelector('.cc-sub-name').innerText.trim(); // Sub-folder ka naam nikala (badge count exclude)
         
         // UI Toggle (Active state)
@@ -270,7 +334,8 @@ document.getElementById('masterLiveSidebarMenu').addEventListener('click', funct
         allCards.forEach(c => {
             const cardSub = c.getAttribute('data-sub').toLowerCase().trim();
             
-            if (cardSub === filterVal) {
+            const cardFolder = (c.getAttribute('data-folder') || '').toLowerCase().trim();
+            if (cardSub === filterVal && (!cardFolder || !parentVal || cardFolder === parentVal)) {
                 c.style.display = "flex"; // Match hone par dikhayein
                 c.classList.remove('card-hidden');
                 c.classList.add('card-visible');

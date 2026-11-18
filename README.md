@@ -22,3 +22,11 @@ Firestore: `data/matrix_config`, `drive_pdfs`, `users`, `applications`, `bills`,
 ## Updates & Notices
 Admin: Updates page (collection `updates`, published=true hone par website par dikhta hai). Cards me documents/process/fee/eligibility fields.
 Website: `js/cc-updates.js` + `css/cc-updates.css` (slide banner, details modal), card par list-check button.
+
+## Troubleshooting (data / notification nahi dikh raha)
+1. `docs/firestore-admin-rules.txt` ka checklist follow karein (rules Publish + `admins` document).
+2. Dashboard par **Ctrl+Shift+D**: Source "Server (live)" hona chahiye. "Cache" ya Error dikhe to Firebase se connect nahi ho raha.
+3. Admin -> Settings -> **Connection Doctor** chalayein.
+4. Admin aur dashboard dono `js/auth-firebase.js` wale project (`agency-136b6`) ko hi use karte hain.
+5. Pages jo Firestore padhte hain (index, mobile, ration-card) ab pehle Firebase login ready hone ka wait karte hain (`window.ccAuthReady`).
+

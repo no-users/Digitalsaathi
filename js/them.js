@@ -4,5 +4,6 @@
     if (window.__ccThemeLoaded) return;
     var s = document.currentScript;
     var base = s && s.src ? s.src.replace(/[^\/]*([?#].*)?$/, "") : "";
+    base = base.replace(/js\/$/, "");
     document.write('<script src="' + base + 'js/theme.js"><\/script>');
 })();

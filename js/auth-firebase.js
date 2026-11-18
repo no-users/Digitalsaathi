@@ -19,3 +19,19 @@ if (!firebase.apps.length) {
 
 window.db = firebase.firestore();
 window.auth = firebase.auth();
+
+// Firestore rules me data padhne ke liye login zaroori hai. Isliye har page pehle
+// auth ready hone ka wait kare (warna 'permission-denied' aata hai aur purana cache dikhta hai).
+window.ccAuthReady = new Promise(function (resolve) {
+    var off = window.auth.onAuthStateChanged(function (u) { try { off(); } catch (e) {} resolve(u || null); });
+});
+
+// Firebase error ko aasan Hindi me samjhane ke liye
+window.ccFbHint = function (err) {
+    var c = (err && (err.code || err.message)) || '';
+    if (/permission-denied/.test(c)) return 'Firestore Rules is data ko padhne nahi de rahe (permission-denied). docs/firestore-admin-rules.txt ke rules Firebase Console me publish karein aur admins collection me apna email jodein.';
+    if (/unauthenticated/.test(c)) return 'Login nahi hai. Dobara login karein.';
+    if (/unavailable|network|offline/.test(c)) return 'Internet ya Firebase se connection nahi ban pa raha.';
+    return c || 'Unknown error';
+};
+

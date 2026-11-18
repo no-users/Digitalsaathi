@@ -3,7 +3,7 @@
   const d = document, $ = s => d.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const get = (k, f) => { try { return JSON.parse(localStorage[k] || 'null') ?? f; } catch (e) { return f; } }, set = (k, v) => { try { localStorage[k] = JSON.stringify(v); } catch (e) {} };
-  const today = () => new Date().toISOString().slice(0, 10);
+  const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const btn = d.createElement('button'); btn.id = 'ccToolsBtn'; btn.title = 'Cafe Tools (T)'; btn.setAttribute('aria-label', 'Cafe Tools'); btn.innerHTML = '<i class="fas fa-toolbox"></i>'; d.body.appendChild(btn);
   function age(a, b) { let y = b.getFullYear() - a.getFullYear(), m = b.getMonth() - a.getMonth(), dd = b.getDate() - a.getDate(); if (dd < 0) { m--; dd += new Date(b.getFullYear(), b.getMonth(), 0).getDate(); } if (m < 0) { y--; m += 12; } return { y, m, d: dd }; }
   const TABS = { age: ['Umar', 'cake-candles'], calc: ['Calculator', 'calculator'], token: ['Token', 'ticket'], notes: ['Notes', 'note-sticky'] };

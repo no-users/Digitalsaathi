@@ -13,25 +13,11 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Shared config (window.db, window.auth, ccAuthReady). Firestore rules me login zaroori hai, isliye auth-guard bhi. -->
+    <script src="js/auth-firebase.js"></script>
+    <script src="js/auth-guard.js"></script>
 
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
-        authDomain: "agency-136b6.firebaseapp.com",
-        databaseURL: "https://agency-136b6-default-rtdb.firebaseio.com",
-        projectId: "agency-136b6",
-        storageBucket: "agency-136b6.firebasestorage.app",
-        messagingSenderId: "503663950718",
-        appId: "1:503663950718:web:8a30b18039c279ffac112f",
-        measurementId: "G-1K7QHDXKQ2"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore(); 
-      window.db = db;
-    </script>
-   
     <link rel="stylesheet" href="css/them.css">
     <link rel="stylesheet" href="css/mobdigitalsaathi.css">
 <link rel="stylesheet" href="css/cc-polish.css">
@@ -184,51 +170,7 @@
 <!-- Yeh aapke desktop wali main JavaScript file ko mobile.html se jod dega -->
     <script src="js/mobile.js"></script>
 <script>
-// --- Main Firebase Loading Function ---
-async function loadCardsFromFirebase() {
-    try {
-        const docRef = db.collection("data").doc("matrix_config");
-        const doc = await docRef.get();
-
-        if (doc.exists) {
-            const data = doc.data();
-            const cardsArray = data.cards || [];
-            
-            const container = document.getElementById('firebaseCardsContainer');
-            container.innerHTML = ""; 
-
-            let i = 0;
-            while (i < cardsArray.length) {
-                // Pattern: 2 Vertical Cards Group
-                let verticalGroup = document.createElement('div');
-                verticalGroup.className = 'mobile-vertical-group';
-                
-                for (let v = 0; v < 2 && i < cardsArray.length; v++, i++) {
-                    // Type bhejenge taaki sahi class lage
-                    verticalGroup.appendChild(createCardElementMixed(cardsArray[i]));
-                }
-                container.appendChild(verticalGroup);
-
-                if (i >= cardsArray.length) break;
-
-                // Pattern: Horizontal Scroll Row (Fixed for scroll)
-                let horizontalScroll = document.createElement('div');
-                horizontalScroll.className = 'mobile-horizontal-scroll-row';
-                
-                // Horizontal container scroll init (if not using drag-to-scroll)
-                // (Agar drag-to-scroll lagaya hai toh yeh scroll-behavior smooth css se handle hoga)
-
-                for (let h = 0; h < 3 && i < cardsArray.length; h++, i++) {
-                    horizontalScroll.appendChild(createCardElementMixed(cardsArray[i]));
-                }
-                container.appendChild(horizontalScroll);
-            }
-        }
-    } catch (error) {
-        console.error("Error loading cards:", error);
-    }
-}
-
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 // --- Updated Helper Function to handle Mixed Layout AND Link Types ---
 function createCardElementMixed(card) {
     const cardElement = document.createElement('div');
@@ -238,15 +180,15 @@ function createCardElementMixed(card) {
     // Icon Box
     const iconBoxHTML = `
         <div class="card-icon-box" style="background-color: ${card.color || '#1e293b'}; color: #fff;">
-            <i class="${card.icon || 'fas fa-star'}"></i>
+            <i class="${esc(card.icon || 'fas fa-star')}"></i>
         </div>
     `;
 
     // Text Info Box
     const infoBoxHTML = `
         <div class="card-info-box">
-            <h4>${card.title || 'Service'}</h4>
-            <p>${card.desc || 'Click to proceed'}</p>
+            <h4>${esc(card.title || 'Service')}</h4>
+            <p>${esc(card.desc || 'Click to proceed')}</p>
         </div>
     `;
 
@@ -256,18 +198,11 @@ function createCardElementMixed(card) {
     cardElement.onclick = (e) => {
         e.preventDefault(); // Prevent default anchor behavior
 
-        if (card.type === 'single' && card.url) {
-            // **Case 1: Direct Open** (Agar 'type' 'single' hai)
-            window.open(card.url, '_blank'); 
-
-        } else if (card.type === 'multiple' && card.links && card.links.length > 0) {
-            // **Case 2: Open Popup** (Agar 'type' 'multiple' hai)
+        // Dashboard jaisa hi: extra links hon to popup, warna seedha URL (admin cards me 'type' field hota hi nahi)
+        if (Array.isArray(card.links) && card.links.length > 0) {
             openMultiLinkPopup(card.title, card.links);
-
-        } else if (!card.type && card.url) {
-            // Fallback: Agar purana data hai jisme 'type' nahi hai, toh direct open karein
+        } else if (card.url) {
             window.open(card.url, '_blank');
-            
         } else {
             console.warn("Card data incomplete:", card);
         }
@@ -285,7 +220,7 @@ const modalCloseBtn = document.getElementById('modalCloseBtn');
 
 function openMultiLinkPopup(title, linksArray) {
     // Title update karein
-    modalTitle.textContent = title;
+    modalTitle.textContent = title || 'Links';
     
     // Purani list clear karein
     modalLinksList.innerHTML = "";
@@ -293,12 +228,12 @@ function openMultiLinkPopup(title, linksArray) {
     // Nayee links dynamically generate karein
     linksArray.forEach(link => {
         const linkAnchor = document.createElement('a');
-        linkAnchor.href = link.url;
+        linkAnchor.href = link.url || '#';
         linkAnchor.target = '_blank';
         linkAnchor.className = 'modal-link-item';
         
         linkAnchor.innerHTML = `
-            <span>${link.name || 'Visit Link'}</span>
+            <span>${esc(link.name || link.title || 'Visit Link')}</span>
             <i class="fas fa-external-link-alt"></i>
         `;
         
@@ -327,10 +262,6 @@ multiLinkModal.addEventListener('click', (e) => {
     }
 });
 
-// Page load hone par function call karein
-document.addEventListener("DOMContentLoaded", () => {
-    loadCardsFromFirebase();
-});
 
 
 </script>

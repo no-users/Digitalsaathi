@@ -1,0 +1,55 @@
+# ============================================================
+# SETUP CHECKLIST (agar dashboard me data / notification nahi aa raha to pehle yeh dekhein)
+# ============================================================
+# 1) Firebase Console -> project "agency-136b6" (admin.html aur dashboard dono yahi project use karte hain).
+# 2) Authentication -> Sign-in method -> Email/Password ON hona chahiye.
+# 3) Firestore Database -> Rules me neeche ke rules jodkar PUBLISH karein (Publish dabana zaroori hai).
+# 4) Firestore Database -> Data -> "admins" collection banayein:
+#       Document ID = aapka email, SAB CHHOTE AKSHAR me (jaise  mera@gmail.com)
+#       fields: role = "owner" (string), active = true (boolean)
+#    (Sirf pehle owner ko Console se banana padta hai; baaki admin panel ke Settings -> Team se ban jate hain.)
+# 5) Admin panel me login karke koi Main Folder save karein. Isse "data/matrix_config" document bana dega.
+# 6) Dashboard par Ctrl+Shift+D dabayein: Project / Folders count / Source: Server (live) dikhna chahiye.
+#    Admin panel -> Settings -> Connection Doctor har collection ka padhna/likhna jaanch deta hai.
+# 7) Dashboard aur mobile page dono data padhne ke liye LOGIN maangte hain (rules me signedIn()).
+#    Agar data bina login ke dikhana ho to `match /data/{doc}` me read ko `if true` kar dein.
+# 8) Naye notice dikhane ke liye Admin -> Updates & Notices me "Status = Published" rakhna zaroori hai.
+# ============================================================
+
+# Firestore Rules: admin panel ke liye (Firebase Console -> Firestore Database -> Rules)
+# Apne PURANE rules (users, login wale) ko mat hatayein. Neeche ka hissa unhi ke andar,
+#   match /databases/{database}/documents { ... }
+# ke bhitar jod dein. Agar pehle se `match /data/{doc}` ya `match /drive_pdfs/{id}` hai to usse badal dein.
+#
+# Pehla owner: Console me `admins` collection banayein, document id = aapka email (chhote akshar me),
+#   fields: role = "owner" (string), active = true (boolean).
+
+function signedIn() { return request.auth != null; }
+function me() { return /databases/$(database)/documents/admins/$(request.auth.token.email.lower()); }
+function isAdmin() { return signedIn() && exists(me()) && get(me()).data.active != false; }
+function isOwner() { return isAdmin() && get(me()).data.role == 'owner'; }
+
+match /admins/{email} {
+  allow read: if signedIn() && (request.auth.token.email.lower() == email || isOwner());
+  allow write: if isOwner();
+}
+match /data/{doc} {                 // matrix_config (folders, sub-portals, cards, notice)
+  allow read: if signedIn();        // dashboard login ke baad padhta hai. Public chahiye to `if true`
+  allow write: if isAdmin();
+}
+match /updates/{id} {               // dashboard ka notification banner
+  allow read: if resource.data.published == true || isAdmin();
+  allow write: if isAdmin();
+}
+match /drive_pdfs/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+match /pdfs/{id}       { allow read: if signedIn(); allow write: if isAdmin(); }
+match /clicks/{id}     { allow read: if isAdmin(); allow write: if signedIn(); }
+match /applications/{id} { allow read, write: if isAdmin(); }
+match /bills/{id}        { allow read, write: if isAdmin(); }
+match /expenses/{id}     { allow read, write: if isAdmin(); }
+match /prices/{id}       { allow read, write: if isAdmin(); }
+match /staff/{id}        { allow read, write: if isAdmin(); }
+match /cash/{id}         { allow read, write: if isAdmin(); }
+match /trash/{id}        { allow read, write: if isAdmin(); }
+match /audit/{id}        { allow read, create: if isAdmin(); }
+match /backups/{id}      { allow read, write: if isAdmin(); }

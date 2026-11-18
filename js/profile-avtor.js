@@ -14,6 +14,7 @@
     try {
         var cs = document.currentScript;
         if (cs && cs.src) BASE = cs.src.replace(/[^\/]*([?#].*)?$/, "");
+        BASE = BASE.replace(/js\/$/, ""); // script ab js/ folder me hai, asset paths site ke root se chalte hain
     } catch (e) { /* ignore */ }
 
     // ---- 1. Theme ko har us page par apply karo jahan chip hai ----

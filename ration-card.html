@@ -62,6 +62,7 @@
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBWyMJvt0OpejwkFEstI_NQToHmMBGwkbE",
@@ -73,8 +74,10 @@
             appId: "1:503663950718:web:8a30b18039c279ffac112f",
             measurementId: "G-1K7QHDXKQ2"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        // Rules me padhne ke liye login zaroori hai: auth ready hone ka wait karein
+        const authReady = new Promise(res => { const off = firebase.auth().onAuthStateChanged(u => { off(); res(u); }); });
 
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -84,6 +87,7 @@
         window.addEventListener('DOMContentLoaded', async () => {
             const dropdown = document.getElementById('pdfDropdown');
             try {
+                await authReady; // login hai to token ke saath padhega; na ho to bhi try karega (rules public ho sakte hain)
                 let snapshot = await db.collection('drive_pdfs').get();
                 if (snapshot.empty) {
                     snapshot = await db.collection('pdfs').get();
@@ -100,6 +104,9 @@
                 });
             } catch (e) {
                 console.error("Error loading dropdown:", e);
+                let o = document.createElement('option'); o.disabled = true;
+                o.innerText = (e && e.code === 'permission-denied') ? 'PDF list nahi aayi: Firestore rules check karein' : 'PDF list load nahi hui';
+                dropdown.appendChild(o);
             }
         });
 

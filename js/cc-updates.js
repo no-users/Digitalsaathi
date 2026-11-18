@@ -164,7 +164,31 @@
   }
   window.ccShowInfo = show;
   document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelector('.ccu-ov')?.remove(); });
-  db.collection('data').doc('matrix_config').onSnapshot(d => { CARDS = (d.data() || {}).cards || []; if (U.length) draw(); });
-  db.collection('updates').where('published', '==', true).onSnapshot(s => { U = s.docs.map(d => ({ id: d.id, ...d.data() })); draw(); maybePop(); }, e => console.warn('updates:', e.message));
+  // Naya notice aate hi phone/PC par alert (page khula ho tab). Permission pehli baar dock par tap karne par maangi jati hai.
+  function notifyNew(u) {
+    const msg = (u.title || 'Naya update') + (u.endDate ? ' · Last date: ' + fmt(u.endDate) : '');
+    try { if (typeof showToast === 'function') showToast('Naya update: ' + msg, 'info'); } catch (e) {}
+    try { if ('Notification' in window && Notification.permission === 'granted') new Notification('Click & Connect · Naya Update', { body: msg, icon: 'assets/img/Web_Icon.png', tag: 'ccu-' + (u.id || u.title) }); } catch (e) {}
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest || !e.target.closest('#ccUpd')) return;
+    try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch (err) {}
+  }, { once: false, passive: true });
+
+  function startUpd() {
+    db.collection('data').doc('matrix_config').onSnapshot(d => { CARDS = (d.data() || {}).cards || []; if (U.length) draw(); }, e => console.warn('matrix_config (cards):', e.message));
+    let first = true;
+    db.collection('updates').where('published', '==', true).onSnapshot(s => {
+      window.ccUpdErr = '';
+      U = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (!first) s.docChanges().forEach(ch => { if (ch.type === 'added') notifyNew({ id: ch.doc.id, ...ch.doc.data() }); });
+      first = false; draw(); maybePop();
+    }, e => {
+      window.ccUpdErr = (window.ccFbHint ? window.ccFbHint(e) : (e.code || e.message));
+      console.warn('updates:', e.code, e.message);
+    });
+  }
+  // Login ready hone ke baad hi listen karein (rules me signedIn zaroori hai)
+  (window.ccAuthReady || Promise.resolve(window.auth && window.auth.currentUser)).then(u => { if (u) startUpd(); });
   setInterval(draw, 60000);
 })();
